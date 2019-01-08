@@ -17,5 +17,13 @@ namespace CJEngine.Models
         public DbSet<CJEngine.Models.Pairing> Pairing { get; set; }
 
         public DbSet<CJEngine.Models.Judge> Judge { get; set; }
+
+        public DbSet<CJEngine.Models.Algorithm> Algorithm { get; set; }
+
+        public DbSet<CJEngine.Models.Artefact> Artefact { get; set; }
+
+        public DbSet<CJEngine.Models.Experiment> Experiment { get; set; }
+
+        public DbSet<CJEngine.Models.Researcher> Researcher { get; set; }
     }
 }

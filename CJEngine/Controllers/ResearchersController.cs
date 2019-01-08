@@ -9,22 +9,22 @@ using CJEngine.Models;
 
 namespace CJEngine.Controllers
 {
-    public class JudgesController : Controller
+    public class ResearchersController : Controller
     {
         private readonly CJEngineContext _context;
 
-        public JudgesController(CJEngineContext context)
+        public ResearchersController(CJEngineContext context)
         {
             _context = context;
         }
 
-        // GET: Judges
+        // GET: Researchers
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Judge.ToListAsync());
+            return View(await _context.Researcher.ToListAsync());
         }
 
-        // GET: Judges/Details/5
+        // GET: Researchers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -32,39 +32,39 @@ namespace CJEngine.Controllers
                 return NotFound();
             }
 
-            var judge = await _context.Judge
+            var researcher = await _context.Researcher
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (judge == null)
+            if (researcher == null)
             {
                 return NotFound();
             }
 
-            return View(judge);
+            return View(researcher);
         }
 
-        // GET: Judges/Create
+        // GET: Researchers/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Judges/Create
+        // POST: Researchers/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Email")] Judge judge)
+        public async Task<IActionResult> Create([Bind("Id,Name")] Researcher researcher)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(judge);
+                _context.Add(researcher);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(judge);
+            return View(researcher);
         }
 
-        // GET: Judges/Edit/5
+        // GET: Researchers/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -72,22 +72,22 @@ namespace CJEngine.Controllers
                 return NotFound();
             }
 
-            var judge = await _context.Judge.FindAsync(id);
-            if (judge == null)
+            var researcher = await _context.Researcher.FindAsync(id);
+            if (researcher == null)
             {
                 return NotFound();
             }
-            return View(judge);
+            return View(researcher);
         }
 
-        // POST: Judges/Edit/5
+        // POST: Researchers/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Email")] Judge judge)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Researcher researcher)
         {
-            if (id != judge.Id)
+            if (id != researcher.Id)
             {
                 return NotFound();
             }
@@ -96,12 +96,12 @@ namespace CJEngine.Controllers
             {
                 try
                 {
-                    _context.Update(judge);
+                    _context.Update(researcher);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!JudgeExists(judge.Id))
+                    if (!ResearcherExists(researcher.Id))
                     {
                         return NotFound();
                     }
@@ -112,10 +112,10 @@ namespace CJEngine.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(judge);
+            return View(researcher);
         }
 
-        // GET: Judges/Delete/5
+        // GET: Researchers/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -123,30 +123,30 @@ namespace CJEngine.Controllers
                 return NotFound();
             }
 
-            var judge = await _context.Judge
+            var researcher = await _context.Researcher
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (judge == null)
+            if (researcher == null)
             {
                 return NotFound();
             }
 
-            return View(judge);
+            return View(researcher);
         }
 
-        // POST: Judges/Delete/5
+        // POST: Researchers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var judge = await _context.Judge.FindAsync(id);
-            _context.Judge.Remove(judge);
+            var researcher = await _context.Researcher.FindAsync(id);
+            _context.Researcher.Remove(researcher);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool JudgeExists(int id)
+        private bool ResearcherExists(int id)
         {
-            return _context.Judge.Any(e => e.Id == id);
+            return _context.Researcher.Any(e => e.Id == id);
         }
     }
 }

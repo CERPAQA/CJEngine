@@ -9,22 +9,22 @@ using CJEngine.Models;
 
 namespace CJEngine.Controllers
 {
-    public class JudgesController : Controller
+    public class ArtefactsController : Controller
     {
         private readonly CJEngineContext _context;
 
-        public JudgesController(CJEngineContext context)
+        public ArtefactsController(CJEngineContext context)
         {
             _context = context;
         }
 
-        // GET: Judges
+        // GET: Artefacts
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Judge.ToListAsync());
+            return View(await _context.Artefact.ToListAsync());
         }
 
-        // GET: Judges/Details/5
+        // GET: Artefacts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -32,39 +32,39 @@ namespace CJEngine.Controllers
                 return NotFound();
             }
 
-            var judge = await _context.Judge
+            var artefact = await _context.Artefact
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (judge == null)
+            if (artefact == null)
             {
                 return NotFound();
             }
 
-            return View(judge);
+            return View(artefact);
         }
 
-        // GET: Judges/Create
+        // GET: Artefacts/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Judges/Create
+        // POST: Artefacts/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Email")] Judge judge)
+        public async Task<IActionResult> Create([Bind("Id,Name,FileName,Description")] Artefact artefact)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(judge);
+                _context.Add(artefact);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(judge);
+            return View(artefact);
         }
 
-        // GET: Judges/Edit/5
+        // GET: Artefacts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -72,22 +72,22 @@ namespace CJEngine.Controllers
                 return NotFound();
             }
 
-            var judge = await _context.Judge.FindAsync(id);
-            if (judge == null)
+            var artefact = await _context.Artefact.FindAsync(id);
+            if (artefact == null)
             {
                 return NotFound();
             }
-            return View(judge);
+            return View(artefact);
         }
 
-        // POST: Judges/Edit/5
+        // POST: Artefacts/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Email")] Judge judge)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,FileName,Description")] Artefact artefact)
         {
-            if (id != judge.Id)
+            if (id != artefact.Id)
             {
                 return NotFound();
             }
@@ -96,12 +96,12 @@ namespace CJEngine.Controllers
             {
                 try
                 {
-                    _context.Update(judge);
+                    _context.Update(artefact);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!JudgeExists(judge.Id))
+                    if (!ArtefactExists(artefact.Id))
                     {
                         return NotFound();
                     }
@@ -112,10 +112,10 @@ namespace CJEngine.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(judge);
+            return View(artefact);
         }
 
-        // GET: Judges/Delete/5
+        // GET: Artefacts/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -123,30 +123,30 @@ namespace CJEngine.Controllers
                 return NotFound();
             }
 
-            var judge = await _context.Judge
+            var artefact = await _context.Artefact
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (judge == null)
+            if (artefact == null)
             {
                 return NotFound();
             }
 
-            return View(judge);
+            return View(artefact);
         }
 
-        // POST: Judges/Delete/5
+        // POST: Artefacts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var judge = await _context.Judge.FindAsync(id);
-            _context.Judge.Remove(judge);
+            var artefact = await _context.Artefact.FindAsync(id);
+            _context.Artefact.Remove(artefact);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool JudgeExists(int id)
+        private bool ArtefactExists(int id)
         {
-            return _context.Judge.Any(e => e.Id == id);
+            return _context.Artefact.Any(e => e.Id == id);
         }
     }
 }

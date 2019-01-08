@@ -9,22 +9,22 @@ using CJEngine.Models;
 
 namespace CJEngine.Controllers
 {
-    public class JudgesController : Controller
+    public class AlgorithmsController : Controller
     {
         private readonly CJEngineContext _context;
 
-        public JudgesController(CJEngineContext context)
+        public AlgorithmsController(CJEngineContext context)
         {
             _context = context;
         }
 
-        // GET: Judges
+        // GET: Algorithms
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Judge.ToListAsync());
+            return View(await _context.Algorithm.ToListAsync());
         }
 
-        // GET: Judges/Details/5
+        // GET: Algorithms/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -32,39 +32,39 @@ namespace CJEngine.Controllers
                 return NotFound();
             }
 
-            var judge = await _context.Judge
+            var algorithm = await _context.Algorithm
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (judge == null)
+            if (algorithm == null)
             {
                 return NotFound();
             }
 
-            return View(judge);
+            return View(algorithm);
         }
 
-        // GET: Judges/Create
+        // GET: Algorithms/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Judges/Create
+        // POST: Algorithms/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Email")] Judge judge)
+        public async Task<IActionResult> Create([Bind("Id,FunctionName,Filename,Description,Valid")] Algorithm algorithm)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(judge);
+                _context.Add(algorithm);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(judge);
+            return View(algorithm);
         }
 
-        // GET: Judges/Edit/5
+        // GET: Algorithms/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -72,22 +72,22 @@ namespace CJEngine.Controllers
                 return NotFound();
             }
 
-            var judge = await _context.Judge.FindAsync(id);
-            if (judge == null)
+            var algorithm = await _context.Algorithm.FindAsync(id);
+            if (algorithm == null)
             {
                 return NotFound();
             }
-            return View(judge);
+            return View(algorithm);
         }
 
-        // POST: Judges/Edit/5
+        // POST: Algorithms/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Email")] Judge judge)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FunctionName,Filename,Description,Valid")] Algorithm algorithm)
         {
-            if (id != judge.Id)
+            if (id != algorithm.Id)
             {
                 return NotFound();
             }
@@ -96,12 +96,12 @@ namespace CJEngine.Controllers
             {
                 try
                 {
-                    _context.Update(judge);
+                    _context.Update(algorithm);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!JudgeExists(judge.Id))
+                    if (!AlgorithmExists(algorithm.Id))
                     {
                         return NotFound();
                     }
@@ -112,10 +112,10 @@ namespace CJEngine.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(judge);
+            return View(algorithm);
         }
 
-        // GET: Judges/Delete/5
+        // GET: Algorithms/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -123,30 +123,30 @@ namespace CJEngine.Controllers
                 return NotFound();
             }
 
-            var judge = await _context.Judge
+            var algorithm = await _context.Algorithm
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (judge == null)
+            if (algorithm == null)
             {
                 return NotFound();
             }
 
-            return View(judge);
+            return View(algorithm);
         }
 
-        // POST: Judges/Delete/5
+        // POST: Algorithms/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var judge = await _context.Judge.FindAsync(id);
-            _context.Judge.Remove(judge);
+            var algorithm = await _context.Algorithm.FindAsync(id);
+            _context.Algorithm.Remove(algorithm);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool JudgeExists(int id)
+        private bool AlgorithmExists(int id)
         {
-            return _context.Judge.Any(e => e.Id == id);
+            return _context.Algorithm.Any(e => e.Id == id);
         }
     }
 }

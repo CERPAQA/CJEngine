@@ -5,10 +5,9 @@ using System.Threading.Tasks;
 
 namespace CJEngine.Models
 {
-    public class Judge
+    public class Researcher
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Email { get; set; }
+        public int Name { get; set; }
     }
 }
