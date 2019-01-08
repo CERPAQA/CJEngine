@@ -1,9 +1,9 @@
 ﻿import React, { Component } from 'react';
-import { GetFileType } from './components/GetFileType';
-import { Header } from './components/Header';
-import { IMGViewer } from './components/IMGViewer';
-import { JudgedScripts } from './components/JudgedScripts';
-import { PDFViewer } from './components/PDFViewer';
+import { GetFileType } from './GetFileType';
+import { Header } from './Header';
+import { IMGViewer } from './IMGViewer';
+import { JudgedScripts } from './JudgedScripts';
+import { PDFViewer } from './PDFViewer';
 
 export class CJCore extends React.Component {
     constructor(props) {
