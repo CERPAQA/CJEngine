@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CJ_Engine.Controllers
+namespace CJEngine.Controllers
 {
     [Route("api/[controller]")]
     public class SampleDataController : Controller

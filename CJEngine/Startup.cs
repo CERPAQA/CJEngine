@@ -7,11 +7,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
-using CJ_Engine.Models;
-using CJ_Engine;
 using CJEngine.Models;
 
-namespace WebApplication1
+namespace CJEngine
 {
     public class Startup
     {
