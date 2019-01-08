@@ -1,5 +1,4 @@
-﻿
-function GetFileType(filename) {
+﻿function GetFileType(filename) {
     if (filename != undefined) {
         var x = filename.includes("pdf");
     }

@@ -1,6 +1,9 @@
 ﻿import React, { Component } from 'react';
 import { GetFileType } from './components/GetFileType';
-
+import { Header } from './components/Header';
+import { IMGViewer } from './components/IMGViewer';
+import { JudgedScripts } from './components/JudgedScripts';
+import { PDFViewer } from './components/PDFViewer';
 
 export class CJCore extends React.Component {
     constructor(props) {
@@ -186,7 +189,7 @@ export class CJCore extends React.Component {
                 <button id="hideTitle" class="btn btn-dark" onClick={this.toggleHidden.bind(this)} >
                     Hide Title
 				</button>
-                <TotalScripts data={this.state.data.length} score={this.state.score} top={this.state.topPick} />
+                <JudgedScripts data={this.state.data.length} score={this.state.score} top={this.state.topPick} />
             </div>
         );
     }
@@ -197,8 +200,3 @@ function EndOfPairs(props) {
         <img src="finished.jpg" width='40%' align={props.align}></img>
     );
 }
-
-ReactDOM.render(
-    <CJCore url="/files" />,
-    document.getElementById('pdfLoc')
-);
