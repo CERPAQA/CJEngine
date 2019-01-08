@@ -1,4 +1,5 @@
-﻿function TotalScripts(props) {
+﻿import React, { Component } from 'react';
+function TotalScripts(props) {
     return (
         <div id="totalScripts">
             <p>Total pairings: {props.data}</p>
