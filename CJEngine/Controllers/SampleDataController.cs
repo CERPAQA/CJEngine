@@ -9,6 +9,7 @@ namespace CJ_Engine.Controllers
     [Route("api/[controller]")]
     public class SampleDataController : Controller
     {
+        CJEngine.Controllers.PairingsController pairingsController = new CJEngine.Controllers.PairingsController();
         private static string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
@@ -17,6 +18,7 @@ namespace CJ_Engine.Controllers
         [HttpGet("[action]")]
         public IEnumerable<WeatherForecast> WeatherForecasts()
         {
+            pairingsController.GetFiles();
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
