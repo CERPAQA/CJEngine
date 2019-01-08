@@ -6,100 +6,45 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CJEngine.Models;
+using System.IO;
 
 namespace CJEngine.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PairingsController : ControllerBase
+    public class PairingsController : Controller
     {
-        private readonly CJEngineContext _context;
+        private static List<Pairing> allPairings = new List<Pairing>();
 
-        public PairingsController(CJEngineContext context)
+		public List<string> GetFiles()
         {
-            _context = context;
-        }
-
-        // GET: api/Pairings
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Pairing>>> GetPairing()
-        {
-            return await _context.Pairing.ToListAsync();
-        }
-
-        // GET: api/Pairings/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Pairing>> GetPairing(int id)
-        {
-            var pairing = await _context.Pairing.FindAsync(id);
-
-            if (pairing == null)
-            {
-                return NotFound();
-            }
-
-            return pairing;
-        }
-
-        // PUT: api/Pairings/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutPairing(int id, Pairing pairing)
-        {
-            if (id != pairing.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(pairing).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PairingExists(id))
+                List<string> fileNames = new List<string>();
+                string currentFile;
+                string[] pdf = Directory.GetFiles("wwwroot\\pdfjs-2.0.943-dist\\web", "*.pdf");
+                string[] imgs = Directory.GetFiles("wwwroot\\images", "*.jpg");
+                foreach (string dir in pdf)
                 {
-                    return NotFound();
+                    currentFile = Path.GetFileName(dir).ToLower();
+                    fileNames.Add(currentFile);
                 }
-                else
+
+                foreach (string img in imgs)
                 {
-                    throw;
+                    String relativeTo = "wwwroot";
+                    String relPath = Path.GetRelativePath(relativeTo, img);
+                    string ImagePath = "/" + relPath.Replace("\\", "/");
+                    fileNames.Add(ImagePath);
                 }
+                return fileNames;
             }
-
-            return NoContent();
-        }
-
-        // POST: api/Pairings
-        [HttpPost]
-        public async Task<ActionResult<Pairing>> PostPairing(Pairing pairing)
-        {
-            _context.Pairing.Add(pairing);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetPairing", new { id = pairing.Id }, pairing);
-        }
-
-        // DELETE: api/Pairings/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Pairing>> DeletePairing(int id)
-        {
-            var pairing = await _context.Pairing.FindAsync(id);
-            if (pairing == null)
+            catch (Exception e)
             {
-                return NotFound();
+                List<string> error = new List<string>();
+                error.Add(e.ToString());
+                return error;
             }
-
-            _context.Pairing.Remove(pairing);
-            await _context.SaveChangesAsync();
-
-            return pairing;
-        }
-
-        private bool PairingExists(int id)
-        {
-            return _context.Pairing.Any(e => e.Id == id);
         }
     }
 }

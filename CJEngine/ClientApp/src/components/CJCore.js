@@ -1,4 +1,6 @@
 ﻿import React, { Component } from 'react';
+import { GetFileType } from './components/GetFileType';
+
 
 export class CJCore extends React.Component {
     constructor(props) {
@@ -151,8 +153,8 @@ export class CJCore extends React.Component {
             } else {
                 var currentFileLeft = this.state.data[this.state.index]["item1"];
                 var currentFileRight = this.state.data[this.state.index]["item2"];
-                var x = getFileType(currentFileLeft);
-                var y = getFileType(currentFileRight);
+                var x = GetFileType(currentFileLeft);
+                var y = GetFileType(currentFileRight);
                 if (x === true) {
                     viewLeft = <PDFViewer id="left" data={currentFileLeft} />;
 
