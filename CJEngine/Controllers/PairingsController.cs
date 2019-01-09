@@ -22,8 +22,8 @@ namespace CJEngine.Controllers
             {
                 List<string> fileNames = new List<string>();
                 string currentFile;
-                string[] pdf = Directory.GetFiles("ClientApp\\public\\Root\\web", "*.pdf");
-                string[] imgs = Directory.GetFiles("ClientApp\\public", "*.jpg");
+                string[] pdf = Directory.GetFiles("ClientApp\\public\\pdf", "*.pdf");
+                string[] imgs = Directory.GetFiles("ClientApp\\public\\images", "*.jpg");
                 foreach (string dir in pdf)
                 {
                     currentFile = Path.GetFileName(dir).ToLower();
@@ -32,7 +32,7 @@ namespace CJEngine.Controllers
 
                 foreach (string img in imgs)
                 {
-                    String relativeTo = "Root";
+                    String relativeTo = "ClientApp\\public";
                     String relPath = Path.GetRelativePath(relativeTo, img);
                     string ImagePath = "/" + relPath.Replace("\\", "/");
                     fileNames.Add(ImagePath);
@@ -49,7 +49,9 @@ namespace CJEngine.Controllers
 
         public List<Tuple<int, int>> GetPairings(int noScripts, int noPairings)
         {
-            REngineClass.GetREngine().Evaluate(@"source('C:\\Users\\owner\\Source\\Repos\\CERPAQA\\CJEngine\\CJEngine\\REngine\\RScripts\\ComparativeJudgmentPairingsTest.R')");
+            REngineClass.GetREngine().Evaluate(@"source('REngine\\RScripts\\ComparativeJudgmentPairingsTest.R')");
+
+           // REngineClass.GetREngine().Evaluate(@"source('C:\\Users\\owner\\Source\\Repos\\CERPAQA\\CJEngine\\CJEngine\\REngine\\RScripts\\ComparativeJudgmentPairingsTest.R')");
             NumericMatrix matrix = REngineClass.GetREngine().Evaluate(string.Format("matrix <- generatePairings(noOfScripts = {0}, noOfPairings = {1})", noScripts, noPairings)).AsNumericMatrix();
 
             //create an empty list of tuples
