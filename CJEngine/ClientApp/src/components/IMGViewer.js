@@ -6,7 +6,7 @@ function importAll(r) {
     return images;
 }
 
-const images = importAll(require.context('../', false, '/\.jpg/'));
+const images = importAll(require.context('../public', false, '/\.jpg/'));
 export function IMGViewer(props) {
     return (
         <div id="imgOne">

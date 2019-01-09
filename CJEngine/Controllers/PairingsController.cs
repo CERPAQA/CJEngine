@@ -22,8 +22,8 @@ namespace CJEngine.Controllers
             {
                 List<string> fileNames = new List<string>();
                 string currentFile;
-                string[] pdf = Directory.GetFiles("Root\\web", "*.pdf");
-                string[] imgs = Directory.GetFiles("Root\\images", "*.jpg");
+                string[] pdf = Directory.GetFiles("ClientApp\\public\\Root\\web", "*.pdf");
+                string[] imgs = Directory.GetFiles("ClientApp\\public", "*.jpg");
                 foreach (string dir in pdf)
                 {
                     currentFile = Path.GetFileName(dir).ToLower();
