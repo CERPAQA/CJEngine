@@ -261,3 +261,5 @@ __pycache__/
 *.pyc
 /CJEngine/Root
 /CJEngine/ClientApp/Root
+/CJEngine/ClientApp/public/images
+/CJEngine/ClientApp/public/pdf

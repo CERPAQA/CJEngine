@@ -37,7 +37,8 @@ export class CJCore extends React.Component {
     getNextFiles() {
         var newindex = this.state.index + 1;
         var newcounter = this.state.counter;
-        this.state.index === this.state.counter ? newcounter++ : newcounter;
+        if(this.state.index === this.state.counter)
+            newcounter++;
         var Score = this.judgeScore();
         this.getLeadingScript();
         this.setState({ index: newindex, counter: newcounter, score: Score, time: new Date() });
@@ -175,10 +176,10 @@ export class CJCore extends React.Component {
             <div>
                 {<Header isHidden={this.state.isHidden} />}
                 <div class="itemDisplay">
-                    <button id="prevFileButton" class="btn btn-dark" align="right" onClick={this.prevFileButton}>Previous File</button>
+                    <button id="prevFileButton" className="btn btn-dark" align="right" onClick={this.prevFileButton}>Previous File</button>
                     {viewLeft}
                     {viewRight}
-                    <button id="nextFileButton" class="btn btn-dark" align="left" onClick={this.nextFileButton}>Next File</button>
+                    <button id="nextFileButton" className="btn btn-dark" align="left" onClick={this.nextFileButton}>Next File</button>
                 </div>
 
                 <div class="judgeChoice">
