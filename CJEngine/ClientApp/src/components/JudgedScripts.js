@@ -1,5 +1,5 @@
 ﻿import React, { Component } from 'react';
-function TotalScripts(props) {
+export function JudgedScripts(props) {
     return (
         <div id="totalScripts">
             <p>Total pairings: {props.data}</p>
