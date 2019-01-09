@@ -22,13 +22,11 @@ export class CJCore extends React.Component {
     }
 
     componentDidMount() {
-        const xhr = new XMLHttpRequest();
-        xhr.open('get', this.props.url, true);
-        xhr.onload = () => {
-            const data = JSON.parse(xhr.responseText);
-            this.setState({ data: data });
-        };
-        xhr.send();
+        fetch('api/Pairings/CreatePairings')
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ data: data });
+            });
     }
 
     toggleHidden() {

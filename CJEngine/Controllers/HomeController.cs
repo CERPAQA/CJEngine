@@ -13,7 +13,6 @@ namespace CJEngine.Controllers
         PairingsController pairingsController = new PairingsController();
         public IActionResult Index()
         {
-            pairingsController.CreatePairings();
             return View();
         }
 

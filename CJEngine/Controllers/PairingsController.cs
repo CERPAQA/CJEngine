@@ -11,6 +11,7 @@ using RDotNet;
 
 namespace CJEngine.Controllers
 {
+    [Route("api/[controller]")]
     public class PairingsController : Controller
     {
         private static List<Pairing> allPairings = new List<Pairing>();
@@ -21,8 +22,8 @@ namespace CJEngine.Controllers
             {
                 List<string> fileNames = new List<string>();
                 string currentFile;
-                string[] pdf = Directory.GetFiles("Root\\web", "*.pdf");
-                string[] imgs = Directory.GetFiles("Root\\images", "*.jpg");
+                string[] pdf = Directory.GetFiles("ClientApp\\Root\\web", "*.pdf");
+                string[] imgs = Directory.GetFiles("ClientApp\\Root\\images", "*.jpg");
                 foreach (string dir in pdf)
                 {
                     currentFile = Path.GetFileName(dir).ToLower();
@@ -62,6 +63,7 @@ namespace CJEngine.Controllers
             return pairings;
         }
 
+        [HttpGet("[action]")]
         public List<Tuple<string, string>> CreatePairings()
         {
             //taken from line 90 above in get file method
