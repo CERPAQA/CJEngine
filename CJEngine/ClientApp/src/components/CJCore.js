@@ -4,6 +4,7 @@ import { Header } from './Header';
 import { IMGViewer } from './IMGViewer';
 import { JudgedScripts } from './JudgedScripts';
 import { PDFViewer } from './PDFViewer';
+import { PDFViewer2 } from './PDFViewer2';
 
 export class CJCore extends React.Component {
     constructor(props) {

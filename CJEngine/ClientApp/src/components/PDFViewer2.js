@@ -1,7 +1,7 @@
 ﻿import React from 'react';
 import PDF from 'react-pdf-js';
 
-class PDFViewer2 extends React.Component {
+export class PDFViewer2 extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -44,9 +44,9 @@ class PDFViewer2 extends React.Component {
             pagination = this.renderPagination(this.state.page, this.state.pages);
         }
         return (
-            <div id={props.id}>
+            <div id={this.props.id}>
                 <PDF
-                    file={props.data}
+                    file={this.props.data}
                     onDocumentComplete={this.onDocumentComplete}
                 page={this.state.page}
                 />
@@ -56,4 +56,3 @@ class PDFViewer2 extends React.Component {
     }
 }
 
-export default PDFViewer2;
