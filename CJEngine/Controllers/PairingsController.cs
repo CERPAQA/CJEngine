@@ -22,8 +22,8 @@ namespace CJEngine.Controllers
             {
                 List<string> fileNames = new List<string>();
                 string currentFile;
-                string[] pdf = Directory.GetFiles("ClientApp\\Root\\web", "*.pdf");
-                string[] imgs = Directory.GetFiles("ClientApp\\Root\\images", "*.jpg");
+                string[] pdf = Directory.GetFiles("Root\\web", "*.pdf");
+                string[] imgs = Directory.GetFiles("Root\\images", "*.jpg");
                 foreach (string dir in pdf)
                 {
                     currentFile = Path.GetFileName(dir).ToLower();
@@ -32,7 +32,7 @@ namespace CJEngine.Controllers
 
                 foreach (string img in imgs)
                 {
-                    String relativeTo = "wwwroot";
+                    String relativeTo = "Root";
                     String relPath = Path.GetRelativePath(relativeTo, img);
                     string ImagePath = "/" + relPath.Replace("\\", "/");
                     fileNames.Add(ImagePath);

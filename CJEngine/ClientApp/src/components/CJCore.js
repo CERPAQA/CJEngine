@@ -37,7 +37,7 @@ export class CJCore extends React.Component {
     getNextFiles() {
         var newindex = this.state.index + 1;
         var newcounter = this.state.counter;
-        this.state.index === this.state.counter ? newcounter++ : newcounter;
+        //this.state.index === this.state.counter ? newcounter++ : newcounter;
         var Score = this.judgeScore();
         this.getLeadingScript();
         this.setState({ index: newindex, counter: newcounter, score: Score, time: new Date() });
