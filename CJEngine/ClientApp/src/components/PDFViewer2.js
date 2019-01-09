@@ -5,7 +5,7 @@ export class PDFViewer2 extends React.Component {
     constructor(props) {
         super(props);
     }
-    state = {};
+    state = { page: 1 };
 
     onDocumentComplete = (pages) => {
         this.setState({ page: 1, pages });
@@ -20,20 +20,39 @@ export class PDFViewer2 extends React.Component {
     }
 
     renderPagination = (page, pages) => {
-        let previousButton = <li className="previous" onClick={this.handlePrevious}><a href="#"><i className="fa fa-arrow-left"></i> Previous</a></li>;
+        let previousButton = (
+            
+            <button onClick={this.handlePrevious} className="btn btn-dark">
+                Previous pg
+            </button>
+        );
         if (page === 1) {
-            previousButton = <li className="previous disabled"><a href="#"><i className="fa fa-arrow-left"></i> Previous</a></li>;
+            previousButton = (
+                <button className="btn btn-dark">
+                    Previous pg
+                </button>
+
+            );
         }
-        let nextButton = <li className="next" onClick={this.handleNext}><a href="#">Next <i className="fa fa-arrow-right"></i></a></li>;
+        let nextButton = (
+            <button onClick={this.handleNext} className="btn btn-dark">
+                Next pg
+            </button>
+
+        );
         if (page === pages) {
-            nextButton = <li className="next disabled"><a href="#">Next <i className="fa fa-arrow-right"></i></a></li>;
+            nextButton = (
+               
+                <button className="btn btn-dark">
+                    Next pg
+                </button>
+                
+            );
         }
         return (
             <nav>
-                <ul className="pager">
-                    {previousButton}
-                    {nextButton}
-                </ul>
+                {previousButton}
+                {nextButton}
             </nav>
         );
     }
@@ -44,15 +63,10 @@ export class PDFViewer2 extends React.Component {
             pagination = this.renderPagination(this.state.page, this.state.pages);
         }
         return (
-            <div id={this.props.id}>
-                <PDF
-                    file={this.props.data}
-                    onDocumentComplete={this.onDocumentComplete}
-                    page={this.state.page}
-                />
+            <div>
+                <PDF file={this.props.data} onDocumentComplete={this.onDocumentComplete} page={this.state.page} />
                 {pagination}
             </div>
-        )
+        );
     }
 }
-
