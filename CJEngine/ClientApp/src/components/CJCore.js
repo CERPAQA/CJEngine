@@ -157,13 +157,13 @@ export class CJCore extends React.Component {
                 var x = GetFileType(currentFileLeft);
                 var y = GetFileType(currentFileRight);
                 if (x === true) {
-                    viewLeft = <PDFViewer id="left" data={currentFileLeft} />;
+                    viewLeft = <PDFViewer2 id="left" data={currentFileLeft} />;
 
                 } else {
                     viewLeft = <IMGViewer id="left" data={currentFileLeft} />;
                 }
                 if (y === true) {
-                    viewRight = <PDFViewer id="right" data={currentFileRight} />;
+                    viewRight = <PDFViewer2 id="right" data={currentFileRight} />;
                 } else {
 
                     viewRight = <IMGViewer id="right" data={currentFileRight} />;
