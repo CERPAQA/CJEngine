@@ -48,7 +48,7 @@ export class PDFViewer2 extends React.Component {
                 <PDF
                     file={this.props.data}
                     onDocumentComplete={this.onDocumentComplete}
-                page={this.state.page}
+                    page={this.state.page}
                 />
                 {pagination}
             </div>
