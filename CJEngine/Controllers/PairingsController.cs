@@ -26,21 +26,22 @@ namespace CJEngine.Controllers
             try
             {
                 List<string> fileNames = new List<string>();
-                string currentFile;
-                string[] pdf = Directory.GetFiles("ClientApp\\public\\pdf", "*.pdf");
+                string[] pdfs = Directory.GetFiles("ClientApp\\public\\pdf", "*.pdf");
                 string[] imgs = Directory.GetFiles("ClientApp\\public\\images", "*.jpg");
-                foreach (string dir in pdf)
+                foreach (string pdf in pdfs)
                 {
-                    currentFile = Path.GetFileName(dir).ToLower();
-                    fileNames.Add(currentFile);
+                    String relativeTo = "ClientApp\\public";
+                    String relPath = Path.GetRelativePath(relativeTo, pdf);
+                    string pdfPath = "/" + relPath.Replace("\\", "/");
+                    fileNames.Add(pdfPath);
                 }
 
                 foreach (string img in imgs)
                 {
                     String relativeTo = "ClientApp\\public";
                     String relPath = Path.GetRelativePath(relativeTo, img);
-                    string ImagePath = "/" + relPath.Replace("\\", "/");
-                    fileNames.Add(ImagePath);
+                    string imagePath = "/" + relPath.Replace("\\", "/");
+                    fileNames.Add(imagePath);
                 }
                 return fileNames;
             }
