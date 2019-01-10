@@ -123,7 +123,7 @@ export class CJCore extends React.Component {
     }
 
     send(pair, winner, timeJ, elapsed) {
-        fetch("winners", {
+        fetch("GetWinners", {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

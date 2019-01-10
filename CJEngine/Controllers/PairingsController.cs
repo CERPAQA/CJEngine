@@ -102,7 +102,6 @@ namespace CJEngine.Controllers
         }
 
         [Produces("application/json")]
-        [Route("winners")]
         public string GetWinners([FromBody] Pairing data)
         {
             string winner = data.winner;

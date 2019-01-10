@@ -1,8 +1,11 @@
-﻿import React, { Component } from 'react';
+﻿import React from 'react';
+import PDF from 'react-pdf-js';
 export function PDFViewer(props) {
     return (
         <div id="pdfOne">
-            <iframe id={props.id} src={"/Root/web/viewer.html?file=" + props.data} height='500em' width='500em'> </iframe>
+        <PDF
+            file={props.data}
+            />
         </div>
     );
 }
