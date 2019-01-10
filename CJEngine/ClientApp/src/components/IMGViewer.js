@@ -1,5 +1,4 @@
 ﻿import React, { Component } from 'react';
-
 export function IMGViewer(props) {
     return (
         <div id="imgOne">

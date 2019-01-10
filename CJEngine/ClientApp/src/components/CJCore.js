@@ -99,16 +99,16 @@ export class CJCore extends React.Component {
     }
 
     getJudgeID() {
-        const xhr = new XMLHttpRequest();
-        xhr.open('get', "/id", true);
-        xhr.onload = () => {
-            const id = JSON.parse(xhr.responseText);
-            this.setState({ judgeID: id });
-        };
-        xhr.send();
+        fetch('api/Pairings/GenerateID')
+            .then(response => response.json())
+            .then(id => {
+                this.setState({ judgeID: id});
+            });
+
         var id = this.state.judgeID;
         return id;
     }
+ 
 
     getLeadingScript() {
         const xhr = new XMLHttpRequest();
@@ -134,15 +134,7 @@ export class CJCore extends React.Component {
             if (response.status !== 200) {
                 console.log('fetch returned not ok' + response.status);
             }
-
-            response.json().then(function (data) {
-                console.log('fetch returned ok');
-                console.log(data);
-            });
         })
-            .catch(function (err) {
-                console.log(`error: ${err}`);
-            });
     }
 
     render() {

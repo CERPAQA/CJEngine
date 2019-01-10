@@ -48,7 +48,7 @@ export class PDFViewer2 extends React.Component {
                 </button>
                 
             );
-        }
+        } 
         return (
             <nav>
                 {previousButton}
