@@ -172,7 +172,7 @@ namespace CJEngine.Controllers
             return sb.ToString();
         }
 
-        [HttpGet]
+        [HttpGet("[action]")]
         public FileContentResult ReportBuilder()
         {
             var csv = GenerateCSVString();
