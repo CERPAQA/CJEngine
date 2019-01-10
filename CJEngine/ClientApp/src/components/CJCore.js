@@ -28,6 +28,7 @@ export class CJCore extends React.Component {
             .then(data => {
                 this.setState({ data: data });
             });
+        this.getJudgeID();
     }
 
     toggleHidden() {
@@ -111,13 +112,11 @@ export class CJCore extends React.Component {
  
 
     getLeadingScript() {
-        const xhr = new XMLHttpRequest();
-        xhr.open('get', "/leader", true);
-        xhr.onload = () => {
-            const script = xhr.responseText;
-            this.setState({ topPick: script });
-        };
-        xhr.send();
+        fetch('api/Pairings/GetLeadingScript')
+            .then(response => response.text())
+            .then(script => {
+                this.setState({ topPick: script });
+            });
         var script = this.state.topPick;
         return script;
     }

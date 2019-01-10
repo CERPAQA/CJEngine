@@ -73,7 +73,6 @@ namespace CJEngine.Controllers
         [HttpGet("[action]")]
         public List<Tuple<string, string>> CreatePairings()
         {
-            //taken from line 90 above in get file method
             List<Tuple<int, int>> result = GetPairings(GetFiles().Count - 1, 20); //change seoond number back to 30 once done testing counter
             List<string> original = GetFiles();
             List<Tuple<string, string>> finalResult = new List<Tuple<string, string>>();
@@ -87,7 +86,6 @@ namespace CJEngine.Controllers
         [HttpGet("[action]")]
         public int GenerateID()
         {
-            //not yet working smoothly, needs more testing and work.
             Random rnd = new Random();
             int id;
             do
@@ -112,14 +110,13 @@ namespace CJEngine.Controllers
             string timeJudgement = data.timeJudgement;
             string elapsedTime = data.elapsedTime;
             int judgeID = data.judgeID;
-
             Pairing p = new Pairing(winner, pairOfScripts, timeJudgement, elapsedTime, judgeID);
             allPairings.Add(p);
             scriptsChosen.Add(winner);
             return winner;
         }
 
-
+        [HttpGet("[action]")]
         public string GetLeadingScript()
         {
             Dictionary<string, int> counts = new Dictionary<string, int>();
