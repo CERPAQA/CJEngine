@@ -13,7 +13,7 @@ namespace CJEngine.Models
         public int Id { get; set; }
 
         public Judge Judge;
-
+        public Experiment Experiment;
         public IList<ArtefactPairing> ArtefactPairings { get; set; }
 
         public Artefact Winner { get; set; }
