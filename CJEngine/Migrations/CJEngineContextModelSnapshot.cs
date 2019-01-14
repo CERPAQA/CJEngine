@@ -176,6 +176,8 @@ namespace CJEngine.Migrations
 
                     b.Property<int>("ElapsedTime");
 
+                    b.Property<int?>("ExperimentId");
+
                     b.Property<int?>("JudgeId");
 
                     b.Property<DateTime>("TimeOfPairing");
@@ -183,6 +185,8 @@ namespace CJEngine.Migrations
                     b.Property<int?>("WinnerId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ExperimentId");
 
                     b.HasIndex("JudgeId");
 
@@ -279,6 +283,10 @@ namespace CJEngine.Migrations
 
             modelBuilder.Entity("CJEngine.Models.Pairing", b =>
                 {
+                    b.HasOne("CJEngine.Models.Experiment")
+                        .WithMany("Pairings")
+                        .HasForeignKey("ExperimentId");
+
                     b.HasOne("CJEngine.Models.Judge")
                         .WithMany("Pairings")
                         .HasForeignKey("JudgeId");

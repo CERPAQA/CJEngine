@@ -10,8 +10,11 @@ namespace CJEngine.Models
     {
         public int Id { get; set; }
         public int Name { get; set; }
+
         public ExperimentParameters ExperimentParameters { get; set; }
         public int ExperimentParametersId { get; set; }
+
+        public IList<Pairing> Pairings { get; set; }
 
         public IList<ExpAlgorithm> ExpAlgorithms { get; set; }
         public IList<ExpArtefact> ExpArtefacts { get; set; }
