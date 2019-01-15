@@ -56,15 +56,12 @@ namespace CJEngine.Controllers
         public List<Tuple<int, int>> GetPairings(int noScripts, int noPairings)
         {
             REngineClass.GetREngine().Evaluate(@"source('REngine\\RScripts\\ComparativeJudgmentPairingsTest.R')");
-           // REngineClass.GetREngine().Evaluate(@"source('C:\\Users\\owner\\Source\\Repos\\CERPAQA\\CJEngine\\CJEngine\\REngine\\RScripts\\ComparativeJudgmentPairingsTest.R')");
             NumericMatrix matrix = REngineClass.GetREngine().Evaluate(string.Format("matrix <- generatePairings(noOfScripts = {0}, noOfPairings = {1})", noScripts, noPairings)).AsNumericMatrix();
 
-            //create an empty list of tuples
             List<Tuple<int, int>> pairings = new List<Tuple<int, int>>();
 
             for (int i = 0; i < matrix.RowCount; i++)
             {
-                //add new tuple to list
                 pairings.Add(new Tuple<int, int>((int)matrix[i, 0], (int)matrix[i, 1]));
             }
             return pairings;

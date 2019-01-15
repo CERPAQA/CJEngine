@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CJEngine.Migrations
 {
     [DbContext(typeof(CJEngineContext))]
-    [Migration("20190111154248_AllTableLinks")]
-    partial class AllTableLinks
+    [Migration("20190114161403_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
