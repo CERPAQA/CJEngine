@@ -4,14 +4,16 @@ using CJEngine.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CJEngine.Migrations
 {
     [DbContext(typeof(CJEngineContext))]
-    partial class CJEngineContextModelSnapshot : ModelSnapshot
+    [Migration("20190114161403_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,8 +50,6 @@ namespace CJEngine.Migrations
 
                     b.Property<string>("FileName");
 
-                    b.Property<string>("FilePath");
-
                     b.Property<string>("Name");
 
                     b.HasKey("Id");
@@ -65,7 +65,7 @@ namespace CJEngine.Migrations
 
                     b.Property<int>("ExperimentParametersId");
 
-                    b.Property<string>("Name");
+                    b.Property<int>("Name");
 
                     b.HasKey("Id");
 

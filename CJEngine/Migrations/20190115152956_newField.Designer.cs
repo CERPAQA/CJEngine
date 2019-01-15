@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CJEngine.Migrations
 {
     [DbContext(typeof(CJEngineContext))]
-    [Migration("20190111154248_AllTableLinks")]
-    partial class AllTableLinks
+    [Migration("20190115152956_newField")]
+    partial class newField
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,6 +50,8 @@ namespace CJEngine.Migrations
 
                     b.Property<string>("FileName");
 
+                    b.Property<string>("FilePath");
+
                     b.Property<string>("Name");
 
                     b.HasKey("Id");
@@ -65,7 +67,7 @@ namespace CJEngine.Migrations
 
                     b.Property<int>("ExperimentParametersId");
 
-                    b.Property<int>("Name");
+                    b.Property<string>("Name");
 
                     b.HasKey("Id");
 

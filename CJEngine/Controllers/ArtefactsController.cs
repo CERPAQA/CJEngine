@@ -6,16 +6,21 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CJEngine.Models;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 
 namespace CJEngine.Controllers
 {
     public class ArtefactsController : Controller
     {
         private readonly CJEngineContext _context;
+        private readonly IHostingEnvironment he;
 
-        public ArtefactsController(CJEngineContext context)
+        public ArtefactsController(CJEngineContext context, IHostingEnvironment e)
         {
             _context = context;
+            he = e;
         }
 
         // GET: Artefacts
@@ -53,10 +58,16 @@ namespace CJEngine.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,FileName,Description")] Artefact artefact)
+        public async Task<IActionResult> Create([Bind("Id,Name,FileName,Description,FilePath")] IFormFile files, Artefact artefact)
         {
             if (ModelState.IsValid)
             {
+                if (files != null)
+                {
+                    var fileName = Path.Combine(he.WebRootPath + "/artefacts", Path.GetFileName(files.FileName));
+                    files.CopyTo(new FileStream(fileName, FileMode.Create));
+                    artefact.setImageAsRelativePath(fileName);
+                }
                 _context.Add(artefact);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
