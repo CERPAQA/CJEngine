@@ -9,23 +9,22 @@ using CJEngine.Models;
 
 namespace CJEngine.Controllers
 {
-    public class ExperimentsController : Controller
+    public class ExperimentParametersController : Controller
     {
         private readonly CJEngineContext _context;
 
-        public ExperimentsController(CJEngineContext context)
+        public ExperimentParametersController(CJEngineContext context)
         {
             _context = context;
         }
 
-        // GET: Experiments
+        // GET: ExperimentParameters
         public async Task<IActionResult> Index()
         {
-
-            return View(await _context.Experiment.ToListAsync());
+            return View(await _context.ExperimentParameters.ToListAsync());
         }
 
-        // GET: Experiments/Details/5
+        // GET: ExperimentParameters/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,45 +32,39 @@ namespace CJEngine.Controllers
                 return NotFound();
             }
 
-            var experiment = await _context.Experiment
+            var experimentParameters = await _context.ExperimentParameters
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (experiment == null)
+            if (experimentParameters == null)
             {
                 return NotFound();
             }
 
-            return View(experiment);
+            return View(experimentParameters);
         }
 
-        // GET: Experiments/Create
+        // GET: ExperimentParameters/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Experiments/Create
+        // POST: ExperimentParameters/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Experiment experiment)
+        public async Task<IActionResult> Create([Bind("Id,ShowTitle,ShowTimer")] ExperimentParameters experimentParameters)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(experiment);
+                _context.Add(experimentParameters);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(experiment);
+            return View(experimentParameters);
         }
 
-        public async Task<IActionResult> GetCreateParam()
-        {
-            ExperimentParametersController experimentParametersController = new ExperimentParametersController(CJEngineContext context);
-            experimentParametersController.Create();
-        }
-
-        // GET: Experiments/Edit/5
+        // GET: ExperimentParameters/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -79,22 +72,22 @@ namespace CJEngine.Controllers
                 return NotFound();
             }
 
-            var experiment = await _context.Experiment.FindAsync(id);
-            if (experiment == null)
+            var experimentParameters = await _context.ExperimentParameters.FindAsync(id);
+            if (experimentParameters == null)
             {
                 return NotFound();
             }
-            return View(experiment);
+            return View(experimentParameters);
         }
 
-        // POST: Experiments/Edit/5
+        // POST: ExperimentParameters/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Experiment experiment)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ShowTitle,ShowTimer")] ExperimentParameters experimentParameters)
         {
-            if (id != experiment.Id)
+            if (id != experimentParameters.Id)
             {
                 return NotFound();
             }
@@ -103,12 +96,12 @@ namespace CJEngine.Controllers
             {
                 try
                 {
-                    _context.Update(experiment);
+                    _context.Update(experimentParameters);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ExperimentExists(experiment.Id))
+                    if (!ExperimentParametersExists(experimentParameters.Id))
                     {
                         return NotFound();
                     }
@@ -119,10 +112,10 @@ namespace CJEngine.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(experiment);
+            return View(experimentParameters);
         }
 
-        // GET: Experiments/Delete/5
+        // GET: ExperimentParameters/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -130,30 +123,30 @@ namespace CJEngine.Controllers
                 return NotFound();
             }
 
-            var experiment = await _context.Experiment
+            var experimentParameters = await _context.ExperimentParameters
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (experiment == null)
+            if (experimentParameters == null)
             {
                 return NotFound();
             }
 
-            return View(experiment);
+            return View(experimentParameters);
         }
 
-        // POST: Experiments/Delete/5
+        // POST: ExperimentParameters/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var experiment = await _context.Experiment.FindAsync(id);
-            _context.Experiment.Remove(experiment);
+            var experimentParameters = await _context.ExperimentParameters.FindAsync(id);
+            _context.ExperimentParameters.Remove(experimentParameters);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ExperimentExists(int id)
+        private bool ExperimentParametersExists(int id)
         {
-            return _context.Experiment.Any(e => e.Id == id);
+            return _context.ExperimentParameters.Any(e => e.Id == id);
         }
     }
 }

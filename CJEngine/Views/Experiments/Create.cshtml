@@ -1,5 +1,4 @@
-﻿@model CJEngine.Models.Experiment
-
+﻿@model CJEngine.Models.Experiment;
 @{
     ViewData["Title"] = "Create";
 }
@@ -16,10 +15,15 @@
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
-                ,
-                <select asp-for="ExperimentParameters"></select>
-                <input asp-for="ExperimentParameters" class="form-control" />
-                <span asp-validation-for="ExperimentParameters" class="text-danger"></span>
+            </div>
+            <div id="parameters">
+                <iframe src="~/Controllers/ExperimentParameters">
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ExperimentParameters.ShowTimer" class="control-label"></label>
+                <input asp-for="ExperimentParameters.ShowTimer" type ="checkbox" name="timer" class="form-control" />
+                <span asp-validation-for="ExperimentParameters.ShowTimer" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
