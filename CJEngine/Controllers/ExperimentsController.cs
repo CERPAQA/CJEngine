@@ -65,12 +65,6 @@ namespace CJEngine.Controllers
             return View(experiment);
         }
 
-        public async Task<IActionResult> GetCreateParam()
-        {
-            ExperimentParametersController experimentParametersController = new ExperimentParametersController(CJEngineContext context);
-            experimentParametersController.Create();
-        }
-
         // GET: Experiments/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
