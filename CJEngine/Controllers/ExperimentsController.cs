@@ -86,7 +86,7 @@ namespace CJEngine.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Experiment experiment)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description")] Experiment experiment)
         {
             if (id != experiment.Id)
             {
