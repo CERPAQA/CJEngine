@@ -9,6 +9,6 @@ namespace CJEngine.ViewModel
     public class ExperimentParameterViewModel
     {
         public Experiment Experiment { get; set; }
-        public List<ExperimentParameters> Parameters { get; set; }
+        public IEnumerable<ExperimentParameters> Parameters { get; set; }
     }
 }
