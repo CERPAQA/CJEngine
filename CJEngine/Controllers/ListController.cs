@@ -1,20 +1,17 @@
-﻿using CJEngine.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using CJEngine.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace CJEngine.ViewModel
+namespace CJEngine.Controllers
 {
-    public class ExperimentParameterViewModel
+    public class ListController : Controller
     {
         private readonly CJEngineContext _context;
-        public Experiment Experiment { get; set; }
-        //public IEnumerable<ExperimentParameters> Parameters { get; set; }
-        public Artefact artefact { get; set; }
-        public Artefact selected { get; set; }
 
         public IEnumerable<SelectListItem> GetArtefacts()
         {
