@@ -10,21 +10,8 @@ namespace CJEngine.ViewModel
 {
     public class ExperimentParameterViewModel
     {
-        private readonly CJEngineContext _context;
         public Experiment Experiment { get; set; }
-        //public IEnumerable<ExperimentParameters> Parameters { get; set; }
-        public Artefact artefact { get; set; }
-        public Artefact selected { get; set; }
-
-        public IEnumerable<SelectListItem> GetArtefacts()
-        {
-            IEnumerable<SelectListItem> allArtefacts = (IEnumerable<SelectListItem>)_context.Artefact.ToList();
-            return allArtefacts;
-        }
-
-        public ActionResult AllArtefacts()
-        {
-            return (ActionResult)GetArtefacts();
-        }
+        public ExperimentParameters ExperimentParameters { get; set; }
+        public IEnumerable<Artefact> Artefacts { get; set; }
     }
 }

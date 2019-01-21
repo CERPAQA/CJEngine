@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CJEngine.Models;
+using CJEngine.ViewModel;
 
 namespace CJEngine.Controllers
 {
@@ -46,7 +47,10 @@ namespace CJEngine.Controllers
         // GET: Experiments/Create
         public IActionResult Create()
         {
-            return View();
+            ExperimentParameterViewModel EPV = new ExperimentParameterViewModel();
+           // EPV.Experiment = new Experiment();
+            EPV.Artefacts = _context.Artefact.ToList();
+            return View(EPV);
         }
 
         // POST: Experiments/Create

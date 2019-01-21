@@ -1,8 +1,10 @@
-﻿@model CJEngine.Models.ExperimentParameters
+﻿@model CJEngine.ViewModel.ExperimentParameterViewModel;
 
 @{
     ViewData["Title"] = "Create";
 }
+
+<h1>Create</h1>
 
 <h4>ExperimentParameters</h4>
 <hr />
@@ -12,12 +14,12 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="ShowTitle" /> @Html.DisplayNameFor(model => model.ShowTitle)
+                    <input class="form-check-input" asp-for="ExperimentParameters.ShowTitle" /> @Html.DisplayNameFor(model => model.ExperimentParameters.ShowTitle)
                 </label>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="ShowTimer" /> @Html.DisplayNameFor(model => model.ShowTimer)
+                    <input class="form-check-input" asp-for="ExperimentParameters.ShowTimer" /> @Html.DisplayNameFor(model => model.ExperimentParameters.ShowTimer)
                 </label>
             </div>
             <div class="form-group">
