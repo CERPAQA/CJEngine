@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CJEngine.Models;
 using CJEngine.ViewModel;
+using CJEngine.Controllers;
 
 namespace CJEngine.Controllers
 {
