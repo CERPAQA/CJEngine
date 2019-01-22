@@ -1,11 +1,10 @@
-﻿@model CJEngine.ViewModel.ExperimentParameterViewModel;
+﻿@model CJEngine.ViewModel.CreateExperimentViewModel;
 @{
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Create New Experiment</h1>
 
-<h4>Experiment</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -24,38 +23,26 @@
             </div>
             <div class="form-group">
                 <label asp-for="Experiment.ExperimentParameters" class="control-label"></label>
-                <select name="Parameters" onchange="javascript:handleSelect(this)" asp-for="Experiment.ExperimentParameters" class="form-control">
-                    <option value="/ExperimentParameters/Create">Create New</option>
+                <select name="Parameters" onchange="java_script_:show(this.options[this.selectedIndex].value)"
+                        asp-for="Experiment.ExperimentParameters" class="form-control">
+                    <option value="New">Create New</option>
+                    @foreach (var item in Model.ExperimentParametersList)
+                    {
+                        <option >@item.Description</option>
+                    }
                 </select>
             </div>
-
-            <table>
-                <tbody>
-                    @foreach (var item in Model.Artefacts)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.FileName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Description)
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-
-            <a href="#popupMap" data-rel="popup" data-position-to="window" class="ui-btn ui-corner-all ui-shadow ui-btn-inline">Open Map</a>
-            <div data-role="popup" id="popupMap" data-overlay-theme="a" data-theme="a" data-corners="false" data-tolerance="15,15">
-                <a href="#" data-rel="back" class="ui-btn ui-btn-b ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+            <div id="parameters">
+                <br />
                 <partial name="~/Views/ExperimentParameters/_CreateParams.cshtml" />
+            </div>
+            <div>
+                <br />
+                <partial name="~/Views/Artefacts/_IndexArtefacts.cshtml" />
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create Experiment" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -69,12 +56,26 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 
+<!--a href="#popupMap" data-rel="popup" data-position-to="window" class="ui-btn ui-corner-all ui-shadow ui-btn-inline">Open Map</a>
+<div data-role="popup" id="popupMap" data-overlay-theme="a" data-theme="a" data-corners="false" data-tolerance="15,15">
+    <a href="#" data-rel="back" class="ui-btn ui-btn-b ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a!-->
+
 <script type="text/javascript">
-    function handleSelect(elm) {
-        if (elm.value == "/ExperimentParameters/Create") {
-            window.location = elm.value;
+    //function handleSelect(elm) {
+    //    if (elm.value == "/ExperimentParameters/Create") {
+    //        window.location = elm.value;
+    //    }
+    //}
+
+    function show(val) {
+        if (val == "New") {
+            parameters.style.display= 'inline-block';
+        }
+        else {
+            parameters.style.display = 'none';
         }
     }
+
 
     // popup examples
     $(document).on("pagecreate", function () {

@@ -8,10 +8,11 @@ using System.Threading.Tasks;
 
 namespace CJEngine.ViewModel
 {
-    public class ExperimentParameterViewModel
+    public class CreateExperimentViewModel
     {
         public Experiment Experiment { get; set; }
         public ExperimentParameters ExperimentParameters { get; set; }
+        public IEnumerable<ExperimentParameters> ExperimentParametersList { get; set; }
         public IEnumerable<Artefact> Artefacts { get; set; }
     }
 }

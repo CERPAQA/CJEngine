@@ -1,0 +1,37 @@
+﻿@model CJEngine.ViewModel.CreateExperimentViewModel;
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h4>Add Artefacts</h4>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                File
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Artefacts) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FileName)
+            </td>
+            <td>
+                <a asp-action="AddArtefact" asp-route-id="@item.Id">Add</a> |
+                <a asp-action="RemoveArtefact" asp-route-id="@item.Id">Remove</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

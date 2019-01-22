@@ -47,10 +47,11 @@ namespace CJEngine.Controllers
         // GET: Experiments/Create
         public IActionResult Create()
         {
-            ExperimentParameterViewModel EPV = new ExperimentParameterViewModel();
-            EPV.Experiment = new Experiment();
-            EPV.Artefacts = _context.Artefact.ToList();
-            return View();
+            CreateExperimentViewModel CEVM = new CreateExperimentViewModel();
+            // EPV.Experiment = new Experiment();
+            CEVM.ExperimentParametersList = _context.ExperimentParameters.ToList();
+            CEVM.Artefacts = _context.Artefact.ToList();
+            return View(CEVM);
         }
 
         // POST: Experiments/Create
