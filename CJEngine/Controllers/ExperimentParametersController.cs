@@ -18,6 +18,17 @@ namespace CJEngine.Controllers
             _context = context;
         }
 
+        [Produces("application/json")]
+        [HttpPost("[action]")]
+        public async void CreateParams([FromBody][Bind("Id,Description,ShowTitle,ShowTimer")] ExperimentParameters experimentParameters)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(experimentParameters);
+                await _context.SaveChangesAsync();
+            }
+        }
+
         // GET: ExperimentParameters
         public async Task<IActionResult> Index()
         {
@@ -53,7 +64,7 @@ namespace CJEngine.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ShowTitle,ShowTimer")] ExperimentParameters experimentParameters)
+        public async Task<IActionResult> Create([Bind("Id,Description,ShowTitle,ShowTimer")] ExperimentParameters experimentParameters)
         {
             if (ModelState.IsValid)
             {

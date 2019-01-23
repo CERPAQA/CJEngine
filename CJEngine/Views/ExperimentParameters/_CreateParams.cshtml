@@ -8,25 +8,24 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create" asp-controller="ExperimentParameters">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <form>
+            <div class="text-danger"></div>
             <div class="form-group form-check">
-                    <label asp-for="ExperimentParameters.Description" class="control-label"></label>
-                    <input asp-for="ExperimentParameters.Description" />
-                    <span asp-validation-for="ExperimentParameters.Description" class="text-danger"></span>
+                    <label class="control-label">Description</label>
+                    <input id="description" type="text" />
             </div> 
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="ExperimentParameters.ShowTitle" /> @Html.DisplayNameFor(model => model.ExperimentParameters.ShowTitle)
+                    <input id="checktitle" type ="checkbox" value="ShowTitle" /> Show Title<br />
                 </label>
             </div>
-            <div class="form-group form-check">
+            <div class="form-group form-check" id="hideTime">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="ExperimentParameters.ShowTimer" /> @Html.DisplayNameFor(model => model.ExperimentParameters.ShowTimer)
+                    <input type="checkbox" id="checkTime" value="ShowTime" /> Show Time
                 </label>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-secondary" />
+            <div>
+                <button type="button" onclick="CreateParams()" class="btn btn-primary">Save changes</button>
             </div>
         </form>
     </div>
@@ -35,3 +34,31 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+<script type="text/javascript">
+    function CreateParams() {
+        var description = document.getElementById("description").innerText;
+        var showTitle = document.getElementById("showtitle").checked;
+        var showTimer = document.getElementById("showTimer").checked;
+        fetch("ExperimentParameters/CreateParams", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ description, showTitle, showTimer })
+        }).then(function (response) {
+            if (response.status !== 200) {
+                console.log('fetch returned not ok' + response.status);
+            }
+
+            response.json().then(function (data) {
+                console.log('fetch returned ok');
+                console.log(data);
+            });
+        })
+            .catch(function (err) {
+                console.log(`error: ${err}`);
+            });
+    }
+</script>
