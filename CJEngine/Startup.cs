@@ -61,23 +61,18 @@ namespace CJEngine
             }
 
             app.UseHttpsRedirection();
-
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
-
             app.UseCookiePolicy();
-
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "ClientApp";
-
                 if (env.IsDevelopment())
                 {
                     spa.UseReactDevelopmentServer(npmScript: "start");

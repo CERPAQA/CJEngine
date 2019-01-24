@@ -47,7 +47,7 @@
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ description, showTitle, showTimer })
+            body: JSON.stringify({ description, showTimer, showTitle })
         }).then(function (response) {
             if (response.status !== 200) {
                 console.log('fetch returned not ok' + response.status);
