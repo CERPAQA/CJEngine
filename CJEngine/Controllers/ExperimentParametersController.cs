@@ -9,6 +9,7 @@ using CJEngine.Models;
 
 namespace CJEngine.Controllers
 {
+    [Route("api/[controller]")]
     public class ExperimentParametersController : Controller
     {
         private readonly CJEngineContext _context;
