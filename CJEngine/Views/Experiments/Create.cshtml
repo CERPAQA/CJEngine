@@ -21,19 +21,31 @@
                 <input asp-for="Experiment.Description" class="form-control" />
                 <span asp-validation-for="Experiment.Description" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Experiment.ExperimentParameters" class="control-label"></label>
-                <select name="Parameters" onchange="java_script_:show(this.options[this.selectedIndex].value)"
-                        asp-for="Experiment.ExperimentParameters" class="form-control">
-                    <option value="New">Create New</option>
-                    @foreach (var item in Model.ExperimentParametersList)
-                    {
-                        <option>@item.Description</option>
-                    }
-                </select>
-                <button type="button" class="btn-secondary" data-toggle="modal" data-target="#parameters"> Create new</button>
-            </div>
+            
+            <!--Need to figure out how to update without page refresh-->
+            <asp:UpdatePanel runat="server" id="UpdatePanel1">
+                <ContentTemplate>
+                    <div class="panel">
+                        <asp:Select runat="server" id="selectParams"></asp:Select>
+                        <div class="form-group">
+                            <label asp-for="Experiment.ExperimentParameters" class="control-label"></label>
+                            <select name="Parameters" onchange="java_script_:show(this.options[this.selectedIndex].value)"
+                                    asp-for="Experiment.ExperimentParameters" class="form-control">
+                                <option value="New">Choose Parameters</option>
+                                @foreach (var item in Model.ExperimentParametersList)
+                                {
+                                    <option>@item.Description</option>
+                                }
+                            </select>
+                            <br />
+                            <button type="button" class="btn-secondary" data-toggle="modal" data-target="#parameters"> Create new</button>
+                        </div>
+                    </div>
+                </ContentTemplate>
+            </asp:UpdatePanel>
+
             <div>
+                <br />
                 <partial name="~/Views/Artefacts/_IndexArtefacts.cshtml" />
             </div>
             <div>
@@ -59,7 +71,6 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" onclick="CreateParams()" class="btn btn-primary">Save changes</button> 
                     </div>
                 </div>
             </div>
