@@ -71,7 +71,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Back to List</a>s
 </div>
 
 @section Scripts {
@@ -101,6 +101,7 @@
         return false;
     }
 
+    //this is supposed to be called when the user clicks the close modal button
     function update() {
         $.ajax({
             type:'POST',
