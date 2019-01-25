@@ -21,13 +21,8 @@
                 <input asp-for="Experiment.Description" class="form-control" />
                 <span asp-validation-for="Experiment.Description" class="text-danger"></span>
             </div>
-            
-            <!--Need to figure out how to update without page refresh-->
-            <asp:UpdatePanel runat="server" id="UpdatePanel1">
-                <ContentTemplate>
-                    <div class="panel">
-                        <asp:Select runat="server" id="selectParams"></asp:Select>
-                        <div class="form-group">
+                    <div>
+                        <div id="partialUpdate" class="form-group">
                             <label asp-for="Experiment.ExperimentParameters" class="control-label"></label>
                             <select name="Parameters" onchange="java_script_:show(this.options[this.selectedIndex].value)"
                                     asp-for="Experiment.ExperimentParameters" class="form-control">
@@ -41,9 +36,6 @@
                             <button type="button" class="btn-secondary" data-toggle="modal" data-target="#parameters"> Create new</button>
                         </div>
                     </div>
-                </ContentTemplate>
-            </asp:UpdatePanel>
-
             <div>
                 <br />
                 <partial name="~/Views/Artefacts/_IndexArtefacts.cshtml" />
@@ -53,7 +45,7 @@
                 <partial name="~/Views/Judges/_IndexJudges.cshtml" />
             </div>
 
-            <div class="form-group">
+            <div>
                 <input type="submit" value="Create Experiment" class="btn btn-primary" />
             </div>
         </form>
@@ -70,7 +62,7 @@
                         <partial name="~/Views/ExperimentParameters/_CreateParams.cshtml" />
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button id="updateDrop" onclick="update()" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -86,6 +78,9 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 
+<script src="https://code.jquery.com/jquery-3.3.1.js"
+        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+        crossorigin="anonymous"></script>
 <script type="text/javascript">
     function show(val) {
         if (val == "New") {
@@ -98,13 +93,23 @@
 
     function ShowPopup(val) {
         if (val == "New") {
-            //$find("mpe").show();
             parameters.style.display = 'inline-block';
         }
         else {
             parameters.style.display = 'none';
         }
         return false;
+    }
+
+    function update() {
+        $.ajax({
+            type:'POST',
+            url: window.location,
+            data: $('partialUpdate').serialize(),
+            success: function (result) {
+                $('#partial').html(result);
+            }
+        })
     }
 
 </script>
