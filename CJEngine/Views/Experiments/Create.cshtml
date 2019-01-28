@@ -21,24 +21,17 @@
                 <input asp-for="Experiment.Description" class="form-control" />
                 <span asp-validation-for="Experiment.Description" class="text-danger"></span>
             </div>
-                    <div>
-                        <div id="partialUpdate" class="form-group">
-                            <label asp-for="Experiment.ExperimentParameters" class="control-label"></label>
-                            <select name="Parameters" onchange="java_script_:show(this.options[this.selectedIndex].value)"
-                                    asp-for="Experiment.ExperimentParameters" class="form-control">
-                                <option value="New">Choose Parameters</option>
-                                @foreach (var item in Model.ExperimentParametersList)
-                                {
-                                    <option>@item.Description</option>
-                                }
-                            </select>
-                            <br />
-                            <button type="button" class="btn-secondary" data-toggle="modal" data-target="#parameters"> Create new</button>
-                        </div>
-                    </div>
+                   <div id="partialUpdate">
+                       <br />
+                       <partial name="~/Views/ExperimentParameters/_LsParams.cshtml" />
+                   </div>
             <div>
                 <br />
                 <partial name="~/Views/Artefacts/_IndexArtefacts.cshtml" />
+            </div>
+            <div>
+                <br />
+                <label id="LsArftefacts"></label>
             </div>
             <div>
                 <br />
@@ -78,9 +71,6 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 
-<script src="https://code.jquery.com/jquery-3.3.1.js"
-        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-        crossorigin="anonymous"></script>
 <script type="text/javascript">
     function show(val) {
         if (val == "New") {
@@ -91,26 +81,7 @@
         }
     }
 
-    function ShowPopup(val) {
-        if (val == "New") {
-            parameters.style.display = 'inline-block';
-        }
-        else {
-            parameters.style.display = 'none';
-        }
-        return false;
-    }
-
-    //this is supposed to be called when the user clicks the close modal button
     function update() {
-        $.ajax({
-            type:'POST',
-            url: window.location,
-            data: $('partialUpdate').serialize(),
-            success: function (result) {
-                $('#partial').html(result);
-            }
-        })
     }
-
+    
 </script>

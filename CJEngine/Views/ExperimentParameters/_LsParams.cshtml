@@ -1,0 +1,17 @@
+﻿@model CJEngine.ViewModel.CreateExperimentViewModel;
+
+<div>
+    <div id="partialUpdate" class="form-group">
+        <label asp-for="Experiment.ExperimentParameters" class="control-label"></label>
+        <select name="Parameters" onchange="java_script_:show(this.options[this.selectedIndex].value)"
+                asp-for="Experiment.ExperimentParameters" class="form-control">
+            <option value="New">Choose Parameters</option>
+            @foreach (var item in Model.ExperimentParametersList)
+            {
+                <option>@item.Description</option>
+            }
+        </select>
+        <br />
+        <button type="button" class="btn-secondary" data-toggle="modal" data-target="#parameters"> Create new</button>
+    </div>
+</div>

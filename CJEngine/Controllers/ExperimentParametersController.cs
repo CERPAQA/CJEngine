@@ -13,6 +13,7 @@ namespace CJEngine.Controllers
     public class ExperimentParametersController : Controller
     {
         private readonly CJEngineContext _context;
+        public IList<Artefact> expArtefacts;
 
         public ExperimentParametersController(CJEngineContext context)
         {
@@ -28,6 +29,15 @@ namespace CJEngine.Controllers
                 _context.Add(experimentParameters);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        //needs more work
+        [HttpPost("[action]")]
+        public async Task AddArtefact([FromBody] Artefact artefact)
+        {
+            var Artefact = await _context.Artefact
+                .FirstOrDefaultAsync(m => m.Id == artefact.Id);
+            expArtefacts.Add(Artefact);
         }
 
         // GET: ExperimentParameters

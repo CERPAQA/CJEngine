@@ -28,10 +28,23 @@
                 @Html.DisplayFor(modelItem => item.FileName)
             </td>
             <td>
-                <a asp-action="AddArtefact" asp-route-id="@item.Id">Add</a> |
+                <a asp-action="AddArtefact" asp-route-id="@item.Id" onclick="addArtefact(@item.Id)">Add</a> |
                 <a asp-action="RemoveArtefact" asp-route-id="@item.Id">Remove</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+<script type="text/javascript">
+    function addArtefact(id) {
+        fetch('/api/ExperimentParameters/AddArtefact', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({id})
+        });
+    }
+</script>
