@@ -21,15 +21,15 @@
     <tbody>
         @foreach (var item in Model.Artefacts) {
         <tr>
-            <td>
+            <td id="artefact">
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.FileName)
             </td>
             <td>
-                <a asp-action="AddArtefact" asp-route-id="@item.Id" id="addArtefact" onclick="addArtefact(@item.Id)">Add</a> |
-                <a asp-action="RemoveArtefact" asp-route-id="@item.Id">Remove</a>
+                <a asp-route-id="@item.Id" onclick="addArtefact()">Add</a> |
+                <a  asp-route-id="@item.Id">Remove</a>
             </td>
         </tr>
 }
@@ -37,16 +37,11 @@
 </table>
 
 <script type="text/javascript">
-    function addArtefact(id) {
-        fetch('/api/Experiment/AddArtefact', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({id})
-        });
-
-        //document.getElementById("addArtefact").disabled = true;
+    function addArtefact() {
+        var artefactName = document.getElementById("artefact").innerHTML;
+        var node = document.createElement("li");
+        var textNode = document.createTextNode(artefactName);
+        node.appendChild(textNode);
+        document.getElementById("selctedArtefacts").appendChild(node);
     }
 </script>

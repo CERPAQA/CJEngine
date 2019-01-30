@@ -23,7 +23,15 @@ namespace CJEngine.Controllers
         //nullreferenceException: object not set to an instance of an object....its not passing the view model along.
         public PartialViewResult LsParam()
         {
-            return PartialView("~/Views/ExperimentParameters/_LsParams.cshtml");
+            try
+            {
+                return PartialView("~/Views/ExperimentParameters/_LsParams.cshtml");
+            }
+            catch (NullReferenceException e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
+            }
         }
 
         //list is empty each time the method is called
