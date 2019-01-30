@@ -9,37 +9,25 @@ using CJEngine.Models;
 
 namespace CJEngine.Controllers
 {
-    [Route("api/[controller]")]
+    //[Route("api/[controller]")]
     public class ExperimentParametersController : Controller
     {
         private readonly CJEngineContext _context;
-        public IList<Artefact> expArtefacts;
+        
 
         public ExperimentParametersController(CJEngineContext context)
         {
             _context = context;
         }
 
-        [Produces("application/json")]
-        [HttpPost("[action]")]
-        public async Task CreateParams([FromBody][Bind("Id,Description,ShowTitle,ShowTimer")] ExperimentParameters experimentParameters)
+        //nullreferenceException: object not set to an instance of an object....its not passing the view model along.
+        public PartialViewResult LsParam()
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(experimentParameters);
-                await _context.SaveChangesAsync();
-            }
+            return PartialView("~/Views/ExperimentParameters/_LsParams.cshtml");
         }
 
-        //needs more work
-        [HttpPost("[action]")]
-        public async Task AddArtefact([FromBody] Artefact artefact)
-        {
-            var Artefact = await _context.Artefact
-                .FirstOrDefaultAsync(m => m.Id == artefact.Id);
-            expArtefacts.Add(Artefact);
-        }
-
+        //list is empty each time the method is called
+     
         // GET: ExperimentParameters
         public async Task<IActionResult> Index()
         {

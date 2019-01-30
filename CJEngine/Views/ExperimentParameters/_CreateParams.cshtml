@@ -40,7 +40,9 @@
         var description = document.getElementById("description").value;
         var showTitle = document.getElementById("checktitle").checked;
         var showTimer = document.getElementById("checkTime").checked;
-        fetch('/api/ExperimentParameters/CreateParams', {
+
+        //reconfigure fetch method
+        fetch('/api/ExperimentParametersAPI/CreateParams', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

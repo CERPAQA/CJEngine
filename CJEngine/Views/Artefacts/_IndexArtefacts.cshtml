@@ -28,7 +28,7 @@
                 @Html.DisplayFor(modelItem => item.FileName)
             </td>
             <td>
-                <a asp-action="AddArtefact" asp-route-id="@item.Id" onclick="addArtefact(@item.Id)">Add</a> |
+                <a asp-action="AddArtefact" asp-route-id="@item.Id" id="addArtefact" onclick="addArtefact(@item.Id)">Add</a> |
                 <a asp-action="RemoveArtefact" asp-route-id="@item.Id">Remove</a>
             </td>
         </tr>
@@ -38,7 +38,7 @@
 
 <script type="text/javascript">
     function addArtefact(id) {
-        fetch('/api/ExperimentParameters/AddArtefact', {
+        fetch('/api/Experiment/AddArtefact', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -46,5 +46,7 @@
             },
             body: JSON.stringify({id})
         });
+
+        //document.getElementById("addArtefact").disabled = true;
     }
 </script>

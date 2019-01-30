@@ -14,10 +14,19 @@ namespace CJEngine.Controllers
     public class ExperimentsController : Controller
     {
         private readonly CJEngineContext _context;
+        public static IList<Artefact> expArtefacts = new List<Artefact>();
 
         public ExperimentsController(CJEngineContext context)
         {
             _context = context;
+        }
+
+        [HttpPost("[action]")]
+        public async Task AddArtefact([FromBody] Artefact artefact)
+        {
+            var Artefact = await _context.Artefact
+                .FirstOrDefaultAsync(m => m.Id == artefact.Id);
+            expArtefacts.Add(Artefact);
         }
 
         // GET: Experiments

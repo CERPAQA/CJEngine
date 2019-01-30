@@ -71,6 +71,9 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 
+<script src="https://code.jquery.com/jquery-3.3.1.js"
+        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+        crossorigin="anonymous"></script>
 <script type="text/javascript">
     function show(val) {
         if (val == "New") {
@@ -81,7 +84,18 @@
         }
     }
 
-    function update() {
+    function ShowPopup(val) {
+        if (val == "New") {
+            parameters.style.display = 'inline-block';
+        }
+        else {
+            parameters.style.display = 'none';
+        }
+        return false;
     }
-    
+
+    //this is supposed to be called when the user clicks the close modal button
+    function update() {
+        $('#partialUpdate').load('/ExperimentParameters/LsParam');
+    }
 </script>
