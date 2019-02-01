@@ -6,7 +6,7 @@
 
 <h4>Add Artefacts</h4>
 
-<table class="table" id="tblArtefact">
+<table id="tblArtefact">
     <thead>
         <tr>
             <th>
@@ -28,16 +28,18 @@
                 @Html.DisplayFor(modelItem => item.FileName)
             </td>
             <td>
-                <a id="add" asp-route-id="@item.Id" onclick="addArtefact()">Add</a> |
-                <a id="remove" asp-route-id="@item.Id">Remove</a>
+                <a asp-route-id="@item.Id">Add</a> |
+                <a asp-route-id="@item.Id">Remove</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
-
+<script src="https://code.jquery.com/jquery-3.3.1.js"
+        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+        crossorigin="anonymous"></script>
 <script type="text/javascript">
-    function addArtefact() {
+    /*function addArtefact() {
         var tbl = document.getElementById("tblArtefact");
         for (var i = 0; i < tbl.rows.length; i++) {
             for (var j = 0; j < tbl.rows[i].cells.length; j++) {
@@ -49,5 +51,23 @@
         var textNode = document.createTextNode(x);
         node.appendChild(textNode);
         document.getElementById("selctedArtefacts").appendChild(node);
-    }
+    }*/
+    //javascriot is happening at wrong time as .rows is returning null, started a new method below for testing.
+    $(document).ready(function () {
+        $("#tblArtefact td").click(function () {
+            var column_num = parseInt($(this).index()) - 2;
+            var row_num = parseInt($(this).parent().index()) + 1;
+
+            var x = document.getElementById("#tblArtefact").rows.lenght;
+            console.log();
+        });
+    });
+
+    $("#tblArtefact td").click(function () {
+            var column_num = parseInt($(this).index()) - 2;
+            var row_num = parseInt($(this).parent().index()) + 1;
+
+            var x = document.getElementById("#tblArtefact").rows.lenght;
+            console.log();
+        });
 </script>
