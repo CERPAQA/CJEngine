@@ -21,14 +21,6 @@ namespace CJEngine.Controllers
             _context = context;
         }
 
-        [HttpPost("[action]")]
-        public async Task AddArtefact([FromBody] Artefact artefact)
-        {
-            var Artefact = await _context.Artefact
-                .FirstOrDefaultAsync(m => m.Id == artefact.Id);
-            expArtefacts.Add(Artefact);
-        }
-
         // GET: Experiments
         public async Task<IActionResult> Index()
         {
