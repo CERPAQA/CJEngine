@@ -40,7 +40,7 @@
         crossorigin="anonymous"></script>
 <script type="text/javascript">
     $("#tblArtefact td").click(function (e) {
-        e.preventDefault();
+        e.preventDefault(); //this line prevents the form from refreshing each time
         var tbl = document.getElementById("tblArtefact");
         if (tbl.innerHTML != null) {
             var row_num = parseInt($(this).parent().index()) + 1;
@@ -51,7 +51,7 @@
             node.appendChild(textNode);
             document.getElementById("selctedArtefacts").appendChild(node);
         } else {
-            console.log("null")
+            alert("The Table is empty")
         }
      });
 </script>
