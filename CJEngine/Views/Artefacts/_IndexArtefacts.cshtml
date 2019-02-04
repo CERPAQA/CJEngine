@@ -39,36 +39,13 @@
         integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
         crossorigin="anonymous"></script>
 <script type="text/javascript">
-    /*function addArtefact() {
-        var tbl = document.getElementById("tblArtefact");
-        for (var i = 0; i < tbl.rows.length; i++) {
-            for (var j = 0; j < tbl.rows[i].cells.length; j++) {
-                var x = tbl.rows[i].cells[j].innerHTML;
-            }
-        }
-        //var artefactName = document.getElementById("").innerHTML;
-        var node = document.createElement("li");
-        var textNode = document.createTextNode(x);
-        node.appendChild(textNode);
-        document.getElementById("selctedArtefacts").appendChild(node);
-    }*/
-    /*$(document).ready(function () {
-        $("#tblArtefact td").click(function () {
-            var column_num = parseInt($(this).index()) - 2;
-            var row_num = parseInt($(this).parent().index()) + 1;
-
-            var x = document.getElementById("#tblArtefact").rows.lenght;
-            console.log();
-        });
-    });*/
-
-    $("#tblArtefact td").click(function () {
+    $("#tblArtefact td").click(function (e) {
+        e.preventDefault();
         var tbl = document.getElementById("tblArtefact");
         if (tbl.innerHTML != null) {
             var row_num = parseInt($(this).parent().index()) + 1;
             var column_num = parseInt($(this).index()) - 2;
             var x = tbl.rows[row_num].cells[column_num].innerHTML;
-
             var node = document.createElement("li");
             var textNode = document.createTextNode(x);
             node.appendChild(textNode);

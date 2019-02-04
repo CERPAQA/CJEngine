@@ -21,15 +21,20 @@
                 <input asp-for="Experiment.Description" class="form-control" />
                 <span asp-validation-for="Experiment.Description" class="text-danger"></span>
             </div>
-            <div id="partialUpdate">
-                <br />
-                <partial name="~/Views/ExperimentParameters/_LsParams.cshtml" />
-            </div>
+                   <div id="partialUpdate">
+                       <br />
+                       <partial name="~/Views/ExperimentParameters/_LsParams.cshtml" />
+                   </div>
             <div>
                 <br />
                 <partial name="~/Views/Artefacts/_IndexArtefacts.cshtml" />
             </div>
+            <div>
+                <br />
+                <ul id="selctedArtefacts">
 
+                </ul>
+            </div>
             <div>
                 <br />
                 <partial name="~/Views/Judges/_IndexJudges.cshtml" />
@@ -39,10 +44,6 @@
                 <input type="submit" value="Create Experiment" class="btn btn-primary" />
             </div>
         </form>
-        <div>
-            <br />
-            <ul id="selctedArtefacts"></ul>
-        </div>
         <div class="modal fade" id="parameters" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
