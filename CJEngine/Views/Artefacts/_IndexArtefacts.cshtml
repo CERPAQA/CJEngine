@@ -39,6 +39,7 @@
         integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
         crossorigin="anonymous"></script>
 <script type="text/javascript">
+    var lsArtefacts = [];
     $("#tblArtefact td").click(function (e) {
         e.preventDefault(); //this line prevents the form from refreshing each time
         var tbl = document.getElementById("tblArtefact");
@@ -46,6 +47,7 @@
             var row_num = parseInt($(this).parent().index()) + 1;
             var column_num = parseInt($(this).index()) - 2;
             var x = tbl.rows[row_num].cells[column_num].innerHTML;
+            lsArtefacts.push(x);
             var node = document.createElement("li");
             var textNode = document.createTextNode(x);
             node.appendChild(textNode);
