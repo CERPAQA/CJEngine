@@ -74,28 +74,8 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 
-<script src="https://code.jquery.com/jquery-3.3.1.js"
-        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-        crossorigin="anonymous"></script>
 <script type="text/javascript">
-    function show(val) {
-        if (val == "New") {
-            parameters.style.display= 'inline-block';
-        }
-        else {
-            parameters.style.display = 'none';
-        }
-    }
+    var x = document.getElementById("parametersList").value;
 
-    function update() {
-        //$('#partialUpdate').load('/ExperimentParameters/LsParam');
-        /*$.ajax({
-            type: 'POST',
-            url: '/ExperimentParameters/_LsParam',
-            success: function (data) {
-                $(partialUpdate).html(data);
-            }
-        });
-        return false;*/
-    }
+
 </script>
