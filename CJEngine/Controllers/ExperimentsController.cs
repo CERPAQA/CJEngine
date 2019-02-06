@@ -63,6 +63,13 @@ namespace CJEngine.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Description")] Experiment experiment)
         {
+            var form = Request.Form;
+            string expNameParam = form["Parameters"];
+            var expParam = await _context.ExperimentParameters
+                .FirstOrDefaultAsync(m => m.Description == expNameParam);
+
+            experiment.ExperimentParameters = expParam;
+
             if (ModelState.IsValid)
             {
                 _context.Add(experiment);
