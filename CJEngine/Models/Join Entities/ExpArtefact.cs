@@ -9,10 +9,9 @@ namespace CJEngine.Models.Join_Entities
     public class ExpArtefact
     {
         public int ExperimentId { get; set; }
+
         [NotMapped]
-
         public Experiment Experiment { get; set; }
-
         public int ArtefactId { get; set; }
 
         [NotMapped]

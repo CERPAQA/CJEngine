@@ -40,6 +40,16 @@
         crossorigin="anonymous"></script>
 <script type="text/javascript">
     var lsArtefacts = [];
+
+    //this method was necessary because UL and LI are not submitable form data
+    function addHidden(Li, key, value) {
+        var input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key; 'name-as-seen-at-the-server';
+        input.value = value;
+        document.getElementById("selctedArtefacts").appendChild(input);
+    }
+
     $("#tblArtefact td").click(function (e) {
         e.preventDefault(); //this line prevents the form from refreshing each time
         var tbl = document.getElementById("tblArtefact");
@@ -51,6 +61,7 @@
             var node = document.createElement("li");
             var textNode = document.createTextNode(x);
             node.appendChild(textNode);
+            addHidden(node, 'expArtefacts', x);
             document.getElementById("selctedArtefacts").appendChild(node);
         } else {
             alert("The Table is empty")

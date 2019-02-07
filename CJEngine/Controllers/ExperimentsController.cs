@@ -59,16 +59,26 @@ namespace CJEngine.Controllers
         // POST: Experiments/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /*
+         * There were issues getting the data from the partial view, not sure if what I have here now is the most optimised way to go.
+         * The method currenlty does more than one operation which probably isnt best practice, needs refactoring.
+         */
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Description")] Experiment experiment)
         {
             var form = Request.Form;
+
             string expNameParam = form["Parameters"];
             var expParam = await _context.ExperimentParameters
                 .FirstOrDefaultAsync(m => m.Description == expNameParam);
-
             experiment.ExperimentParameters = expParam;
+
+            var artefacts = form["expArtefacts"];
+            foreach (string x in artefacts)
+            {
+                experiment.ExpArtefacts.Add(x);
+            }
 
             if (ModelState.IsValid)
             {
