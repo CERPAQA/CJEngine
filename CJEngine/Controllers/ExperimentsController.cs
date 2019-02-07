@@ -77,7 +77,10 @@ namespace CJEngine.Controllers
             var artefacts = form["expArtefacts"];
             foreach (string x in artefacts)
             {
-                experiment.ExpArtefacts.Add(x);
+                var trimmed = x.Trim();
+                var expArtefact = await _context.Artefact.
+                    FirstOrDefaultAsync(m => m.Name == trimmed);
+                //now that I have the artefact what happens now??
             }
 
             if (ModelState.IsValid)
