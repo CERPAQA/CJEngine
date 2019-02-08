@@ -34,7 +34,15 @@
         integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
         crossorigin="anonymous"></script>
 <script type="text/javascript">
-    var lsJudges = [];
+
+    function addHidden(Li, key, value) {
+        var input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key; 'name-as-seen-at-the-server';
+        input.value = value;
+        document.getElementById("selctedJudges").appendChild(input);
+    }
+
     $("#tblJudge td").click(function (e) {
         e.preventDefault(); //this line prevents the form from refreshing each time
         var tbl = document.getElementById("tblJudge");
@@ -42,10 +50,10 @@
             var row_num = parseInt($(this).parent().index()) + 1;
             var column_num = parseInt($(this).index()) - 1;
             var x = tbl.rows[row_num].cells[column_num].innerHTML;
-            lsJudges.push(x);
             var node = document.createElement("li");
             var textNode = document.createTextNode(x);
             node.appendChild(textNode);
+            addHidden(node, 'expJudges', x);
             document.getElementById("selctedJudges").appendChild(node);
         } else {
             alert("The Table is empty")

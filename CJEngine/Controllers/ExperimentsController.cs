@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CJEngine.Models;
+using CJEngine.Models.Join_Entities;
 using CJEngine.ViewModel;
 using CJEngine.Controllers;
 
@@ -59,16 +60,15 @@ namespace CJEngine.Controllers
         // POST: Experiments/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        /*
-         * There were issues getting the data from the partial view, not sure if what I have here now is the most optimised way to go.
-         * The method currenlty does more than one operation which probably isnt best practice, needs refactoring.
-         */
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Description")] Experiment experiment)
         {
             var form = Request.Form;
+            experiment.ExpArtefacts = new List<ExpArtefact>();
+            experiment.ExpJudges = new List<ExpJudge>();
 
+            var expID = experiment.Id;
             string expNameParam = form["Parameters"];
             var expParam = await _context.ExperimentParameters
                 .FirstOrDefaultAsync(m => m.Description == expNameParam);
@@ -77,12 +77,32 @@ namespace CJEngine.Controllers
             var artefacts = form["expArtefacts"];
             foreach (string x in artefacts)
             {
-                var trimmed = x.Trim();
+                var artefactName = x.Trim();
                 var expArtefact = await _context.Artefact.
-                    FirstOrDefaultAsync(m => m.Name == trimmed);
-                //now that I have the artefact what happens now??
+                    FirstOrDefaultAsync(m => m.Name == artefactName);
+                var artefactID = expArtefact.Id;
+                ExpArtefact exp = new ExpArtefact();
+                exp.ExperimentId = expID;
+                exp.ArtefactId = artefactID;
+                exp.Experiment = experiment;
+                exp.Artefact = expArtefact;              
+                experiment.ExpArtefacts.Add(exp);
             }
 
+            var judges = form["expJudges"];
+            foreach (string x in judges)
+            {
+                var judgeName = x.Trim();
+                var judge = await _context.Judge.
+                    FirstOrDefaultAsync(m => m.Name == judgeName);
+                var judgeID = judge.Id;
+                ExpJudge exp = new ExpJudge();
+                exp.ExperimentId = expID;
+                exp.JudgeId = judgeID;
+                exp.Experiment = experiment;
+                exp.Judge = judge;
+                experiment.ExpJudges.Add(exp);
+            }
             if (ModelState.IsValid)
             {
                 _context.Add(experiment);
