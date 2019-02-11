@@ -29,6 +29,12 @@ namespace CJEngine.Controllers
             return View(await _context.Experiment.ToListAsync());
         }
 
+        //This method is what renders when the cj tab is clicked
+        public async Task<IActionResult> CJIndex()
+        {
+            return View(await _context.Experiment.ToListAsync());
+        }
+
         // GET: Experiments/Details/5
         public async Task<IActionResult> Details(int? id)
         {
