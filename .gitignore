@@ -264,5 +264,4 @@ __pycache__/
 /CJEngine/ClientApp/public/images
 /CJEngine/ClientApp/public/pdf
 /CJEngine/ClientApp/public
-/CJEngine/Migrations/20190114161423_Initial.Designer.cs
-/CJEngine/Migrations/20190114161423_Initial.cs
+/CJEngine/wwwroot/artefacts

@@ -10,6 +10,7 @@ namespace CJEngine.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string Description { get; set; }
 
         public ExperimentParameters ExperimentParameters { get; set; }
         public int ExperimentParametersId { get; set; }

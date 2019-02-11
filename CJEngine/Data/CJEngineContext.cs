@@ -46,6 +46,8 @@ namespace CJEngine.Models
 
         public DbSet<ArtefactPairing> ArtefactPairings { get; set; }
 
+        public DbSet<CJEngine.Models.ExperimentParameters> ExperimentParameters { get; set; }
+
     }
 
 }

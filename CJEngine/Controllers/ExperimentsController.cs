@@ -6,12 +6,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CJEngine.Models;
+using CJEngine.Models.Join_Entities;
+using CJEngine.ViewModel;
+using CJEngine.Controllers;
 
 namespace CJEngine.Controllers
 {
     public class ExperimentsController : Controller
     {
         private readonly CJEngineContext _context;
+        public static IList<Artefact> expArtefacts = new List<Artefact>();
 
         public ExperimentsController(CJEngineContext context)
         {
@@ -21,6 +25,7 @@ namespace CJEngine.Controllers
         // GET: Experiments
         public async Task<IActionResult> Index()
         {
+
             return View(await _context.Experiment.ToListAsync());
         }
 
@@ -45,7 +50,11 @@ namespace CJEngine.Controllers
         // GET: Experiments/Create
         public IActionResult Create()
         {
-            return View();
+            CreateExperimentViewModel CEVM = new CreateExperimentViewModel();
+            CEVM.ExperimentParametersList = _context.ExperimentParameters.ToList();
+            CEVM.Artefacts = _context.Artefact.ToList();
+            CEVM.Judges = _context.Judge.ToList();
+            return View(CEVM);
         }
 
         // POST: Experiments/Create
@@ -53,8 +62,47 @@ namespace CJEngine.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Experiment experiment)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description")] Experiment experiment)
         {
+            var form = Request.Form;
+            experiment.ExpArtefacts = new List<ExpArtefact>();
+            experiment.ExpJudges = new List<ExpJudge>();
+
+            var expID = experiment.Id;
+            string expNameParam = form["Parameters"];
+            var expParam = await _context.ExperimentParameters
+                .FirstOrDefaultAsync(m => m.Description == expNameParam);
+            experiment.ExperimentParameters = expParam;
+
+            var artefacts = form["expArtefacts"];
+            foreach (string x in artefacts)
+            {
+                var artefactName = x.Trim();
+                var expArtefact = await _context.Artefact.
+                    FirstOrDefaultAsync(m => m.Name == artefactName);
+                var artefactID = expArtefact.Id;
+                ExpArtefact exp = new ExpArtefact();
+                exp.ExperimentId = expID;
+                exp.ArtefactId = artefactID;
+                exp.Experiment = experiment;
+                exp.Artefact = expArtefact;              
+                experiment.ExpArtefacts.Add(exp);
+            }
+
+            var judges = form["expJudges"];
+            foreach (string x in judges)
+            {
+                var judgeName = x.Trim();
+                var judge = await _context.Judge.
+                    FirstOrDefaultAsync(m => m.Name == judgeName);
+                var judgeID = judge.Id;
+                ExpJudge exp = new ExpJudge();
+                exp.ExperimentId = expID;
+                exp.JudgeId = judgeID;
+                exp.Experiment = experiment;
+                exp.Judge = judge;
+                experiment.ExpJudges.Add(exp);
+            }
             if (ModelState.IsValid)
             {
                 _context.Add(experiment);
@@ -85,7 +133,7 @@ namespace CJEngine.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Experiment experiment)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description")] Experiment experiment)
         {
             if (id != experiment.Id)
             {
