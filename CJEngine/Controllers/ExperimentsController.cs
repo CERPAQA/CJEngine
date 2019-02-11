@@ -35,6 +35,27 @@ namespace CJEngine.Controllers
             return View(await _context.Experiment.ToListAsync());
         }
 
+        //Called when experiment is selected.
+        //The name of this method might need to be changed to get experiment
+        public async Task<IActionResult> GetExperiment(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var experiment = await _context.Experiment
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (experiment == null)
+            {
+                return NotFound();
+            }
+        //
+            var experimentAreftacts = await _context.ExpArtefact
+                .Where(experiment.Id == )
+            return null;
+        }
+
         // GET: Experiments/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -78,6 +99,8 @@ namespace CJEngine.Controllers
             string expNameParam = form["Parameters"];
             var expParam = await _context.ExperimentParameters
                 .FirstOrDefaultAsync(m => m.Description == expNameParam);
+            int expParamID = expParam.Id;
+            experiment.ExperimentParametersId = expParamID;
             experiment.ExperimentParameters = expParam;
 
             var artefacts = form["expArtefacts"];
