@@ -9,6 +9,7 @@ using CJEngine.Models;
 using CJEngine.Models.Join_Entities;
 using CJEngine.ViewModel;
 using CJEngine.Controllers;
+using System.Collections;
 
 namespace CJEngine.Controllers
 {
@@ -36,24 +37,24 @@ namespace CJEngine.Controllers
         }
 
         //Called when experiment is selected.
-        //The name of this method might need to be changed to get experiment
-        public async Task<IActionResult> GetExperiment(int? id)
+        public async Task<IEnumerable> GetExperiment(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return NotFound().ToString();
             }
 
             var experiment = await _context.Experiment
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (experiment == null)
             {
-                return NotFound();
+                return NotFound().ToString();
             }
-        //
-            var experimentAreftacts = await _context.ExpArtefact
-                .Where(experiment.Id == )
-            return null;
+            List<ExpArtefact> expArtefacts = _context.ExpArtefact.ToList();
+            //List<Judge> judges = _context.Judge.ToList();
+            List<ExperimentParameters> experimentParameters = _context.ExperimentParameters.ToList();
+            var query = experimentParameters.Where(x => x.Id == experiment.ExperimentParameters.Id);
+            return query;
         }
 
         // GET: Experiments/Details/5
