@@ -6,41 +6,45 @@
 
 <h4>Add Artefacts</h4>
 
-<table id="tblArtefact" >
+<table id="tblArtefact" class="col-md-10">
     <thead>
         <tr>
-            <th >
+            <th>
                 Name
             </th>
             <th>
                 File
             </th>
-            <th ></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Artefacts) {
-        <tr>
-            <td >
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td >
-                @Html.DisplayFor(modelItem => item.FileName)
-            </td>
-            <td>
-                <a asp-route-id="@item.Id">Add</a> |
-                <a asp-route-id="@item.Id">Remove</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Artefacts)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FileName)
+                </td>
+                <td>
+                    <a asp-route-id="@item.Id">Add</a> |
+                    <a asp-route-id="@item.Id">Remove</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+<div>
+    <ul id="selectedArtefacts"></ul>
+</div>
+
 <script src="https://code.jquery.com/jquery-3.3.1.js"
         integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
         crossorigin="anonymous"></script>
 <script type="text/javascript">
 
-    //this method was necessary because UL and LI are not submitable form data
     function addHidden(Li, key, value) {
         var input = document.createElement('input');
         input.type = 'hidden';
@@ -64,5 +68,5 @@
         } else {
             alert("The Table is empty")
         }
-     });
+    });
 </script>
