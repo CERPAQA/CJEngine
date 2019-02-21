@@ -58,19 +58,24 @@ namespace CJEngine.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,FileName,Description,FilePath")] IFormFile files, Artefact artefact)
+        public async Task<IActionResult> Create([Bind("Id,Name,FileName,Description,FilePath")] IFormFile file, Artefact artefact)
         {
             if (ModelState.IsValid)
             {
-                if (files != null)
+                if (file != null)
                 {
-                    var fileName = Path.Combine(he.WebRootPath + "/artefacts", Path.GetFileName(files.FileName));
-                    files.CopyTo(new FileStream(fileName, FileMode.Create));
+                    var fileName = Path.Combine(he.WebRootPath + "/artefacts", Path.GetFileName(file.FileName));
+                    file.CopyTo(new FileStream(fileName, FileMode.Create));
                     artefact.setImageAsRelativePath(fileName);
+                    artefact.FileName = Path.GetFileName(fileName);
+                    if (artefact.Name == null)
+                    {
+                        artefact.Name = Path.GetFileNameWithoutExtension(fileName);
+                    }
                 }
                 _context.Add(artefact);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Create));
             }
             return View(artefact);
         }

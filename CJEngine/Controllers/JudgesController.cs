@@ -59,7 +59,7 @@ namespace CJEngine.Controllers
             {
                 _context.Add(judge);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Create));
             }
             return View(judge);
         }

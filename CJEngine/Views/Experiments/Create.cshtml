@@ -3,11 +3,11 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create New Experiment</h1>
+<h1>Create a new Experiment</h1>
 
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-10">
 
         <form asp-action="Create">
             <!--<div asp-validation-summary="ModelOnly" class="text-danger"></div>-->
@@ -22,19 +22,15 @@
                 <span asp-validation-for="Experiment.Description" class="text-danger"></span>
             </div>
             <div id="partialUpdate">
-                <br />
                 <partial name="~/Views/ExperimentParameters/_LsParams.cshtml" />
             </div>
             <div>
-                <br />
                 <partial name="~/Views/Artefacts/_IndexArtefacts.cshtml" />
             </div>
             <div>
-                <br />
-                <ul id="selctedArtefacts"></ul>
+                <ul id="selectedArtefacts"></ul>
             </div>
             <div>
-                <br />
                 <partial name="~/Views/Judges/_IndexJudges.cshtml" />
             </div>
             <div>
@@ -67,7 +63,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>s
+    <a asp-action="Index">Back to Experiments</a>
 </div>
 
 @section Scripts {
@@ -76,6 +72,8 @@
 
 <script type="text/javascript">
     var x = document.getElementById("parametersList").value;
-
+    $('#partialUpdate').load('/Schedule/UpdatePoints', UpdatePointsAction);
+    var points = $('#newpoints').val();
+    $element.find('PointsDiv').html("You have" + points + " points");
 
 </script>

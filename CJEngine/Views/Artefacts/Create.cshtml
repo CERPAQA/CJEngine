@@ -4,43 +4,38 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Add a new Artefact</h1>
 
-<h4>Artefact</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-10">
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+                <label asp-for="FilePath" class="control-label">Upload File</label>
+                <p><input asp-for="FilePath" type="file" name="file" >
+                    <span asp-validation-for="FilePath" class="text-danger"></span>
+                </p>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label">Artefact Name</label>
+                <input asp-for="Name" class="form-control" placeholder="Leave blank to use Filename" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="FileName" class="control-label"></label>
-                <input asp-for="FileName" class="form-control" />
-                <span asp-validation-for="FileName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
+                <label asp-for="Description" class="control-label">Description</label>
+                <input asp-for="Description" class="form-control" placeholder="Option description of the artefact"></input>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="FilePath" class="control-label"></label>
-                <input asp-for="FilePath" class="form-control" type="file" name="files" />
-                <span asp-validation-for="FilePath" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Add" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Back to Artefacts</a>
 </div>
 
 @section Scripts {
