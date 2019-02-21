@@ -1,15 +1,14 @@
 ﻿@model CJEngine.ViewModel.CreateExperimentViewModel;
 <div>
-    <div id="parametersList" class="form-group">
+    <div class="form-group">
         <label asp-for="Experiment.ExperimentParameters" class="control-label"></label>
-        <select name="Parameters" asp-for="Experiment.ExperimentParameters" class="form-control">
-            <option value="Default">Select Saved Parameters</option>
+        <select name="Parameters" asp-for="Experiment.ExperimentParameters" class="form-control" id="parametersList">
+            <option value="Default" class="dropdown-menu">Select Saved Parameters</option>
+            <option value="New" class="dropdown-item" data-target="#parameters" data-toggle="modal">Create New Parameters...</option>
             @foreach (var item in Model.ExperimentParametersList)
             {
                 <option>@item.Description</option>
             }
-            <option value="New">Create New Paramaters...</option>
         </select>
-        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#parameters"> Create new</button>
     </div>
 </div>

@@ -45,16 +45,13 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                        <h5 class="modal-title" id="exampleModalLongTitle">Create New Parameter Set</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
                         <partial name="~/Views/ExperimentParameters/_CreateParams.cshtml" />
-                    </div>
-                    <div class="modal-footer">
-                        <button id="updateDrop" onclick="update()" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -72,8 +69,4 @@
 
 <script type="text/javascript">
     var x = document.getElementById("parametersList").value;
-    $('#partialUpdate').load('/Schedule/UpdatePoints', UpdatePointsAction);
-    var points = $('#newpoints').val();
-    $element.find('PointsDiv').html("You have" + points + " points");
-
 </script>

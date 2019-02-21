@@ -6,25 +6,25 @@
 
 <h4>Add Artefacts</h4>
 
-<table id="tblArtefact">
+<table id="tblArtefact" >
     <thead>
         <tr>
-            <th>
+            <th >
                 Name
             </th>
             <th>
                 File
             </th>
-            <th></th>
+            <th ></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model.Artefacts) {
         <tr>
-            <td>
+            <td >
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
-            <td>
+            <td >
                 @Html.DisplayFor(modelItem => item.FileName)
             </td>
             <td>
