@@ -9,6 +9,7 @@ using CJEngine.Models;
 using CJEngine.Models.Join_Entities;
 using CJEngine.ViewModel;
 using CJEngine.Controllers;
+using System.Collections;
 
 namespace CJEngine.Controllers
 {
@@ -27,6 +28,33 @@ namespace CJEngine.Controllers
         {
 
             return View(await _context.Experiment.ToListAsync());
+        }
+
+        //This method is what renders when the cj tab is clicked
+        public async Task<IActionResult> CJIndex()
+        {
+            return View(await _context.Experiment.ToListAsync());
+        }
+
+        //Called when experiment is selected.
+        public async Task<IEnumerable> GetExperiment(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound().ToString();
+            }
+
+            var experiment = await _context.Experiment
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (experiment == null)
+            {
+                return NotFound().ToString();
+            }
+            List<ExpArtefact> expArtefacts = _context.ExpArtefact.ToList();
+            //List<Judge> judges = _context.Judge.ToList();
+            List<ExperimentParameters> experimentParameters = _context.ExperimentParameters.ToList();
+            var query = experimentParameters.Where(x => x.Id == experiment.ExperimentParameters.Id);
+            return query;
         }
 
         // GET: Experiments/Details/5
@@ -72,6 +100,8 @@ namespace CJEngine.Controllers
             string expNameParam = form["Parameters"];
             var expParam = await _context.ExperimentParameters
                 .FirstOrDefaultAsync(m => m.Description == expNameParam);
+            int expParamID = expParam.Id;
+            experiment.ExperimentParametersId = expParamID;
             experiment.ExperimentParameters = expParam;
 
             var artefacts = form["expArtefacts"];
