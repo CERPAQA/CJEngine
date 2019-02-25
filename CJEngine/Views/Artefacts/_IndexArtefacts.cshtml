@@ -29,8 +29,8 @@
                     @Html.DisplayFor(modelItem => item.FileName)
                 </td>
                 <td>
-                    <a asp-route-id="@item.Id" id="addArtefactButton" class="mybtn">Add</a> |
-                    <a asp-route-id="@item.Id">Remove</a>
+                    <a asp-route-id="@item.Id" class="addArtefactButton">Add</a> |
+                    <a asp-route-id="@item.Id" class="removeArtefactButton">Remove</a>
                 </td>
             </tr>
         }
@@ -44,7 +44,7 @@
         integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
         crossorigin="anonymous"></script>
 <script type="text/javascript">
-
+    var ls = [];
     function addHidden(Li, key, value) {
         var input = document.createElement('input');
         input.type = 'hidden';
@@ -53,17 +53,33 @@
         document.getElementById("selctedArtefacts").appendChild(input);
     }
 
-    $(".mybtn").click(function (e) {
+    $(".addArtefactButton").click(function (e) {
         e.preventDefault(); //this line prevents the form from refreshing each time
         var $item = $(this).closest("tr")
         var x = $item.find("td:nth-child(1)").text();
-        var node = document.createElement("li");
-        var textNode = document.createTextNode(x);
-        node.appendChild(textNode);
-        addHidden(node, 'expArtefacts', x);
-        node.appendChild(textNode);
-        addHidden(node, 'expArtefacts', x);
-        document.getElementById("selctedArtefacts").appendChild(node);
-        console.log();       
+        var k = ls.includes(x);
+        if (k === false) {
+            ls.push(x);
+            var node = document.createElement("li");
+            var textNode = document.createTextNode(x);
+            node.appendChild(textNode);
+            addHidden(node, 'expArtefacts', x);
+            node.appendChild(textNode);
+            addHidden(node, 'expArtefacts', x);
+            document.getElementById("selctedArtefacts").appendChild(node);
+        } else {
+            alert("Artefact Already Added");
+        }    
+    });
+
+    $(".removeArtefactButton").click(function (e) {
+        var $item = $(this).closest("tr")
+        var x = $item.find("td:nth-child(1)").text();
+        var k = ls.includes(x);
+        if (k === false) {
+            alert("Artefact not in List");
+        } else {
+
+        }
     });
 </script>
