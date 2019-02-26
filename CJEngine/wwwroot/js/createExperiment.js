@@ -1,25 +1,17 @@
-﻿var ls = [];
-
+﻿var artefactList = [];
 var x = document.getElementById("parametersList").value;
-
-function addHidden(Li, key, value) {
-    var input = document.createElement('input');
-    input.type = 'hidden';
-    input.name = key; 'name-as-seen-at-the-server';
-    input.value = value;
-    document.getElementById("selctedArtefacts").appendChild(input);
-}
 
 $(".addArtefactButton").click(function (e) {
     e.preventDefault(); //this line prevents the form from refreshing each time
     var $item = $(this).closest("tr")
     var x = $item.find("td:nth-child(1)").text();
-    var k = ls.includes(x);
+    var k = artefactList.includes(x);
     if (k === false) {
-        ls.push(x);
+        artefactList.push(x);
         var node = document.createElement("li");
         var textNode = document.createTextNode(x);
         node.appendChild(textNode);
+        node.setAttribute("id", x);
         addHidden(node, 'expArtefacts', x);
         node.appendChild(textNode);
         addHidden(node, 'expArtefacts', x);
@@ -29,25 +21,27 @@ $(".addArtefactButton").click(function (e) {
     }
 });
 
-$(".removeArtefactButton").click(function (e) {
-    var $item = $(this).closest("tr")
-    var x = $item.find("td:nth-child(1)").text();
-    var k = ls.includes(x);
-    if (k === false) {
-        alert("Artefact not in List");
-    } else {
-
-    }
-});
-
-
 function addHidden(Li, key, value) {
     var input = document.createElement('input');
     input.type = 'hidden';
     input.name = key; 'name-as-seen-at-the-server';
     input.value = value;
-    document.getElementById("selctedJudges").appendChild(input);
+    document.getElementById("selctedArtefacts").appendChild(input);
 }
+
+$(".removeArtefactButton").click(function (e) {
+    e.preventDefault();
+    var $item = $(this).closest("tr")
+    var x = $item.find("td:nth-child(1)").text();
+    var k = artefactList.includes(x);
+    if (k === false) {
+        alert("Artefact not in List");
+    } else {
+        //$("li:contains(''" + x.trim() + "'')").remove();
+        //$("li:has('id'):contains(''" + x + "'')").remove();
+        console.log();
+    }
+});
 
 $("#tblJudge td").click(function (e) {
     e.preventDefault(); //this line prevents the form from refreshing each time
@@ -65,3 +59,11 @@ $("#tblJudge td").click(function (e) {
         alert("The Table is empty")
     }
 });
+
+function addHidden(Li, key, value) {
+    var input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = key; 'name-as-seen-at-the-server';
+    input.value = value;
+    document.getElementById("selctedJudges").appendChild(input);
+}
