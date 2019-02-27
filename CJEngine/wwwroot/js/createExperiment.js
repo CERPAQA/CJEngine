@@ -13,7 +13,7 @@ $(".addArtefactButton").click(function (e) {
         var buttonNode = document.createElement("a");
         buttonNode.setAttribute("class", "remove");
         buttonNode.setAttribute("asp-route-id", "@item.Id")
-        buttonNode.setAttribute("href", "")
+        buttonNode.setAttribute("href", "#")
         buttonNode.textContent = "Remove";
         node.appendChild(textNode);
         node.appendChild(buttonNode);
@@ -32,18 +32,20 @@ function addHidden(Li, key, value) {
     document.getElementById("selctedArtefacts").appendChild(input);
 }
 
-$(".removeArtefactButton").click(function (e) {
+$(".remove").click(function (e) {
     e.preventDefault();
-    var $item = $(this).closest("tr")
+    var $item = $(this).closest("tr");
+    var $test = $(this).closest("li");
     var x = $item.find("td:nth-child(1)").text();
     var k = artefactList.includes(x);
     if (k === false) {
         alert("Artefact not in List");
     } else {
         //$("li:contains(''" + x + "'')").remove();
-        $('.remove').on('click', function () {
+        /*$('.remove').on('click', function () {
             $(this).parent().remove();
-        });
+        });*/
+        $test.remove();
         console.log();
     }
 });
