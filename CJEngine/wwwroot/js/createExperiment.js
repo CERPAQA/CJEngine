@@ -10,10 +10,13 @@ $(".addArtefactButton").click(function (e) {
         artefactList.push(x);
         var node = document.createElement("li");
         var textNode = document.createTextNode(x);
+        var buttonNode = document.createElement("a");
+        buttonNode.setAttribute("class", "remove");
+        buttonNode.setAttribute("asp-route-id", "@item.Id")
+        buttonNode.setAttribute("href", "")
+        buttonNode.textContent = "Remove";
         node.appendChild(textNode);
-        node.setAttribute("id", x);
-        addHidden(node, 'expArtefacts', x);
-        node.appendChild(textNode);
+        node.appendChild(buttonNode);
         addHidden(node, 'expArtefacts', x);
         document.getElementById("selctedArtefacts").appendChild(node);
     } else {
@@ -37,8 +40,10 @@ $(".removeArtefactButton").click(function (e) {
     if (k === false) {
         alert("Artefact not in List");
     } else {
-        //$("li:contains(''" + x.trim() + "'')").remove();
-        //$("li:has('id'):contains(''" + x + "'')").remove();
+        //$("li:contains(''" + x + "'')").remove();
+        $('.remove').on('click', function () {
+            $(this).parent().remove();
+        });
         console.log();
     }
 });
