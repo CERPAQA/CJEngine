@@ -1,19 +1,31 @@
 ﻿var artefactList = [];
+var judgeList = [];
 var x = document.getElementById("parametersList").value;
 
 $(".addArtefactButton").click(function (e) {
-    e.preventDefault(); //this line prevents the form from refreshing each time
+    e.preventDefault(); 
     var $item = $(this).closest("tr")
     var x = $item.find("td:nth-child(1)").text();
+    x = x.trim();
     var k = artefactList.includes(x);
     if (k === false) {
         artefactList.push(x);
         var node = document.createElement("li");
         var textNode = document.createTextNode(x);
-        var buttonNode = document.createElement("a");
+        var buttonNode = document.createElement("button");
         buttonNode.setAttribute("class", "remove");
-        buttonNode.setAttribute("asp-route-id", "@item.Id")
-        buttonNode.setAttribute("href", "#")
+        buttonNode.setAttribute("id", "artefact"+x)
+        buttonNode.setAttribute("type", "button");
+        buttonNode.addEventListener("click", function () {
+            var k = artefactList.includes(x);
+            if (k === false) {
+                alert("Artefact not in List");
+            } else {
+                var index = artefactList.indexOf(x);
+                artefactList.splice(index, 1);
+                node.remove();
+            }
+        });
         buttonNode.textContent = "Remove";
         node.appendChild(textNode);
         node.appendChild(buttonNode);
@@ -32,38 +44,37 @@ function addHidden(Li, key, value) {
     document.getElementById("selctedArtefacts").appendChild(input);
 }
 
-$(".remove").click(function (e) {
+$(".addJudgeButton").click(function (e) {
     e.preventDefault();
-    var $item = $(this).closest("tr");
-    var $test = $(this).closest("li");
+    var $item = $(this).closest("tr")
     var x = $item.find("td:nth-child(1)").text();
-    var k = artefactList.includes(x);
+    x = x.trim();
+    var k = judgeList.includes(x);
     if (k === false) {
-        alert("Artefact not in List");
-    } else {
-        //$("li:contains(''" + x + "'')").remove();
-        /*$('.remove').on('click', function () {
-            $(this).parent().remove();
-        });*/
-        $test.remove();
-        console.log();
-    }
-});
-
-$("#tblJudge td").click(function (e) {
-    e.preventDefault(); //this line prevents the form from refreshing each time
-    var tbl = document.getElementById("tblJudge");
-    if (tbl.innerHTML != null) {
-        var row_num = parseInt($(this).parent().index()) + 1;
-        var column_num = parseInt($(this).index()) - 1;
-        var x = tbl.rows[row_num].cells[column_num].innerHTML;
+        judgeList.push(x);
         var node = document.createElement("li");
         var textNode = document.createTextNode(x);
+        var buttonNode = document.createElement("button");
+        buttonNode.setAttribute("class", "remove");
+        buttonNode.setAttribute("id", "artefact" + x)
+        buttonNode.setAttribute("type", "button");
+        buttonNode.addEventListener("click", function () {
+            var k = judgeList.includes(x);
+            if (k === false) {
+                alert("Judge not in List");
+            } else {
+                var index = judgeList.indexOf(x);
+                judgeList.splice(index, 1);
+                node.remove();
+            }
+        });
+        buttonNode.textContent = "Remove";
         node.appendChild(textNode);
+        node.appendChild(buttonNode);
         addHidden(node, 'expJudges', x);
         document.getElementById("selctedJudges").appendChild(node);
     } else {
-        alert("The Table is empty")
+        alert("Judge Already Added");
     }
 });
 

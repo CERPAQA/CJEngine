@@ -29,13 +29,9 @@
                     @Html.DisplayFor(modelItem => item.FileName)
                 </td>
                 <td>
-                    <a asp-route-id="@item.Id" class="addArtefactButton">Add</a> |
-                    <a asp-route-id="@item.Id" class="removeArtefactButton">Remove</a>
+                    <a asp-route-id="@item.Id" class="addArtefactButton">Add</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-<div>
-    <ul id="selectedArtefacts"></ul>
-</div>
