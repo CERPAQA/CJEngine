@@ -2,26 +2,27 @@
 var judgeList = [];
 var x = document.getElementById("parametersList").value;
 
-$(".addArtefactButton").click(function (e) {
-    e.preventDefault(); 
+//add Artefact to expArtefacts
+$(".addArtefactButton").click(function (event) {
+    event.preventDefault(); 
     var $item = $(this).closest("tr")
-    var x = $item.find("td:nth-child(1)").text();
-    x = x.trim();
-    var k = artefactList.includes(x);
-    if (k === false) {
-        artefactList.push(x);
+    var artefactName = $item.find("td:nth-child(1)").text();
+    artefactName = artefactName.trim();
+    var inList = artefactList.includes(artefactName);
+    if (inList === false) {
+        artefactList.push(artefactName);
         var node = document.createElement("li");
-        var textNode = document.createTextNode(x);
+        var textNode = document.createTextNode(artefactName);
         var buttonNode = document.createElement("button");
         buttonNode.setAttribute("class", "remove");
-        buttonNode.setAttribute("id", "artefact"+x)
+        buttonNode.setAttribute("id", "artefact" + artefactName)
         buttonNode.setAttribute("type", "button");
         buttonNode.addEventListener("click", function () {
-            var k = artefactList.includes(x);
-            if (k === false) {
+            var inList = artefactList.includes(artefactName);
+            if (inList === false) {
                 alert("Artefact not in List");
             } else {
-                var index = artefactList.indexOf(x);
+                var index = artefactList.indexOf(artefactName);
                 artefactList.splice(index, 1);
                 node.remove();
             }
@@ -29,7 +30,7 @@ $(".addArtefactButton").click(function (e) {
         buttonNode.textContent = "Remove";
         node.appendChild(textNode);
         node.appendChild(buttonNode);
-        addHidden(node, 'expArtefacts', x);
+        addHidden(node, 'expArtefacts', artefactName);
         document.getElementById("selctedArtefacts").appendChild(node);
     } else {
         alert("Artefact Already Added");
@@ -44,26 +45,27 @@ function addHidden(Li, key, value) {
     document.getElementById("selctedArtefacts").appendChild(input);
 }
 
-$(".addJudgeButton").click(function (e) {
-    e.preventDefault();
+//add judge to expJudges
+$(".addJudgeButton").click(function (event) {
+    event.preventDefault();
     var $item = $(this).closest("tr")
-    var x = $item.find("td:nth-child(1)").text();
-    x = x.trim();
-    var k = judgeList.includes(x);
+    var judgeName = $item.find("td:nth-child(1)").text();
+    judgeName = judgeName.trim();
+    var k = judgeList.includes(judgeName);
     if (k === false) {
-        judgeList.push(x);
+        judgeList.push(judgeName);
         var node = document.createElement("li");
-        var textNode = document.createTextNode(x);
+        var textNode = document.createTextNode(judgeName);
         var buttonNode = document.createElement("button");
         buttonNode.setAttribute("class", "remove");
-        buttonNode.setAttribute("id", "artefact" + x)
+        buttonNode.setAttribute("id", "artefact" + judgeName)
         buttonNode.setAttribute("type", "button");
         buttonNode.addEventListener("click", function () {
-            var k = judgeList.includes(x);
-            if (k === false) {
+            var inList = judgeList.includes(judgeName);
+            if (inList === false) {
                 alert("Judge not in List");
             } else {
-                var index = judgeList.indexOf(x);
+                var index = judgeList.indexOf(judgeName);
                 judgeList.splice(index, 1);
                 node.remove();
             }
@@ -71,7 +73,7 @@ $(".addJudgeButton").click(function (e) {
         buttonNode.textContent = "Remove";
         node.appendChild(textNode);
         node.appendChild(buttonNode);
-        addHidden(node, 'expJudges', x);
+        addHidden(node, 'expJudges', judgeName);
         document.getElementById("selctedJudges").appendChild(node);
     } else {
         alert("Judge Already Added");
@@ -84,4 +86,36 @@ function addHidden(Li, key, value) {
     input.name = key; 'name-as-seen-at-the-server';
     input.value = value;
     document.getElementById("selctedJudges").appendChild(input);
+}
+
+//saves the chosen parameters (API method)
+function createParams() {
+    var description = document.getElementById("description").value;
+    var showTitle = document.getElementById("checktitle").checked;
+    var showTimer = document.getElementById("checkTime").checked;
+
+    //reconfigure fetch method
+    fetch('/api/ExperimentParametersAPI/CreateParams', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ description, showTimer, showTitle })
+    }).then(function (response) {
+        if (response.status !== 200) {
+            console.log('fetch returned not ok' + response.status);
+        }
+
+        response.json().then(function (data) {
+            console.log('fetch returned ok');
+            console.log(data);
+        });
+    })
+        .catch(function (err) {
+            console.log(`error: ${err}`);
+        });
+    var select = document.getElementById("parametersList");
+    select.options[select.options.length] = new Option(description, description);
+    select.value = description;
 }

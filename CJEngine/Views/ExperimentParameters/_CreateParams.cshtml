@@ -32,36 +32,3 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
-
-<script type="text/javascript">
-    function createParams() {
-        var description = document.getElementById("description").value;
-        var showTitle = document.getElementById("checktitle").checked;
-        var showTimer = document.getElementById("checkTime").checked;
-
-        //reconfigure fetch method
-        fetch('/api/ExperimentParametersAPI/CreateParams', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ description, showTimer, showTitle })
-        }).then(function (response) {
-            if (response.status !== 200) {
-                console.log('fetch returned not ok' + response.status);
-            }
-
-            response.json().then(function (data) {
-                console.log('fetch returned ok');
-                console.log(data);
-            });
-        })
-            .catch(function (err) {
-                console.log(`error: ${err}`);
-            });
-        var select = document.getElementById("parametersList");
-        select.options[select.options.length] = new Option(description, description);
-        select.value = description;
-    }
-</script>
