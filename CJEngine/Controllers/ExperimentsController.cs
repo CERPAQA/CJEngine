@@ -66,7 +66,13 @@ namespace CJEngine.Controllers
             }
 
             var experiment = await _context.Experiment
+                .Include(exp => exp.ExperimentParameters)
+                .Include(exp => exp.ExpJudges)
+                    .ThenInclude(judge => judge.Judge)
+                .Include(exp => exp.ExpArtefacts)
+                    .ThenInclude(artefact => artefact. Artefact)
                 .FirstOrDefaultAsync(m => m.Id == id);
+            
             if (experiment == null)
             {
                 return NotFound();

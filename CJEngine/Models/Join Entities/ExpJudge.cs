@@ -9,12 +9,8 @@ namespace CJEngine.Models.Join_Entities
     public class ExpJudge
     {
         public int ExperimentId { get; set; }
-
-        [NotMapped]
         public Experiment Experiment { get; set; }
         public int JudgeId { get; set; }
-
-        [NotMapped]
         public Judge Judge { get; set; }
     }
 }

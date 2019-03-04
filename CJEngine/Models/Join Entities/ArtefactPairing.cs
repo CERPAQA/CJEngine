@@ -9,11 +9,9 @@ namespace CJEngine.Models.Join_Entities
     public class ArtefactPairing
     {
         public int ArtefactId { get; set; }
-        [NotMapped]
         public Artefact Artefact { get; set; }
 
         public int PairingId { get; set; }
-        [NotMapped]
         public Pairing Pairing { get; set; }
     }
 }
