@@ -14,8 +14,6 @@ export default class App extends Component {
     return (
       <Layout>
         <Route exact path='/App' component={Home} />
-        <Route path='/counter' component={Counter} />
-        <Route path='/fetch-data' component={FetchData} />
             <Route path='/CJ' component={CJCore} /> {/*For now, put the CJ Engine component here*/}
             <Route path='/CJ' component={Clock} />
       </Layout>

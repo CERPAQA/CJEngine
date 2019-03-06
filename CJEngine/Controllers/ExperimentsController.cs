@@ -36,26 +36,7 @@ namespace CJEngine.Controllers
             return View(await _context.Experiment.ToListAsync());
         }
 
-        //Called when experiment is selected.
-        public async Task<IEnumerable> GetExperiment(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound().ToString();
-            }
-
-            var experiment = await _context.Experiment
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (experiment == null)
-            {
-                return NotFound().ToString();
-            }
-            List<ExpArtefact> expArtefacts = _context.ExpArtefact.ToList();
-            //List<Judge> judges = _context.Judge.ToList();
-            List<ExperimentParameters> experimentParameters = _context.ExperimentParameters.ToList();
-            var query = experimentParameters.Where(x => x.Id == experiment.ExperimentParameters.Id);
-            return query;
-        }
+       
 
         // GET: Experiments/Details/5
         public async Task<IActionResult> Details(int? id)

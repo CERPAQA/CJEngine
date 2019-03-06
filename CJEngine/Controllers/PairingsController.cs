@@ -4,11 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using CJEngine.Models;
+using CJEngine.Models.Join_Entities;
 using System.IO;
 using RDotNet;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
 
 namespace CJEngine.Controllers
 {
@@ -21,38 +22,41 @@ namespace CJEngine.Controllers
         private static List<string> scriptsChosen = new List<string>();
         private static int maxJudges = 5;
 
-        public List<string> GetFiles()
-        {
-            try
-            {
-                List<string> fileNames = new List<string>();
-                string[] pdfs = Directory.GetFiles("ClientApp\\public\\pdf", "*.pdf");
-                string[] imgs = Directory.GetFiles("ClientApp\\public\\images", "*.jpg");
-                foreach (string pdf in pdfs)
-                {
-                    String relativeTo = "ClientApp\\public";
-                    String relPath = Path.GetRelativePath(relativeTo, pdf);
-                    string pdfPath = "/" + relPath.Replace("\\", "/");
-                    fileNames.Add(pdfPath);
-                }
+        private readonly CJEngineContext _context;
+        List<string> fileNames = new List<string>();
+        Experiment Experiment = new Experiment();
 
-                foreach (string img in imgs)
-                {
-                    String relativeTo = "ClientApp\\public";
-                    String relPath = Path.GetRelativePath(relativeTo, img);
-                    string imagePath = "/" + relPath.Replace("\\", "/");
-                    fileNames.Add(imagePath);
-                }
-                return fileNames;
-            }
-            catch (Exception e)
-            {
-                List<string> error = new List<string>();
-                error.Add(e.ToString());
-                return error;
-            }
+        public PairingsController(CJEngineContext context)
+        {
+            _context = context;
         }
 
+        [HttpGet("[action]")]
+        public LocalRedirectResult GetExperiment(int? id)
+        {
+            /*var liveExperiment = await _context.Experiment
+               .Include(exp => exp.ExperimentParameters)
+               .Include(exp => exp.ExpJudges)
+                   .ThenInclude(judge => judge.Judge)
+               .Include(exp => exp.ExpArtefacts)
+                   .ThenInclude(artefact => artefact.Artefact)
+               .FirstOrDefaultAsync(m => m.Id == id);*/
+
+            return LocalRedirect("/cj/" + id);
+        }
+
+        [HttpGet("[action]")]
+        public List<string> GetFiles(int id)
+        {
+            foreach(ExpArtefact artefact in Experiment.ExpArtefacts)
+            {
+                string path = artefact.Artefact.FilePath;
+                fileNames.Add(path);
+            }
+            return fileNames;
+        }
+
+        [HttpGet("[action]")]
         public List<Tuple<int, int>> GetPairings(int noScripts, int noPairings)
         {
             REngineClass.GetREngine().Evaluate(@"source('REngine\\RScripts\\ComparativeJudgmentPairingsTest.R')");
@@ -70,7 +74,7 @@ namespace CJEngine.Controllers
         [HttpGet("[action]")]
         public List<Tuple<string, string>> CreatePairings()
         {
-            List<Tuple<int, int>> result = GetPairings(GetFiles().Count - 1, 20); //change seoond number back to 30 once done testing counter
+            List<Tuple<int, int>> result = GetPairings(fileNames.Count - 1, 20); //change seoond number back to 30 once done testing counter
             List<string> original = GetFiles();
             List<Tuple<string, string>> finalResult = new List<Tuple<string, string>>();
             foreach (Tuple<int, int> x in result)
@@ -78,6 +82,7 @@ namespace CJEngine.Controllers
                 finalResult.Add(new Tuple<string, string>(original[x.Item1], original[x.Item2]));
             }
             return finalResult;
+            return null;
         }
 
         [HttpGet("[action]")]
@@ -145,6 +150,7 @@ namespace CJEngine.Controllers
             return mostFrequent;
         }
 
+        [HttpGet("[action]")]
         public string GenerateCSVString()
         {
             StringBuilder sb = new StringBuilder();

@@ -10,7 +10,6 @@ namespace CJEngine.Controllers
 {
     public class HomeController : Controller
     {
-        PairingsController pairingsController = new PairingsController();
         public IActionResult Index()
         {
             return View();

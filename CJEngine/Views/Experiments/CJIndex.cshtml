@@ -31,7 +31,7 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                <a asp-action="GetExperiment" asp-route-id="@item.Id">Run Experiment</a> 
+                <a asp-controller="Pairings" asp-action="GetExperiment" asp-route-id="@item.Id">Run Experiment</a> 
             </td>
         </tr>
 }
