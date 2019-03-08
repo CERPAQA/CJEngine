@@ -74,14 +74,14 @@ namespace CJEngine.Controllers
         [HttpGet("[action]")]
         public List<Tuple<string, string>> CreatePairings()
         {
-            List<Tuple<int, int>> result = GetPairings(fileNames.Count - 1, 20); //change seoond number back to 30 once done testing counter
+            /*List<Tuple<int, int>> result = GetPairings(fileNames.Count - 1, 20); //change seoond number back to 30 once done testing counter
             List<string> original = GetFiles();
             List<Tuple<string, string>> finalResult = new List<Tuple<string, string>>();
             foreach (Tuple<int, int> x in result)
             {
                 finalResult.Add(new Tuple<string, string>(original[x.Item1], original[x.Item2]));
             }
-            return finalResult;
+            return finalResult;*/
             return null;
         }
 

@@ -9,7 +9,7 @@ import { PDFViewer2 } from './PDFViewer2';
 export class CJCore extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { data: [], index: 0, isHidden: false, counter: 0, score: 0, time: new Date(), judgeID: 0, winList: [], topPick: "" };
+        this.state = { fileNames: [], expID:  0, index: 0, isHidden: false, counter: 0, score: 0, time: new Date(), judgeID: 0, winList: [], topPick: "" };
         this.nextFileButton = this.nextFileButton.bind(this);
         this.prevFileButton = this.prevFileButton.bind(this);
         this.judgePairOneButton = this.judgePairOneButton.bind(this);
@@ -23,10 +23,10 @@ export class CJCore extends React.Component {
     }
 
     componentDidMount() {
-        fetch('api/Pairings/CreatePairings')
+        fetch('api/Pairings/GetExperiment')
             .then(response => response.json())
-            .then(data => {
-                this.setState({ data: data });
+            .then(expID => {
+                this.setState({ expID: expID });
             });
         this.getJudgeID();
     }
@@ -69,11 +69,11 @@ export class CJCore extends React.Component {
 
     //This handles pressing either the item 1 or 2 button 
     judgePair(itemNumber) {
-        var item = this.state.data[this.state.index][itemNumber];
+        var item = this.state.fileNames[this.state.index][itemNumber];
         var timeJudged = this.setTime();
         var elapsed = this.elapsedTime();
         this.getNextFiles();
-        this.send(this.state.data[this.state.index], item, timeJudged, elapsed);
+        this.send(this.state.fileNames[this.state.index], item, timeJudged, elapsed);
     }
 
     setTime() {
@@ -141,25 +141,25 @@ export class CJCore extends React.Component {
         let viewRight;
         var endOfPairs = this.state.counter;
 
-        if (this.state.data.length > 0) {
-            if (endOfPairs >= this.state.data.length) {
+        if (this.state.fileNames.length > 0) {
+            if (endOfPairs >= this.state.fileNames.length) {
                 viewLeft = <EndOfPairs align="left" />;
             } else {
-                var currentFileLeft = this.state.data[this.state.index]["item1"];
-                var currentFileRight = this.state.data[this.state.index]["item2"];
+                var currentFileLeft = this.state.fileNames[this.state.index]["item1"];
+                var currentFileRight = this.state.fileNames[this.state.index]["item2"];
                 var x = GetFileType(currentFileLeft);
                 var y = GetFileType(currentFileRight);
                 if (x === true) {
-                    viewLeft = <PDFViewer id="left" data={currentFileLeft} />;
+                    viewLeft = <PDFViewer id="left" fileNames={currentFileLeft} />;
 
                 } else {
-                    viewLeft = <IMGViewer id="left" data={currentFileLeft} />;
+                    viewLeft = <IMGViewer id="left" fileNames={currentFileLeft} />;
                 }
                 if (y === true) {
-                    viewRight = <PDFViewer id="right" data={currentFileRight} />;
+                    viewRight = <PDFViewer id="right" fileNames={currentFileRight} />;
                 } else {
 
-                    viewRight = <IMGViewer id="right" data={currentFileRight} />;
+                    viewRight = <IMGViewer id="right" fileNames={currentFileRight} />;
                 }
             }
         }
@@ -180,7 +180,7 @@ export class CJCore extends React.Component {
                 <button id="hideTitle" class="btn btn-dark" onClick={this.toggleHidden.bind(this)} >
                     Hide Title
 				</button>
-                <JudgedScripts data={this.state.data.length} score={this.state.score} top={this.state.topPick} />
+                <JudgedScripts fileNames={this.state.fileNames.length} score={this.state.score} top={this.state.topPick} />
             </div>
         );
     }
