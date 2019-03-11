@@ -23,12 +23,22 @@ export class CJCore extends React.Component {
     }
 
     componentDidMount() {
-        fetch('api/Pairings/GetExperiment')
-            .then(response => response.json())
-            .then(expID => {
-                this.setState({ expID: expID });
-            });
-        this.getJudgeID();
+        var stringExpNum = document.URL.split("/")[4]; 
+        var expNum = parseInt(stringExpNum, 10);
+        this.setState({ expID: expNum });
+
+        fetch("api/Pairings/CreatePairings", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ expID: expNum })
+        }).then(function (response) {
+            if (response.status !== 200) {
+                console.log('fetch returned not ok' + response.status);
+            }
+        })
     }
 
     toggleHidden() {
