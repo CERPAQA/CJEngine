@@ -12,11 +12,7 @@ export class Clock extends React.Component {
     render() {
         return (
             <div id="hideTime" >
-                {!this.state.isHidden && <Tick />}
-                <Duration />
-                <button class="btn btn-dark" onClick={this.toggleHidden.bind(this)} >
-                    Hide Time
-				</button>
+             
             </div>
         );
     }
@@ -55,3 +51,12 @@ function format(seconds) {
 }
 
 var markDate = new Date();
+
+/*
+ * this stuff was originally in the render method..taken out for now
+ *    {!this.state.isHidden && <Tick />}
+                <Duration />
+                <button class="btn btn-dark" onClick={this.toggleHidden.bind(this)} >
+                    Hide Time
+				</button>
+ */

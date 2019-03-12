@@ -9,7 +9,8 @@ import { PDFViewer2 } from './PDFViewer2';
 export class CJCore extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { fileNames: [], expID:  0, index: 0, isHidden: false, counter: 0, score: 0, time: new Date(), judgeID: 0, winList: [], topPick: "" };
+        this.state = {
+            fileNames: [], expID: 0, showTitle: false, showTimer: false, index: 0, isHidden: false, counter: 0, score: 0, time: new Date(), judgeID: 0, winList: [], topPick: "" };
         this.nextFileButton = this.nextFileButton.bind(this);
         this.prevFileButton = this.prevFileButton.bind(this);
         this.judgePairOneButton = this.judgePairOneButton.bind(this);
@@ -32,8 +33,12 @@ export class CJCore extends React.Component {
             .then(fileNames => {
                 this.setState({ fileNames: fileNames })
             });
-        console.log("");
-        
+
+        fetch("api/Pairings/GetParams/?id=" + expNum)
+            .then(response => response.json())
+            .then(params => {
+                this.setState({ showTitle: params["showTitle"], showTimer: params["showTimer"]})
+            });
     }
 
     toggleHidden() {
@@ -170,7 +175,7 @@ export class CJCore extends React.Component {
         }
         return (
             <div>
-                {<Header isHidden={this.state.isHidden} />}
+                {<Header isHidden={this.state.showTitle} />}
                 <div class="itemDisplay">
                     <button id="prevFileButton" className="btn btn-dark" align="right" onClick={this.prevFileButton}>Previous File</button>
                     {viewLeft}
@@ -182,9 +187,7 @@ export class CJCore extends React.Component {
                     <button id="itemOne" class="btn btn-dark" onClick={this.judgePairOneButton}>Item One</button>
                     <button id="itemTwo" class="btn btn-dark" onClick={this.judgePairTwoButton}>Item Two</button>
                 </div>
-                <button id="hideTitle" class="btn btn-dark" onClick={this.toggleHidden.bind(this)} >
-                    Hide Title
-				</button>
+               
                 <JudgedScripts fileNames={this.state.fileNames.length} score={this.state.score} top={this.state.topPick} />
             </div>
         );
@@ -196,3 +199,7 @@ function EndOfPairs(props) {
         <img src="finished.jpg" width='40%' align={props.align}></img>
     );
 }
+
+//<button id="hideTitle" class="btn btn-dark" onClick={this.toggleHidden.bind(this)} >
+ //   Hide Title
+	//			</button>
