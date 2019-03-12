@@ -37,21 +37,8 @@ namespace CJEngine.Controllers
             return LocalRedirect("/cj/" + id);
         }
 
-        private async Task<Experiment> GetExperiment(int id)
-        {
-            var liveExperiment = await _context.Experiment
-               .Include(exp => exp.ExperimentParameters)
-               .Include(exp => exp.ExpJudges)
-                   .ThenInclude(judge => judge.Judge)
-               .Include(exp => exp.ExpArtefacts)
-                   .ThenInclude(artefact => artefact.Artefact)
-               .FirstOrDefaultAsync(m => m.Id == id);
-
-            return liveExperiment;
-        }
-
         [HttpGet("[action]")]
-        public List<string> GetFiles()
+        public List<string> GetFiles(Experiment Experiment)
         {
             foreach(ExpArtefact artefact in Experiment.ExpArtefacts)
             {
@@ -77,13 +64,19 @@ namespace CJEngine.Controllers
         }
 
         [Produces("application/json")]
-        [HttpPost]
+        [HttpGet]
         [Route("CreatePairings")]
-        public List<Tuple<string, string>> CreatePairings()
+        public async Task<List<Tuple<string, string>>> CreatePairings(int? id)
         {
-            var id = Request;
-            List<Tuple<int, int>> result = GetPairings(fileNames.Count - 1, 20); //change seoond number back to 30 once done testing counter
-            List<string> original = GetFiles();
+            var liveExperiment = await _context.Experiment
+               .Include(exp => exp.ExperimentParameters)
+               .Include(exp => exp.ExpJudges)
+                   .ThenInclude(judge => judge.Judge)
+               .Include(exp => exp.ExpArtefacts)
+                   .ThenInclude(artefact => artefact.Artefact)
+               .FirstOrDefaultAsync(m => m.Id == id);
+            List<string> original = GetFiles(liveExperiment);
+            List<Tuple<int, int>> result = GetPairings(fileNames.Count - 1, 20); 
             List<Tuple<string, string>> finalResult = new List<Tuple<string, string>>();
             foreach (Tuple<int, int> x in result)
             {
