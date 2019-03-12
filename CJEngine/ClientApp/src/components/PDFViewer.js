@@ -2,7 +2,7 @@
 export function PDFViewer(props) {
     return (
         <div id="pdfOne">
-            <iframe id={props.id} src={props.fileName} height='500em' width='500em'> </iframe>
+            <iframe id={props.id} src={props.fileNames} height='500em' width='500em'> </iframe>
         </div>
     );
 }

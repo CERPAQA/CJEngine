@@ -28,8 +28,33 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\artefacts\Areas of numeracy.pdf" />
+    <Content Remove="wwwroot\artefacts\compressed.tracemonkey-pldi-09.pdf" />
+    <Content Remove="wwwroot\artefacts\Computer Science Spec.PDF" />
+    <Content Remove="wwwroot\artefacts\GCSE and A Level Maths.pdf" />
+    <Content Remove="wwwroot\artefacts\gohan.jpg" />
+    <Content Remove="wwwroot\artefacts\goku.jpg" />
+    <Content Remove="wwwroot\artefacts\javascript.jpg" />
+    <Content Remove="wwwroot\artefacts\learn to code.jpg" />
+    <Content Remove="wwwroot\artefacts\Literacy Practice Test 3.pdf" />
+    <Content Remove="wwwroot\artefacts\Literacy Practice Test 4.pdf" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="ClientApp\public\images\" />
-    <Folder Include="wwwroot\artefacts\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\artefacts\Areas of numeracy.pdf" />
+    <None Include="wwwroot\artefacts\compressed.tracemonkey-pldi-09.pdf" />
+    <None Include="wwwroot\artefacts\Computer Science Spec.pdf" />
+    <None Include="wwwroot\artefacts\GCSE and A Level Maths.pdf" />
+    <None Include="wwwroot\artefacts\gohan.jpg" />
+    <None Include="wwwroot\artefacts\goku.jpg" />
+    <None Include="wwwroot\artefacts\javascript.jpg" />
+    <None Include="wwwroot\artefacts\learn to code.jpg" />
+    <None Include="wwwroot\artefacts\Literacy Practice Test 3.pdf" />
+    <None Include="wwwroot\artefacts\Literacy Practice Test 4.pdf" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

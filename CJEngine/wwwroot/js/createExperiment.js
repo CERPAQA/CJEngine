@@ -1,6 +1,6 @@
 ﻿var artefactList = [];
 var judgeList = [];
-var x = document.getElementById("parametersList").value;
+//var x = document.getElementById("parametersList").value;
 
 //add Artefact to expArtefacts
 $(".addArtefactButton").click(function (event) {
