@@ -11,20 +11,22 @@ export class Clock extends React.Component {
 
     render() {
         return (
-            <div id="hideTime" >
-                {!this.state.isHidden && <Tick />}
-                <button class="btn btn-dark" onClick={this.toggleHidden.bind(this)} >
-                    Hide Time
-				</button>
-            </div>
-        );
+            <br/>
+            );
     }
 }
 
-function Tick() {
+function currentTime() {
     return (
-        <div id="time">
+        <div>
             <h2>{new Date().toLocaleTimeString()}</h2>
         </div>
     );
 }
+
+/*<div >
+    {!this.state.isHidden && <Tick />}
+    <button class="btn btn-dark" onClick={this.toggleHidden.bind(this)} >
+        Hide Time
+				</button>
+</div>*/

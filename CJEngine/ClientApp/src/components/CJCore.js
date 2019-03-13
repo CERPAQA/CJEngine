@@ -189,6 +189,7 @@ export class CJCore extends React.Component {
                     <button id="itemTwo" class="btn btn-dark" onClick={this.judgePairTwoButton}>Item Two</button>
                 </div>
                 {<ElapsedTimer isHidden={this.state.showTimer} />}
+                
                 <JudgedScripts fileNames={this.state.fileNames.length} score={this.state.score} top={this.state.topPick} />
             </div>
         );
@@ -200,6 +201,8 @@ function EndOfPairs(props) {
         <img src="finished.jpg" width='40%' align={props.align}></img>
     );
 }
+
+//{setInterval(<ElapsedTimer />, 1000)}
 
 //<button id="hideTitle" class="btn btn-dark" onClick={this.toggleHidden.bind(this)} >
  //   Hide Title

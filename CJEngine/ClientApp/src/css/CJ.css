@@ -16,21 +16,21 @@
 }
 
 /* Time elements*/
-#time {
+/*#time {
     position: relative;
     text-align: center;
     font-family: 'Alfa Slab One';
     top: 1.5em;
     font-size: 22px;
-}
+}*/
 
-#timer {
+/*#timer {
     position: relative;
     text-align: center;
     top: 30em;
     font-family: 'Alfa Slab One';
     font-size: 22px;
-}
+}*/
 
 /* PDF and images display divs*/
 .itemDisplay {
@@ -82,8 +82,8 @@
     right: 10px;
 }
 
-#hideTime {
+/*#hideTime {
     position: relative;
     top: 550px;
     right: 10px;
-}
+}*/
