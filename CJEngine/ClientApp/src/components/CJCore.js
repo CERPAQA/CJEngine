@@ -5,6 +5,7 @@ import { IMGViewer } from './IMGViewer';
 import { JudgedScripts } from './JudgedScripts';
 import { PDFViewer } from './PDFViewer';
 import { PDFViewer2 } from './PDFViewer2';
+import { ElapsedTimer } from './ElapsedTimer';
 
 export class CJCore extends React.Component {
     constructor(props) {
@@ -187,7 +188,7 @@ export class CJCore extends React.Component {
                     <button id="itemOne" class="btn btn-dark" onClick={this.judgePairOneButton}>Item One</button>
                     <button id="itemTwo" class="btn btn-dark" onClick={this.judgePairTwoButton}>Item Two</button>
                 </div>
-               
+                {<ElapsedTimer isHidden={this.state.showTimer} />}
                 <JudgedScripts fileNames={this.state.fileNames.length} score={this.state.score} top={this.state.topPick} />
             </div>
         );
