@@ -125,17 +125,25 @@ namespace CJEngine.Controllers
         [Produces("application/json")]
         [HttpPost]
         [Route("GetWinners")]
-        public string GetWinners([FromBody] Pairing data)
+        public async void GetWinners([FromBody] Pairing data, int? id)
         {
-            string winner = data.winner;
-            Tuple<string, string> pairOfScripts = data.pairOfScripts;
-            string timeJudgement = data.timeJudgement;
-            string elapsedTime = data.elapsedTime;
-            int judgeID = data.judgeID;
-            Pairing p = new Pairing(winner, pairOfScripts, timeJudgement, elapsedTime, judgeID);
-            allPairings.Add(p);
-            scriptsChosen.Add(winner);
-            return winner;
+            var liveExperiment = await _context.Experiment
+              .Include(exp => exp.ExperimentParameters)
+              .Include(exp => exp.ExpJudges)
+                  .ThenInclude(judge => judge.Judge)
+              .Include(exp => exp.ExpArtefacts)
+                  .ThenInclude(artefact => artefact.Artefact)
+              .FirstOrDefaultAsync(m => m.Id == id);
+
+            //string winner = data.Winner.FileName;
+            //Tuple<string, string> pairOfScripts = data.ArtefactPairings;
+            //DateTime timeJudgement = data.TimeOfPairing;
+            //int elapsedTime = data.ElapsedTime;
+            //int judgeID = data.judgeID;
+            //Pairing pairing = new Pairing();
+            //allPairings.Add(p);
+            //scriptsChosen.Add(winner);
+
         }
 
         [HttpGet("[action]")]
@@ -185,11 +193,11 @@ namespace CJEngine.Controllers
             for (int i = 0; i < allPairings.Count; i++)
             {
                 //Just cleaning the strings up a little bit for easier reading/analysis
-                sb.Append(allPairings[i].winner.Replace("/images/", "") + ",");
+                /*sb.Append(allPairings[i].winner.Replace("/images/", "") + ",");
                 sb.Append(allPairings[i].pairOfScripts.ToString().Replace("/images/", "").Replace("(", "").Replace(")", "") + ",");
                 sb.Append(allPairings[i].timeJudgement + ",");
                 sb.Append(allPairings[i].elapsedTime + ",");
-                sb.Append(allPairings[i].judgeID + ",");
+                sb.Append(allPairings[i].judgeID + ",");*/
                 sb.AppendLine();
             }
             return sb.ToString();
@@ -204,7 +212,7 @@ namespace CJEngine.Controllers
             return File(new System.Text.UTF8Encoding().GetBytes(csv), "text/csv", fileName);
         }
 
-        public class Pairing
+        /*public class Pairing
         {
             public string winner { get; set; }
             public Tuple<string, string> pairOfScripts { get; set; }
@@ -220,7 +228,7 @@ namespace CJEngine.Controllers
                 this.elapsedTime = elapsedTime;
                 this.judgeID = id;
             }
-        }
+        }*/
 
         public class Judge
         {

@@ -133,13 +133,13 @@ export class CJCore extends React.Component {
     }
 
     send(pair, winner, timeJ, elapsed) {
-        fetch("api/Pairings/GetWinners", {
+        fetch("api/Pairings/GetWinners?id=" + this.state.expID, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ winner: winner, pairOfScripts: pair, timeJudgement: timeJ, elapsedTime: elapsed, judgeID: this.state.judgeID })
+            body: JSON.stringify({ Winner: winner, ArtefactPairings: pair, TimeOfPairing: timeJ, ElapsedTime: elapsed, judgeID: this.state.judgeID })
         }).then(function (response) {
             if (response.status !== 200) {
                 console.log('fetch returned not ok' + response.status);
