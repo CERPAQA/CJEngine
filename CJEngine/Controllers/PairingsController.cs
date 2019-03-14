@@ -10,6 +10,7 @@ using System.IO;
 using RDotNet;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace CJEngine.Controllers
 {
@@ -125,22 +126,23 @@ namespace CJEngine.Controllers
         [Produces("application/json")]
         [HttpPost]
         [Route("GetWinners")]
-        public async void GetWinners([FromBody] Pairing data, int? id)
+        public async void GetWinners([FromBody] dynamic data, int? id)
         {
             var liveExperiment = await _context.Experiment
-              .Include(exp => exp.ExperimentParameters)
-              .Include(exp => exp.ExpJudges)
-                  .ThenInclude(judge => judge.Judge)
-              .Include(exp => exp.ExpArtefacts)
-                  .ThenInclude(artefact => artefact.Artefact)
               .FirstOrDefaultAsync(m => m.Id == id);
 
-            //string winner = data.Winner.FileName;
-            //Tuple<string, string> pairOfScripts = data.ArtefactPairings;
-            //DateTime timeJudgement = data.TimeOfPairing;
+            string winner = data.Winner;
+            List<string> pairOfScripts = new List<string>();
+            string scriptOne = data.ArtefactPairings["item1"];
+            string scriptTwo = data.ArtefactPairings["item2"];
+            pairOfScripts.Add(scriptOne);
+            pairOfScripts.Add(scriptTwo);
+            //DateTime now = DateTime.Now;
+            CultureInfo culture = new CultureInfo("en-US");
+            //DateTime timeJudgement = DateTime.ParseExact(data.TimeOfPairing,"dd/MM/yyyy, HH:mm:ss" , CultureInfo.InvariantCulture);
             //int elapsedTime = data.ElapsedTime;
             //int judgeID = data.judgeID;
-            //Pairing pairing = new Pairing();
+            Pairing pairing = new Pairing();
             //allPairings.Add(p);
             //scriptsChosen.Add(winner);
 
