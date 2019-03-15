@@ -100,7 +100,7 @@ export class CJCore extends React.Component {
         timeDiff /= 1000;
 
         var seconds = Math.round(timeDiff);
-        var elapsed = seconds + " seconds";
+        var elapsed = seconds;
         return elapsed;
     }
 

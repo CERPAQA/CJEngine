@@ -9,7 +9,6 @@ namespace CJEngine.Models
     {
         public int Id { get; set; }
         public string Description { get; set; }
-        public Experiment Experiment { get; set; }
         public bool ShowTitle { get; set; }
         public bool ShowTimer { get; set; }
     }

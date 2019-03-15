@@ -126,26 +126,45 @@ namespace CJEngine.Controllers
         [Produces("application/json")]
         [HttpPost]
         [Route("GetWinners")]
-        public async void GetWinners([FromBody] dynamic data, int? id)
+        public async Task GetWinners([FromBody] dynamic data, int? id)
         {
-            var liveExperiment = await _context.Experiment
-              .FirstOrDefaultAsync(m => m.Id == id);
-
             string winner = data.Winner;
-            List<string> pairOfScripts = new List<string>();
-            string scriptOne = data.ArtefactPairings["item1"];
-            string scriptTwo = data.ArtefactPairings["item2"];
-            pairOfScripts.Add(scriptOne);
-            pairOfScripts.Add(scriptTwo);
-            //DateTime now = DateTime.Now;
-            CultureInfo culture = new CultureInfo("en-US");
-            //DateTime timeJudgement = DateTime.ParseExact(data.TimeOfPairing,"dd/MM/yyyy, HH:mm:ss" , CultureInfo.InvariantCulture);
-            //int elapsedTime = data.ElapsedTime;
-            //int judgeID = data.judgeID;
-            Pairing pairing = new Pairing();
-            //allPairings.Add(p);
-            //scriptsChosen.Add(winner);
+            //need to find a way to pass the id of the artefacts to client
+            var winningArtefact = await _context.Artefact
+                .FirstOrDefaultAsync(m => m.FilePath == winner);
 
+            DateTime timeJudgement = DateTime.ParseExact((string)data.TimeOfPairing, "dd/MM/yyyy, HH:mm:ss", CultureInfo.InvariantCulture);
+            int elapsedTime = (int)data.ElapsedTime;
+            Pairing pairing = new Pairing();
+            pairing.ExperimentId = (int)id;
+
+            List<ArtefactPairing> pairOfScripts = new List<ArtefactPairing>();
+
+            string scriptOne = data.ArtefactPairings["item1"];
+            Artefact artefactOne = await _context.Artefact
+                .FirstOrDefaultAsync(m => m.FilePath == scriptOne);
+            ArtefactPairing one = new ArtefactPairing();
+            one.ArtefactId = artefactOne.Id;
+            one.PairingId = pairing.Id;
+
+            string scriptTwo = data.ArtefactPairings["item2"];
+            Artefact artefactTwo = await _context.Artefact
+                .FirstOrDefaultAsync(m => m.FileName == scriptTwo);
+            ArtefactPairing two = new ArtefactPairing();
+            two.ArtefactId = artefactOne.Id;
+            two.PairingId = pairing.Id;
+
+            pairOfScripts.Add(one);
+            pairOfScripts.Add(two);
+            pairing.ArtefactPairings = pairOfScripts;
+            pairing.Winner = winningArtefact;
+            pairing.TimeOfPairing = timeJudgement;
+            pairing.ElapsedTime = elapsedTime;
+            if (ModelState.IsValid)
+            {
+                _context.Add(pairing);
+                await _context.SaveChangesAsync();
+            }
         }
 
         [HttpGet("[action]")]
