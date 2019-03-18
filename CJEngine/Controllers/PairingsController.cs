@@ -118,8 +118,8 @@ namespace CJEngine.Controllers
             while (ids.Contains(id));
             maxJudges++; //Max judges is a low number to keep generated IDs low, it scales up if we want more browser windows to test.
             ids.Add(id);
-            Judge j = new Judge(id);
-            judges.Add(j);
+            /*Judge j = new Judge(id);
+            judges.Add(j);*/
             return id;
         }
 
@@ -129,13 +129,9 @@ namespace CJEngine.Controllers
         public async Task GetWinners([FromBody] dynamic data, int? id)
         {
             string winner = data.Winner;
-            //need to find a way to pass the id of the artefacts to client
-            var winningArtefact = await _context.Artefact
-                .FirstOrDefaultAsync(m => m.FilePath == winner);
-
+            var winningArtefact = new Artefact();
             DateTime timeJudgement = DateTime.ParseExact((string)data.TimeOfPairing, "dd/MM/yyyy, HH:mm:ss", CultureInfo.InvariantCulture);
             int elapsedTime = (int)data.ElapsedTime;
-            //needs to generate a ID for the pairing first
             Pairing pairing = new Pairing
             {
                 ExperimentId = (int)id,
@@ -144,8 +140,6 @@ namespace CJEngine.Controllers
             };
 
             List<ArtefactPairing> pairOfScripts = new List<ArtefactPairing>();
-
-            //this code should only be be done twice as we already have the winning artefact 
             string scriptOne = data.ArtefactPairings["item1"];
             Artefact artefactOne = await _context.Artefact
                 .FirstOrDefaultAsync(m => m.FilePath == scriptOne);
@@ -165,7 +159,14 @@ namespace CJEngine.Controllers
                 PairingId = pairing.Id,
                 Artefact = artefactTwo
             };
-
+            if (artefactOne.FilePath == winner )
+            {
+                winningArtefact = artefactOne;
+            }
+            else
+            {
+                winningArtefact = artefactTwo;
+            }
             pairOfScripts.Add(one);
             pairOfScripts.Add(two);
             pairing.ArtefactPairings = pairOfScripts;
@@ -175,9 +176,6 @@ namespace CJEngine.Controllers
             if (ModelState.IsValid)
             {
                 _context.Update(pairing);
-                //below are the two new artefactpairing instances
-                //_context.ArtefactPairings.Add(one);
-                // _context.ArtefactPairings.Add(two);
                 await _context.SaveChangesAsync();
             }
         }
@@ -246,33 +244,6 @@ namespace CJEngine.Controllers
             var fileName = "report.csv";
 
             return File(new System.Text.UTF8Encoding().GetBytes(csv), "text/csv", fileName);
-        }
-
-        /*public class Pairing
-        {
-            public string winner { get; set; }
-            public Tuple<string, string> pairOfScripts { get; set; }
-            public string timeJudgement { get; set; }
-            public string elapsedTime { get; set; }
-            public int judgeID;
-
-            public Pairing(string winner, Tuple<string, string> pairOfScripts, string timeJudgement, string elapsedTime, int id)
-            {
-                this.winner = winner;
-                this.pairOfScripts = pairOfScripts;
-                this.timeJudgement = timeJudgement;
-                this.elapsedTime = elapsedTime;
-                this.judgeID = id;
-            }
-        }*/
-
-        public class Judge
-        {
-            public int judgeID { get; set; }
-            public Judge(int judgeID)
-            {
-                this.judgeID = judgeID;
-            }
         }
     }
 }
