@@ -20,7 +20,7 @@ namespace CJEngine.Models
 
         public IList<ArtefactPairing> ArtefactPairings { get; set; }
 
-        public int ArtefactId { get; set; }
+        public int WinnerId { get; set; }
         public Artefact Winner { get; set; }
 
         [DataType(DataType.Date)]

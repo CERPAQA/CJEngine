@@ -135,24 +135,36 @@ namespace CJEngine.Controllers
 
             DateTime timeJudgement = DateTime.ParseExact((string)data.TimeOfPairing, "dd/MM/yyyy, HH:mm:ss", CultureInfo.InvariantCulture);
             int elapsedTime = (int)data.ElapsedTime;
-            Pairing pairing = new Pairing();
-            pairing.ExperimentId = (int)id;
+            //needs to generate a ID for the pairing first
+            Pairing pairing = new Pairing
+            {
+                ExperimentId = (int)id,
+                Experiment = await _context.Experiment.FirstOrDefaultAsync(m => m.Id == id),
+                JudgeId = 1
+            };
 
             List<ArtefactPairing> pairOfScripts = new List<ArtefactPairing>();
 
+            //this code should only be be done twice as we already have the winning artefact 
             string scriptOne = data.ArtefactPairings["item1"];
             Artefact artefactOne = await _context.Artefact
                 .FirstOrDefaultAsync(m => m.FilePath == scriptOne);
-            ArtefactPairing one = new ArtefactPairing();
-            one.ArtefactId = artefactOne.Id;
-            one.PairingId = pairing.Id;
+            ArtefactPairing one = new ArtefactPairing
+            {
+                ArtefactId = artefactOne.Id,
+                PairingId = pairing.Id,
+                Artefact = artefactOne
+            };
 
             string scriptTwo = data.ArtefactPairings["item2"];
             Artefact artefactTwo = await _context.Artefact
-                .FirstOrDefaultAsync(m => m.FileName == scriptTwo);
-            ArtefactPairing two = new ArtefactPairing();
-            two.ArtefactId = artefactOne.Id;
-            two.PairingId = pairing.Id;
+                .FirstOrDefaultAsync(m => m.FilePath == scriptTwo);
+            ArtefactPairing two = new ArtefactPairing
+            {
+                ArtefactId = artefactTwo.Id,
+                PairingId = pairing.Id,
+                Artefact = artefactTwo
+            };
 
             pairOfScripts.Add(one);
             pairOfScripts.Add(two);
@@ -162,7 +174,10 @@ namespace CJEngine.Controllers
             pairing.ElapsedTime = elapsedTime;
             if (ModelState.IsValid)
             {
-                _context.Add(pairing);
+                _context.Update(pairing);
+                //below are the two new artefactpairing instances
+                //_context.ArtefactPairings.Add(one);
+                // _context.ArtefactPairings.Add(two);
                 await _context.SaveChangesAsync();
             }
         }
