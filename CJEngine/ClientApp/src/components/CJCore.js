@@ -4,7 +4,7 @@ import { Header } from './Header';
 import { IMGViewer } from './IMGViewer';
 import { JudgedScripts } from './JudgedScripts';
 import { PDFViewer } from './PDFViewer';
-import { PDFViewer2 } from './PDFViewer2';
+//import { PDFViewer2 } from './PDFViewer2';
 import { ElapsedTimer } from './ElapsedTimer';
 
 export class CJCore extends React.Component {
@@ -150,6 +150,7 @@ export class CJCore extends React.Component {
     render() {
         let viewLeft;
         let viewRight;
+        let timer;
         var endOfPairs = this.state.counter;
 
         if (this.state.fileNames.length > 0) {
@@ -189,7 +190,6 @@ export class CJCore extends React.Component {
                     <button id="itemTwo" class="btn btn-dark" onClick={this.judgePairTwoButton}>Item Two</button>
                 </div>
                 {<ElapsedTimer isHidden={this.state.showTimer} />}
-                
                 <JudgedScripts fileNames={this.state.fileNames.length} score={this.state.score} top={this.state.topPick} />
             </div>
         );
@@ -201,9 +201,3 @@ function EndOfPairs(props) {
         <img src="finished.jpg" width='40%' align={props.align}></img>
     );
 }
-
-//{setInterval(<ElapsedTimer />, 1000)}
-
-//<button id="hideTitle" class="btn btn-dark" onClick={this.toggleHidden.bind(this)} >
- //   Hide Title
-	//			</button>
