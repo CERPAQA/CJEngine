@@ -136,20 +136,23 @@ namespace CJEngine.Controllers
             {
                 return NotFound();
             }
-
-            var experiment = await _context.Experiment
+            EditExperimentViewModel EEVM = new EditExperimentViewModel();
+            EEVM.Experiment = await _context.Experiment
                 .Include(exp => exp.ExperimentParameters)
                 .Include(exp => exp.ExpJudges)
                     .ThenInclude(judge => judge.Judge)
                 .Include(exp => exp.ExpArtefacts)
                     .ThenInclude(artefact => artefact.Artefact)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (experiment == null)
+            EEVM.ExperimentParametersList = _context.ExperimentParameters.ToList();
+            EEVM.ExperimentParametersList = _context.ExperimentParameters.ToList();
+            EEVM.Artefacts = _context.Artefact.ToList();
+            EEVM.Judges = _context.Judge.ToList();
+            if (EEVM == null)
             {
                 return NotFound();
             }
-
-            return View(experiment);
+            return View(EEVM);
         }
 
         // POST: Experiments/Edit/5
