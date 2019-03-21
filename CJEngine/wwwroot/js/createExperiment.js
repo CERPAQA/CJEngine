@@ -1,6 +1,6 @@
 ﻿var artefactList = [];
 var judgeList = [];
-//var x = document.getElementById("parametersList").value;
+var x = document.getElementById("parametersList").value;
 
 //add Artefact to expArtefacts
 $(".addArtefactButton").click(function (event) {
@@ -31,7 +31,7 @@ $(".addArtefactButton").click(function (event) {
         node.appendChild(textNode);
         node.appendChild(buttonNode);
         addHidden(node, 'expArtefacts', artefactName);
-        document.getElementById("selctedArtefacts").appendChild(node);
+        document.getElementById("selectedArtefacts").appendChild(node);
     } else {
         alert("Artefact Already Added");
     }
@@ -42,7 +42,7 @@ function addHidden(Li, key, value) {
     input.type = 'hidden';
     input.name = key; 'name-as-seen-at-the-server';
     input.value = value;
-    document.getElementById("selctedArtefacts").appendChild(input);
+    document.getElementById("selectedArtefacts").appendChild(input);
 }
 
 //add judge to expJudges
@@ -74,7 +74,7 @@ $(".addJudgeButton").click(function (event) {
         node.appendChild(textNode);
         node.appendChild(buttonNode);
         addHidden(node, 'expJudges', judgeName);
-        document.getElementById("selctedJudges").appendChild(node);
+        document.getElementById("selectedJudges").appendChild(node);
     } else {
         alert("Judge Already Added");
     }
@@ -85,7 +85,19 @@ function addHidden(Li, key, value) {
     input.type = 'hidden';
     input.name = key; 'name-as-seen-at-the-server';
     input.value = value;
-    document.getElementById("selctedJudges").appendChild(input);
+    document.getElementById("selectedJudges").appendChild(input);
+}
+
+//used for edit experiment page
+//need to add an event listener for remove on edit page and then test create page still works
+window.onload = function () {
+    var templs = [];
+    templs = document.getElementById("selectedArtefacts")
+        .getElementsByTagName("li");
+    for (i = 0; i < templs.length; i++) {
+        var name = $(templs[i]).text().split("Remove")[0].trim();
+        artefactList.push(name);
+    }
 }
 
 //saves the chosen parameters (API method)

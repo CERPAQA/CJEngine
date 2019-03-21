@@ -171,6 +171,7 @@ namespace CJEngine.Controllers
             {
                 try
                 {
+                    var form = Request.Form;
                     _context.Update(experiment);
                     await _context.SaveChangesAsync();
                 }
