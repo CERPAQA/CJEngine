@@ -172,6 +172,43 @@ namespace CJEngine.Controllers
                 try
                 {
                     var form = Request.Form;
+                    var expID = experiment.Id;
+                    string expNameParam = form["Parameters"];
+                    var expParam = await _context.ExperimentParameters
+                        .FirstOrDefaultAsync(m => m.Description == expNameParam);
+                    int expParamID = expParam.Id;
+                    experiment.ExperimentParametersId = expParamID;
+                    experiment.ExperimentParameters = expParam;
+
+                    var artefacts = form["expArtefacts"];
+                    foreach (string x in artefacts)
+                    {
+                        var artefactName = x.Trim();
+                        var expArtefact = await _context.Artefact.
+                            FirstOrDefaultAsync(m => m.Name == artefactName);
+                        var artefactID = expArtefact.Id;
+                        ExpArtefact exp = new ExpArtefact();
+                        exp.ExperimentId = expID;
+                        exp.ArtefactId = artefactID;
+                        exp.Experiment = experiment;
+                        exp.Artefact = expArtefact;
+                        experiment.ExpArtefacts.Add(exp);
+                    }
+
+                    var judges = form["expJudges"];
+                    foreach (string x in judges)
+                    {
+                        var judgeName = x.Trim();
+                        var judge = await _context.Judge.
+                            FirstOrDefaultAsync(m => m.Name == judgeName);
+                        var judgeID = judge.Id;
+                        ExpJudge exp = new ExpJudge();
+                        exp.ExperimentId = expID;
+                        exp.JudgeId = judgeID;
+                        exp.Experiment = experiment;
+                        exp.Judge = judge;
+                        experiment.ExpJudges.Add(exp);
+                    }
                     _context.Update(experiment);
                     await _context.SaveChangesAsync();
                 }

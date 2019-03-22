@@ -90,13 +90,21 @@ function addHidden(Li, key, value) {
 
 //used for edit experiment page
 window.onload = function () {
-    var templs = [];
-    templs = document.getElementById("selectedArtefacts")
+    var tempLsArtefact = [];
+    var tempLsJudge = [];
+    tempLsArtefact = document.getElementById("selectedArtefacts")
         .getElementsByTagName("li");
-    for (i = 0; i < templs.length; i++) {
-        var name = $(templs[i]).text().split("Remove")[0].trim(); //not efficient enough, needs fixing
+    for (i = 0; i < tempLsArtefact.length; i++) {
+        var name = $(tempLsArtefact[i]).text().split("Remove")[0].trim(); //not efficient enough, needs fixing
         artefactList.push(name);
     }
+    tempLsJudge = document.getElementById("selectedJudges")
+        .getElementsByTagName("li");
+    for (i = 0; i < tempLsJudge.length; i++) {
+        var name = $(tempLsJudge[i]).text().split("Remove")[0].trim(); //not efficient enough, needs fixing
+        judgeList.push(name);
+    }
+
     var remove = document.getElementsByClassName("remove");
     for (var i = 0; i < remove.length; i++) {
         remove[i].addEventListener("click", function () {
@@ -112,6 +120,23 @@ window.onload = function () {
             }
         });
     }
+
+    var remove = document.getElementsByClassName("remove");
+    for (var i = 0; i < remove.length; i++) {
+        remove[i].addEventListener("click", function () {
+            var item = $(this).closest("li")
+            var judgeName = item.text().split("Remove")[0].trim(); //not efficient enough, needs fixing
+            var inList = judgeList.includes(judgeName);
+            if (inList === false) {
+                alert("Judge not in List");
+            } else {
+                var index = judgeList.indexOf(judgeName);
+                judgeList.splice(index, 1);
+                item.remove();
+            }
+        });
+    }
+    
 }
 
 //saves the chosen parameters (API method)
