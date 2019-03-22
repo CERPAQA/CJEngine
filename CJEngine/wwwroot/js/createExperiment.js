@@ -89,14 +89,28 @@ function addHidden(Li, key, value) {
 }
 
 //used for edit experiment page
-//need to add an event listener for remove on edit page and then test create page still works
 window.onload = function () {
     var templs = [];
     templs = document.getElementById("selectedArtefacts")
         .getElementsByTagName("li");
     for (i = 0; i < templs.length; i++) {
-        var name = $(templs[i]).text().split("Remove")[0].trim();
+        var name = $(templs[i]).text().split("Remove")[0].trim(); //not efficient enough, needs fixing
         artefactList.push(name);
+    }
+    var remove = document.getElementsByClassName("remove");
+    for (var i = 0; i < remove.length; i++) {
+        remove[i].addEventListener("click", function () {
+            var item = $(this).closest("li")
+            var artefactName = item.text().split("Remove")[0].trim(); //not efficient enough, needs fixing
+            var inList = artefactList.includes(artefactName);
+            if (inList === false) {
+                alert("Artefact not in List");
+            } else {
+                var index = artefactList.indexOf(artefactName);
+                artefactList.splice(index, 1);
+                item.remove();
+            }
+        });
     }
 }
 
