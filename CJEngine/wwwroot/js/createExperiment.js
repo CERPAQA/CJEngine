@@ -105,7 +105,7 @@ window.onload = function () {
         judgeList.push(name);
     }
 
-    var remove = document.getElementsByClassName("remove");
+    var remove = document.getElementsByClassName("removeArtefact");
     for (var i = 0; i < remove.length; i++) {
         remove[i].addEventListener("click", function () {
             var item = $(this).closest("li")
@@ -121,7 +121,7 @@ window.onload = function () {
         });
     }
 
-    var remove = document.getElementsByClassName("remove");
+    var remove = document.getElementsByClassName("removeJudge");
     for (var i = 0; i < remove.length; i++) {
         remove[i].addEventListener("click", function () {
             var item = $(this).closest("li")

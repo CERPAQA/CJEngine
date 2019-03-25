@@ -1,7 +1,7 @@
 ﻿@model CJEngine.ViewModel.EditExperimentViewModel;
 
 @{
-    //ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit";
 }
 
 
@@ -43,7 +43,7 @@
                 <ul id="selectedArtefacts">
                     @foreach (var artefact in Model.Experiment.ExpArtefacts)
                     {
-                        <li>@artefact.Artefact.Name <button class="remove" type="button">Remove</button></li>
+                        <li>@artefact.Artefact.Name <button class="removeArtefact" type="button">Remove</button></li>
                     }
                 </ul>
             </div>
@@ -54,7 +54,7 @@
                 <ul id="selectedJudges">
                     @foreach (var judge in Model.Experiment.ExpJudges)
                     {
-                        <li>@judge.Judge.Name <button class="remove" type="button">Remove</button></li>
+                        <li>@judge.Judge.Name <button class="removeJudge" type="button">Remove</button></li>
                     }
                 </ul>
             </div>
