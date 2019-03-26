@@ -28,7 +28,7 @@
             <div>
                 <label asp-for="ExperimentParameters" class="control-label"></label>
                 <select name="Parameters" asp-for="ExperimentParameters" class="form-control" id="parametersList" onchange="this.options[this.selectedIndex].onclick()">
-                    <option value="Default" class="dropdown-menu">jkl</option>
+                    <option value="Default" class="dropdown-menu">Do not change</option>
                     <option value="New" class="dropdown-item" onclick=" document.getElementById('hiddenButton').click()">Create New Parameters...</option>
                     @foreach (var item in Model.ExperimentParametersList)
                     {

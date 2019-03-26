@@ -172,6 +172,8 @@ namespace CJEngine.Controllers
                 try
                 {
                     var form = Request.Form;
+                    experiment.ExpArtefacts = new List<ExpArtefact>();
+                    experiment.ExpJudges = new List<ExpJudge>();
                     var expID = experiment.Id;
                     string expNameParam = form["Parameters"];
                     var expParam = await _context.ExperimentParameters
