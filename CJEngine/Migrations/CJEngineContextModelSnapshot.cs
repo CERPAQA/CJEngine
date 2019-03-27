@@ -82,6 +82,8 @@ namespace CJEngine.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<bool>("AddComment");
+
                     b.Property<string>("Description");
 
                     b.Property<bool>("ShowTimer");
@@ -179,8 +181,6 @@ namespace CJEngine.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ArtefactId");
-
                     b.Property<int>("ElapsedTime");
 
                     b.Property<int>("ExperimentId");
@@ -189,13 +189,15 @@ namespace CJEngine.Migrations
 
                     b.Property<DateTime>("TimeOfPairing");
 
-                    b.HasKey("Id");
+                    b.Property<int>("WinnerId");
 
-                    b.HasIndex("ArtefactId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ExperimentId");
 
                     b.HasIndex("JudgeId");
+
+                    b.HasIndex("WinnerId");
 
                     b.ToTable("Pairing");
                 });
@@ -288,11 +290,6 @@ namespace CJEngine.Migrations
 
             modelBuilder.Entity("CJEngine.Models.Pairing", b =>
                 {
-                    b.HasOne("CJEngine.Models.Artefact", "Winner")
-                        .WithMany()
-                        .HasForeignKey("ArtefactId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("CJEngine.Models.Experiment")
                         .WithMany("Pairings")
                         .HasForeignKey("ExperimentId")
@@ -301,6 +298,11 @@ namespace CJEngine.Migrations
                     b.HasOne("CJEngine.Models.Judge")
                         .WithMany("Pairings")
                         .HasForeignKey("JudgeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CJEngine.Models.Artefact", "Winner")
+                        .WithMany()
+                        .HasForeignKey("WinnerId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

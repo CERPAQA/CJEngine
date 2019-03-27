@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CJEngine.Migrations
 {
     [DbContext(typeof(CJEngineContext))]
-    [Migration("20190114161423_Initial")]
+    [Migration("20190327110932_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,6 +50,8 @@ namespace CJEngine.Migrations
 
                     b.Property<string>("FileName");
 
+                    b.Property<string>("FilePath");
+
                     b.Property<string>("Name");
 
                     b.HasKey("Id");
@@ -63,14 +65,15 @@ namespace CJEngine.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Description");
+
                     b.Property<int>("ExperimentParametersId");
 
-                    b.Property<int>("Name");
+                    b.Property<string>("Name");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ExperimentParametersId")
-                        .IsUnique();
+                    b.HasIndex("ExperimentParametersId");
 
                     b.ToTable("Experiment");
                 });
@@ -80,6 +83,10 @@ namespace CJEngine.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("AddComment");
+
+                    b.Property<string>("Description");
 
                     b.Property<bool>("ShowTimer");
 
@@ -178,13 +185,13 @@ namespace CJEngine.Migrations
 
                     b.Property<int>("ElapsedTime");
 
-                    b.Property<int?>("ExperimentId");
+                    b.Property<int>("ExperimentId");
 
-                    b.Property<int?>("JudgeId");
+                    b.Property<int>("JudgeId");
 
                     b.Property<DateTime>("TimeOfPairing");
 
-                    b.Property<int?>("WinnerId");
+                    b.Property<int>("WinnerId");
 
                     b.HasKey("Id");
 
@@ -213,19 +220,19 @@ namespace CJEngine.Migrations
             modelBuilder.Entity("CJEngine.Models.Experiment", b =>
                 {
                     b.HasOne("CJEngine.Models.ExperimentParameters", "ExperimentParameters")
-                        .WithOne("Experiment")
-                        .HasForeignKey("CJEngine.Models.Experiment", "ExperimentParametersId")
+                        .WithMany()
+                        .HasForeignKey("ExperimentParametersId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("CJEngine.Models.Join_Entities.ArtefactPairing", b =>
                 {
-                    b.HasOne("CJEngine.Models.Artefact")
+                    b.HasOne("CJEngine.Models.Artefact", "Artefact")
                         .WithMany("ArtefactPairings")
                         .HasForeignKey("ArtefactId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("CJEngine.Models.Pairing")
+                    b.HasOne("CJEngine.Models.Pairing", "Pairing")
                         .WithMany("ArtefactPairings")
                         .HasForeignKey("PairingId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -233,12 +240,12 @@ namespace CJEngine.Migrations
 
             modelBuilder.Entity("CJEngine.Models.Join_Entities.ExpAlgorithm", b =>
                 {
-                    b.HasOne("CJEngine.Models.Algorithm")
+                    b.HasOne("CJEngine.Models.Algorithm", "Algorithm")
                         .WithMany("ExpAlgorithms")
                         .HasForeignKey("AlgorithmId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("CJEngine.Models.Experiment")
+                    b.HasOne("CJEngine.Models.Experiment", "Experiment")
                         .WithMany("ExpAlgorithms")
                         .HasForeignKey("ExperimentId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -246,12 +253,12 @@ namespace CJEngine.Migrations
 
             modelBuilder.Entity("CJEngine.Models.Join_Entities.ExpArtefact", b =>
                 {
-                    b.HasOne("CJEngine.Models.Artefact")
+                    b.HasOne("CJEngine.Models.Artefact", "Artefact")
                         .WithMany("ExpArtefacts")
                         .HasForeignKey("ArtefactId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("CJEngine.Models.Experiment")
+                    b.HasOne("CJEngine.Models.Experiment", "Experiment")
                         .WithMany("ExpArtefacts")
                         .HasForeignKey("ExperimentId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -259,12 +266,12 @@ namespace CJEngine.Migrations
 
             modelBuilder.Entity("CJEngine.Models.Join_Entities.ExpJudge", b =>
                 {
-                    b.HasOne("CJEngine.Models.Experiment")
+                    b.HasOne("CJEngine.Models.Experiment", "Experiment")
                         .WithMany("ExpJudges")
                         .HasForeignKey("ExperimentId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("CJEngine.Models.Judge")
+                    b.HasOne("CJEngine.Models.Judge", "Judge")
                         .WithMany("ExpJudges")
                         .HasForeignKey("JudgeId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -272,12 +279,12 @@ namespace CJEngine.Migrations
 
             modelBuilder.Entity("CJEngine.Models.Join_Entities.ExpResearcher", b =>
                 {
-                    b.HasOne("CJEngine.Models.Experiment")
+                    b.HasOne("CJEngine.Models.Experiment", "Experiment")
                         .WithMany("ExpResearchers")
                         .HasForeignKey("ExperimentId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("CJEngine.Models.Researcher")
+                    b.HasOne("CJEngine.Models.Researcher", "Researcher")
                         .WithMany("ExpResearchers")
                         .HasForeignKey("ResearcherId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -287,15 +294,18 @@ namespace CJEngine.Migrations
                 {
                     b.HasOne("CJEngine.Models.Experiment")
                         .WithMany("Pairings")
-                        .HasForeignKey("ExperimentId");
+                        .HasForeignKey("ExperimentId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("CJEngine.Models.Judge")
                         .WithMany("Pairings")
-                        .HasForeignKey("JudgeId");
+                        .HasForeignKey("JudgeId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("CJEngine.Models.Artefact", "Winner")
                         .WithMany()
-                        .HasForeignKey("WinnerId");
+                        .HasForeignKey("WinnerId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

@@ -63,8 +63,10 @@ namespace CJEngine.Controllers
                .FirstOrDefaultAsync(m => m.Id == id);
             bool showTimer = liveExperiment.ExperimentParameters.ShowTimer;
             bool showTitle = liveExperiment.ExperimentParameters.ShowTitle;
+            bool addComment = liveExperiment.ExperimentParameters.AddComment;
             expParams.Add("showTimer", showTimer);
             expParams.Add("showTitle", showTitle);
+            expParams.Add("addComment", addComment);
 
             return expParams;
         }

@@ -21,7 +21,7 @@ namespace CJEngine.Controllers
 
         [Produces("application/json")]
         [HttpPost("[action]")]
-        public async Task CreateParams([FromBody][Bind("Id,Description,ShowTitle,ShowTimer")] ExperimentParameters experimentParameters)
+        public async Task CreateParams([FromBody][Bind("Id,Description,ShowTitle,ShowTimer, AddComment")] ExperimentParameters experimentParameters)
         {
             if (ModelState.IsValid)
             {

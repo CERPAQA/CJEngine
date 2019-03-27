@@ -71,7 +71,7 @@ namespace CJEngine.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Description,ShowTitle,ShowTimer")] ExperimentParameters experimentParameters)
+        public async Task<IActionResult> Create([Bind("Id,Description,ShowTitle,ShowTimer, AddComment")] ExperimentParameters experimentParameters)
         {
             if (ModelState.IsValid)
             {
@@ -103,7 +103,7 @@ namespace CJEngine.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ShowTitle,ShowTimer")] ExperimentParameters experimentParameters)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ShowTitle,ShowTimer, AddComment")] ExperimentParameters experimentParameters)
         {
             if (id != experimentParameters.Id)
             {

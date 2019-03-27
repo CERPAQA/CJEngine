@@ -32,7 +32,8 @@ namespace CJEngine.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true),
                     FileName = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true)
+                    Description = table.Column<string>(nullable: true),
+                    FilePath = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -45,8 +46,10 @@ namespace CJEngine.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Description = table.Column<string>(nullable: true),
                     ShowTitle = table.Column<bool>(nullable: false),
-                    ShowTimer = table.Column<bool>(nullable: false)
+                    ShowTimer = table.Column<bool>(nullable: false),
+                    AddComment = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -86,7 +89,8 @@ namespace CJEngine.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
                     ExperimentParametersId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -202,11 +206,11 @@ namespace CJEngine.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    WinnerId = table.Column<int>(nullable: true),
+                    JudgeId = table.Column<int>(nullable: false),
+                    ExperimentId = table.Column<int>(nullable: false),
+                    WinnerId = table.Column<int>(nullable: false),
                     TimeOfPairing = table.Column<DateTime>(nullable: false),
-                    ElapsedTime = table.Column<int>(nullable: false),
-                    ExperimentId = table.Column<int>(nullable: true),
-                    JudgeId = table.Column<int>(nullable: true)
+                    ElapsedTime = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -216,19 +220,19 @@ namespace CJEngine.Migrations
                         column: x => x.ExperimentId,
                         principalTable: "Experiment",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Pairing_Judge_JudgeId",
                         column: x => x.JudgeId,
                         principalTable: "Judge",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Pairing_Artefact_WinnerId",
                         column: x => x.WinnerId,
                         principalTable: "Artefact",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -273,8 +277,7 @@ namespace CJEngine.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Experiment_ExperimentParametersId",
                 table: "Experiment",
-                column: "ExperimentParametersId",
-                unique: true);
+                column: "ExperimentParametersId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ExpJudge_JudgeId",
