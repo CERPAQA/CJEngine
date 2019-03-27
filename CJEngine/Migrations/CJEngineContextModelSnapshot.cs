@@ -90,6 +90,8 @@ namespace CJEngine.Migrations
 
                     b.Property<bool>("ShowTitle");
 
+                    b.Property<int>("Timer");
+
                     b.HasKey("Id");
 
                     b.ToTable("ExperimentParameters");
@@ -180,6 +182,8 @@ namespace CJEngine.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Comment");
 
                     b.Property<int>("ElapsedTime");
 

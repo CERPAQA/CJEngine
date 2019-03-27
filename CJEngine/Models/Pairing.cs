@@ -26,5 +26,6 @@ namespace CJEngine.Models
         [DataType(DataType.Date)]
         public DateTime TimeOfPairing { get; set; }
         public int ElapsedTime { get; set; }
+        public string Comment { get; set; }
     }
 }

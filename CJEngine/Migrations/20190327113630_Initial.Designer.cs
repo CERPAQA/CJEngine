@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CJEngine.Migrations
 {
     [DbContext(typeof(CJEngineContext))]
-    [Migration("20190327110932_Initial")]
+    [Migration("20190327113630_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -91,6 +91,8 @@ namespace CJEngine.Migrations
                     b.Property<bool>("ShowTimer");
 
                     b.Property<bool>("ShowTitle");
+
+                    b.Property<int>("Timer");
 
                     b.HasKey("Id");
 
@@ -182,6 +184,8 @@ namespace CJEngine.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Comment");
 
                     b.Property<int>("ElapsedTime");
 

@@ -49,7 +49,8 @@ namespace CJEngine.Migrations
                     Description = table.Column<string>(nullable: true),
                     ShowTitle = table.Column<bool>(nullable: false),
                     ShowTimer = table.Column<bool>(nullable: false),
-                    AddComment = table.Column<bool>(nullable: false)
+                    AddComment = table.Column<bool>(nullable: false),
+                    Timer = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -210,7 +211,8 @@ namespace CJEngine.Migrations
                     ExperimentId = table.Column<int>(nullable: false),
                     WinnerId = table.Column<int>(nullable: false),
                     TimeOfPairing = table.Column<DateTime>(nullable: false),
-                    ElapsedTime = table.Column<int>(nullable: false)
+                    ElapsedTime = table.Column<int>(nullable: false),
+                    Comment = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -220,19 +222,19 @@ namespace CJEngine.Migrations
                         column: x => x.ExperimentId,
                         principalTable: "Experiment",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Pairing_Judge_JudgeId",
                         column: x => x.JudgeId,
                         principalTable: "Judge",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Pairing_Artefact_WinnerId",
                         column: x => x.WinnerId,
                         principalTable: "Artefact",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
