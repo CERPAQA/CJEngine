@@ -12,7 +12,7 @@ namespace CJEngine.Controllers
     public class ExperimentsController : Controller
     {
         private readonly CJEngineContext _context;
-        public static IList<Artefact> expArtefacts = new List<Artefact>();
+        //public static IList<Artefact> expArtefacts = new List<Artefact>();
 
         public ExperimentsController(CJEngineContext context)
         {

@@ -18,7 +18,7 @@ namespace CJEngine.Controllers
         {
             _context = context;
         }
-
+        //This method is used when adding new parameters
         [Produces("application/json")]
         [HttpPost("[action]")]
         public async Task CreateParams([FromBody][Bind("Id,Description,ShowTitle,ShowTimer, AddComment")] ExperimentParameters experimentParameters)

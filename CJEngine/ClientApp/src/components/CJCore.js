@@ -6,12 +6,13 @@ import { JudgedScripts } from './JudgedScripts';
 import { PDFViewer } from './PDFViewer';
 //import { PDFViewer2 } from './PDFViewer2';
 import { ElapsedTimer } from './ElapsedTimer';
+import { CommentBox } from './CommentBox';
 
 export class CJCore extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            fileNames: [], expID: 0, showTitle: false, showTimer: false, index: 0, isHidden: false, counter: 0, score: 0, time: new Date(), judgeID: 0, winList: [], topPick: "" };
+            fileNames: [], expID: 0, showTitle: false, showTimer: false, addComment: false, index: 0, isHidden: false, counter: 0, score: 0, time: new Date(), judgeID: 0, winList: [], topPick: "" };
         this.nextFileButton = this.nextFileButton.bind(this);
         this.prevFileButton = this.prevFileButton.bind(this);
         this.judgePairOneButton = this.judgePairOneButton.bind(this);
@@ -38,7 +39,7 @@ export class CJCore extends React.Component {
         fetch("api/Pairings/GetParams/?id=" + expNum)
             .then(response => response.json())
             .then(params => {
-                this.setState({ showTitle: params["showTitle"], showTimer: params["showTimer"]})
+                this.setState({ showTitle: params["showTitle"], showTimer: params["showTimer"], addComment: params["addComment"]})
             });
     }
 
@@ -189,7 +190,7 @@ export class CJCore extends React.Component {
                     <button id="itemOne" class="btn btn-dark" onClick={this.judgePairOneButton}>Item One</button>
                     <button id="itemTwo" class="btn btn-dark" onClick={this.judgePairTwoButton}>Item Two</button>
                 </div>
-                {<ElapsedTimer isHidden={this.state.showTimer} />}
+                {<ElapsedTimer isHidden={this.state.showTimer} />} {<CommentBox isHidden={this.state.addComment} />}
                 <JudgedScripts fileNames={this.state.fileNames.length} score={this.state.score} top={this.state.topPick} />
             </div>
         );
