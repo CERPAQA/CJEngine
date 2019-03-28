@@ -134,6 +134,7 @@ namespace CJEngine.Controllers
             var winningArtefact = new Artefact();
             DateTime timeJudgement = DateTime.ParseExact((string)data.TimeOfPairing, "dd/MM/yyyy, HH:mm:ss", CultureInfo.InvariantCulture);
             int elapsedTime = (int)data.ElapsedTime;
+            string comment = data.Comment;
             Pairing pairing = new Pairing
             {
                 ExperimentId = (int)id,
@@ -175,6 +176,7 @@ namespace CJEngine.Controllers
             pairing.Winner = winningArtefact;
             pairing.TimeOfPairing = timeJudgement;
             pairing.ElapsedTime = elapsedTime;
+            pairing.Comment = comment;
             if (ModelState.IsValid)
             {
                 _context.Update(pairing);

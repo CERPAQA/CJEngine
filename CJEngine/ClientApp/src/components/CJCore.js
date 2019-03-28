@@ -134,13 +134,14 @@ export class CJCore extends React.Component {
     }
 
     send(pair, winner, timeJ, elapsed) {
+        var comment = document.getElementById("CommentText").value;
         fetch("api/Pairings/GetWinners?id=" + this.state.expID, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ Winner: winner, ArtefactPairings: pair, TimeOfPairing: timeJ, ElapsedTime: elapsed, judgeID: this.state.judgeID })
+            body: JSON.stringify({ Winner: winner, ArtefactPairings: pair, TimeOfPairing: timeJ, ElapsedTime: elapsed, Comment: comment, judgeID: this.state.judgeID })
         }).then(function (response) {
             if (response.status !== 200) {
                 console.log('fetch returned not ok' + response.status);
@@ -151,7 +152,6 @@ export class CJCore extends React.Component {
     render() {
         let viewLeft;
         let viewRight;
-        let timer;
         var endOfPairs = this.state.counter;
 
         if (this.state.fileNames.length > 0) {
