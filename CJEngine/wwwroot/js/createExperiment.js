@@ -136,7 +136,6 @@ window.onload = function () {
             }
         });
     }
-    
 }
 
 //saves the chosen parameters (API method)
@@ -145,6 +144,7 @@ function createParams() {
     var showTitle = document.getElementById("checktitle").checked;
     var showTimer = document.getElementById("checkTime").checked;
     var addComment = document.getElementById("checkAddComment").checked;
+    var timer = document.getElementById("checkTimer").value;
 
     //reconfigure fetch method
     fetch('/api/ExperimentParametersAPI/CreateParams', {
@@ -153,7 +153,7 @@ function createParams() {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ description, showTimer, showTitle, addComment })
+        body: JSON.stringify({ description, showTimer, showTitle, addComment, timer })
     }).then(function (response) {
         if (response.status !== 200) {
             console.log('fetch returned not ok' + response.status);
