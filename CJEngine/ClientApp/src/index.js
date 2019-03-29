@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
+import {  } from './components/CJCore';
 //import { ElapsedTimer } from './components/ElapsedTimer';
 //import { Clock } from './components/Clock';
 
@@ -19,9 +20,10 @@ ReactDOM.render(
 
 /*function Update() {
     ReactDOM.render(
-        <ElapsedTimer />,
+        <Clock />,
         document.getElementById('root')
     );
 }*/
 //setInterval(Update, 1000);
+//setInterval(CJCore.judgePair("item1"), 15000); //tried to use class method
 registerServiceWorker();

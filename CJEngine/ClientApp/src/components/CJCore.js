@@ -12,7 +12,7 @@ export class CJCore extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            fileNames: [], expID: 0, showTitle: false, showTimer: false, addComment: false, index: 0, isHidden: false, counter: 0, score: 0, time: new Date(), judgeID: 0, winList: [], topPick: "" };
+            fileNames: [], expID: 0, showTitle: false, showTimer: false, addComment: false, timer: 0, index: 0, isHidden: false, counter: 0, score: 0, time: new Date(), judgeID: 0, winList: [], topPick: "" };
         this.nextFileButton = this.nextFileButton.bind(this);
         this.prevFileButton = this.prevFileButton.bind(this);
         this.judgePairOneButton = this.judgePairOneButton.bind(this);
@@ -41,6 +41,19 @@ export class CJCore extends React.Component {
             .then(params => {
                 this.setState({ showTitle: params["showTitle"], showTimer: params["showTimer"], addComment: params["addComment"]})
             });
+
+        fetch("api/Pairings/IsTimerSet/?id=" + expNum)
+            .then(response => response.json())
+            .then(timerLength => {
+                this.setState({ timer: timerLength })
+            });
+        /*var timer = 15;
+        if (timer > 0) {
+            var itemLs = ["item1", "item2"];
+            var randomItem = itemLs[Math.floor(Math.random() * itemLs.length)];
+            var timerMS = timer * 1000;
+            setInterval(this.judgePair(randomItem), timerMS)
+        }*/
     }
 
     toggleHidden() {
@@ -121,7 +134,6 @@ export class CJCore extends React.Component {
         var id = this.state.judgeID;
         return id;
     }
- 
 
     getLeadingScript() {
         fetch('api/Pairings/GetLeadingScript')
@@ -134,7 +146,12 @@ export class CJCore extends React.Component {
     }
 
     send(pair, winner, timeJ, elapsed) {
-        var comment = document.getElementById("CommentText").value;
+        var commentEnabled = this.state.addComment;
+        if (commentEnabled === true) {
+            var comment = document.getElementById("CommentText").value;
+        } else {
+            comment = "";
+        }
         fetch("api/Pairings/GetWinners?id=" + this.state.expID, {
             method: 'POST',
             headers: {

@@ -39,6 +39,20 @@ namespace CJEngine.Controllers
         }
 
         [HttpGet("[action]")]
+        public async Task<int> IsTimerSet(int? id)
+        {
+            var liveExperiment = await _context.Experiment
+               .Include(exp => exp.ExperimentParameters)
+               .Include(exp => exp.ExpJudges)
+                   .ThenInclude(judge => judge.Judge)
+               .Include(exp => exp.ExpArtefacts)
+                   .ThenInclude(artefact => artefact.Artefact)
+               .FirstOrDefaultAsync(m => m.Id == id);
+            int timer = liveExperiment.ExperimentParameters.Timer;
+            return timer;
+        }
+
+        [HttpGet("[action]")]
         public List<string> GetFiles(Experiment Experiment)
         {
             foreach(ExpArtefact artefact in Experiment.ExpArtefacts)
@@ -67,7 +81,6 @@ namespace CJEngine.Controllers
             expParams.Add("showTimer", showTimer);
             expParams.Add("showTitle", showTitle);
             expParams.Add("addComment", addComment);
-
             return expParams;
         }
 
