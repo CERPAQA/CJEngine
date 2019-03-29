@@ -38,8 +38,7 @@ namespace CJEngine.Controllers
             return LocalRedirect("/cj/" + id);
         }
 
-        [HttpGet("[action]")]
-        public async Task<int> IsTimerSet(int? id)
+        public async Task<Experiment> getCurrentExp(int id)
         {
             var liveExperiment = await _context.Experiment
                .Include(exp => exp.ExperimentParameters)
@@ -48,6 +47,14 @@ namespace CJEngine.Controllers
                .Include(exp => exp.ExpArtefacts)
                    .ThenInclude(artefact => artefact.Artefact)
                .FirstOrDefaultAsync(m => m.Id == id);
+
+            return liveExperiment;
+        }
+
+        [HttpGet("[action]")]
+        public async Task<int> IsTimerSet(int? id)
+        {
+            var liveExperiment = await getCurrentExp((int)id);
             int timer = liveExperiment.ExperimentParameters.Timer;
             return timer;
         }
@@ -68,13 +75,7 @@ namespace CJEngine.Controllers
         [Route("GetParams")]
         public async Task<Dictionary<string, bool>> GetParams(int? id)
         {
-            var liveExperiment = await _context.Experiment
-               .Include(exp => exp.ExperimentParameters)
-               .Include(exp => exp.ExpJudges)
-                   .ThenInclude(judge => judge.Judge)
-               .Include(exp => exp.ExpArtefacts)
-                   .ThenInclude(artefact => artefact.Artefact)
-               .FirstOrDefaultAsync(m => m.Id == id);
+            var liveExperiment = await getCurrentExp((int)id);
             bool showTimer = liveExperiment.ExperimentParameters.ShowTimer;
             bool showTitle = liveExperiment.ExperimentParameters.ShowTitle;
             bool addComment = liveExperiment.ExperimentParameters.AddComment;
@@ -104,13 +105,7 @@ namespace CJEngine.Controllers
         [Route("CreatePairings")]
         public async Task<List<Tuple<string, string>>> CreatePairings(int? id)
         {
-            var liveExperiment = await _context.Experiment
-               .Include(exp => exp.ExperimentParameters)
-               .Include(exp => exp.ExpJudges)
-                   .ThenInclude(judge => judge.Judge)
-               .Include(exp => exp.ExpArtefacts)
-                   .ThenInclude(artefact => artefact.Artefact)
-               .FirstOrDefaultAsync(m => m.Id == id);
+            var liveExperiment = await getCurrentExp((int)id);
             List<string> original = GetFiles(liveExperiment);
             List<Tuple<int, int>> result = GetPairings(fileNames.Count - 1, 20); 
             List<Tuple<string, string>> finalResult = new List<Tuple<string, string>>();
