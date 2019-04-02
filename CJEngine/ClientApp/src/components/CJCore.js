@@ -23,9 +23,11 @@ export class CJCore extends React.Component {
         this.getNextFiles = this.getNextFiles.bind(this);
         this.getJudgeID = this.getJudgeID.bind(this);
         this.getLeadingScript = this.getLeadingScript.bind(this);
+        this.clickJ = this.clickJ.bind(this);
+        this.Judge = this.Judge.bind(this);
     }
 
-    componentDidMount() {
+    componentWillMount() {
         var stringExpNum = document.URL.split("/")[4];
         var expNum = parseInt(stringExpNum, 10);
         this.setState({ expID: expNum });
@@ -39,21 +41,34 @@ export class CJCore extends React.Component {
         fetch("api/Pairings/GetParams/?id=" + expNum)
             .then(response => response.json())
             .then(params => {
-                this.setState({ showTitle: params["showTitle"], showTimer: params["showTimer"], addComment: params["addComment"]})
+                this.setState({ showTitle: params["showTitle"], showTimer: params["showTimer"], addComment: params["addComment"] })
             });
+    }
 
+    componentDidMount() {
+        var stringExpNum = document.URL.split("/")[4];
+        var expNum = parseInt(stringExpNum, 10);
         fetch("api/Pairings/IsTimerSet/?id=" + expNum)
             .then(response => response.json())
             .then(timerLength => {
-                this.setState({ timer: timerLength })
+                this.Judge(timerLength);
             });
-        /*var timer = 15;
-        if (timer > 0) {
-            var itemLs = ["item1", "item2"];
-            var randomItem = itemLs[Math.floor(Math.random() * itemLs.length)];
-            var timerMS = timer * 1000;
-            setInterval(this.judgePair(randomItem), timerMS)
-        }*/
+    }
+
+    clickJ(item) {
+        //document.getElementById(item).click();
+        document.getElementById("itemOne").click();
+    }
+
+    Judge(timerLength) {
+        if (timerLength > 0) {
+            var interval = timerLength * 1000;
+            var itemLs = ["itemOne", "itemTwo"];
+            var randChoice = itemLs[Math.floor(Math.random() * itemLs.length)];
+            setInterval(this.clickJ, interval);
+        } else {
+            console.log("no timer");
+        }
     }
 
     toggleHidden() {
