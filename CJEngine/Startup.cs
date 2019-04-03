@@ -64,6 +64,7 @@ namespace CJEngine
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
             app.UseCookiePolicy();
+            app.UseAuthentication();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
