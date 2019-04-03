@@ -2,9 +2,8 @@
 export class Clock extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { timer: 0 };
+        this.state = { showTimer: false };
     }
-
     componentDidMount() {
         var stringExpNum = document.URL.split("/")[4];
         var expNum = parseInt(stringExpNum, 10);
@@ -14,17 +13,22 @@ export class Clock extends React.Component {
                 this.setState({ showTimer: params["showTimer"]})
             });
     }
-
     render() {
         return (
-            <h2>Elapsed Time: {updateClock()}</h2>
+            <div id="ElapsedTimer">
+                {<Duration isHidden={this.state.showTimer} />}
+            </div>
             );
     }
 }
 
-function Duration() {
+function Duration(props) {
     return (
-        <h2>Elapsed Time: {updateClock()}</h2>
+        <div id="timer" >
+        {
+           props.isHidden && <h2>Elapsed Time: {updateClock()}</h2>
+        }
+        </div>
     );
 }
 

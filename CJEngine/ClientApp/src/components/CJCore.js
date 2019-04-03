@@ -8,11 +8,12 @@ import { PDFViewer } from './PDFViewer';
 import { ElapsedTimer } from './ElapsedTimer';
 import { CommentBox } from './CommentBox';
 
+var timeout;
 export class CJCore extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            fileNames: [], expID: 0, showTitle: false, showTimer: false, addComment: false, timer: 0, index: 0, isHidden: false, counter: 0, score: 0, time: new Date(), judgeID: 0, winList: [], topPick: "" };
+            fileNames: [], expID: 0, showTitle: false, addComment: false, timer: 0, index: 0, isHidden: false, counter: 0, score: 0, time: new Date(), judgeID: 0, winList: [], topPick: "" };
         this.nextFileButton = this.nextFileButton.bind(this);
         this.prevFileButton = this.prevFileButton.bind(this);
         this.judgePairOneButton = this.judgePairOneButton.bind(this);
@@ -41,7 +42,7 @@ export class CJCore extends React.Component {
         fetch("api/Pairings/GetParams/?id=" + expNum)
             .then(response => response.json())
             .then(params => {
-                this.setState({ showTitle: params["showTitle"], showTimer: params["showTimer"], addComment: params["addComment"] })
+                this.setState({ showTitle: params["showTitle"], addComment: params["addComment"] })
             });
     }
 
@@ -59,13 +60,17 @@ export class CJCore extends React.Component {
         //document.getElementById(item).click();
         document.getElementById("itemOne").click();
     }
-
+    /*TODO: fix the issue with timed judgement,
+     * if a judgment is made it should reset the 
+     * countdown before automating a new judgement
+     */
     Judge(timerLength) {
         if (timerLength > 0) {
             var interval = timerLength * 1000;
             var itemLs = ["itemOne", "itemTwo"];
+            //TODO: fix random choice of items issue
             var randChoice = itemLs[Math.floor(Math.random() * itemLs.length)];
-            setInterval(this.clickJ, interval);
+            timeout = setTimeout(this.clickJ, interval);
         } else {
             console.log("no timer");
         }
@@ -114,6 +119,7 @@ export class CJCore extends React.Component {
         var elapsed = this.elapsedTime();
         this.getNextFiles();
         this.send(this.state.fileNames[this.state.index], item, timeJudged, elapsed);
+        this.Judge();
     }
 
     setTime() {
@@ -222,7 +228,6 @@ export class CJCore extends React.Component {
                     <button id="itemOne" class="btn btn-dark" onClick={this.judgePairOneButton}>Item One</button>
                     <button id="itemTwo" class="btn btn-dark" onClick={this.judgePairTwoButton}>Item Two</button>
                 </div>
-                {<ElapsedTimer isHidden={this.state.showTimer} />} {<CommentBox isHidden={this.state.addComment} />}
                 <JudgedScripts fileNames={this.state.fileNames.length} score={this.state.score} top={this.state.topPick} />
             </div>
         );
