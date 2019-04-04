@@ -8,6 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using CJEngine.Models;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace CJEngine
 {
@@ -47,7 +49,7 @@ namespace CJEngine
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime applicationLifetime)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime applicationLifetime, IServiceProvider services)
         {
             if (env.IsDevelopment())
             {
@@ -81,6 +83,27 @@ namespace CJEngine
             });
             REngineClass.Initialise();
             applicationLifetime.ApplicationStopping.Register(OnShutDown);
+            //CreateUserRoles(services).Wait();
+        }
+
+        private async Task CreateUserRoles(IServiceProvider serviceProvider)
+        {
+            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var UserManager = serviceProvider.GetRequiredService<UserManager<Researcher>>();
+
+            IdentityResult roleResult;
+            //Adding Admin Role
+            var roleCheck = await RoleManager.RoleExistsAsync("Researcher");
+            if (!roleCheck)
+            {
+                //create the roles and seed them to the database
+                roleResult = await RoleManager.CreateAsync(new IdentityRole("Researcher"));
+            }
+            //Assign Admin role to the main User here we have given our newly registered 
+            //login id for Admin management
+            Researcher user = await UserManager.FindByEmailAsync("syedshanumcain@gmail.com");
+            var User = new Researcher();
+            await UserManager.AddToRoleAsync(user, "Researcher");
         }
 
         //not yet sure if this method is being called.
