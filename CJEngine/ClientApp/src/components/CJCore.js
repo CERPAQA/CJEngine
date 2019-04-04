@@ -47,7 +47,7 @@ export class CJCore extends React.Component {
     }
 
     componentDidMount() {
-        var stringExpNum = document.URL.split("/")[4];
+        var stringExpNum = document.URL.split("/")[document.URL.split("/").length-1];
         var expNum = parseInt(stringExpNum, 10);
         fetch("api/Pairings/IsTimerSet/?id=" + expNum)
             .then(response => response.json())
