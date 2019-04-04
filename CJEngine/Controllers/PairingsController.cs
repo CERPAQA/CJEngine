@@ -25,7 +25,7 @@ namespace CJEngine.Controllers
 
         private readonly CJEngineContext _context;
         List<string> fileNames = new List<string>();
-        Dictionary<string, bool> expParams = new Dictionary<string, bool>();
+        Dictionary<string, dynamic> expParams = new Dictionary<string, dynamic>();
 
         public PairingsController(CJEngineContext context)
         {
@@ -73,12 +73,14 @@ namespace CJEngine.Controllers
         [Produces("application/json")]
         [HttpGet]
         [Route("GetParams")]
-        public async Task<Dictionary<string, bool>> GetParams(int? id)
+        public async Task<Dictionary<string, dynamic>> GetParams(int? id)
         {
             var liveExperiment = await getCurrentExp((int)id);
+            string expTitle = liveExperiment.Name;
             bool showTimer = liveExperiment.ExperimentParameters.ShowTimer;
             bool showTitle = liveExperiment.ExperimentParameters.ShowTitle;
             bool addComment = liveExperiment.ExperimentParameters.AddComment;
+            expParams.Add("expTitle", expTitle);
             expParams.Add("showTimer", showTimer);
             expParams.Add("showTitle", showTitle);
             expParams.Add("addComment", addComment);

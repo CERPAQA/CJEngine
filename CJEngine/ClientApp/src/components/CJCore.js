@@ -8,7 +8,6 @@ import { PDFViewer } from './PDFViewer';
 import { ElapsedTimer } from './ElapsedTimer';
 import { CommentBox } from './CommentBox';
 
-var timeout;
 export class CJCore extends React.Component {
     constructor(props) {
         super(props);
@@ -26,6 +25,7 @@ export class CJCore extends React.Component {
         this.getLeadingScript = this.getLeadingScript.bind(this);
         this.clickJ = this.clickJ.bind(this);
         this.Judge = this.Judge.bind(this);
+        this.timeOut = setTimeout(null, 1000000000000);
     }
 
     componentWillMount() {
@@ -53,6 +53,7 @@ export class CJCore extends React.Component {
             .then(response => response.json())
             .then(timerLength => {
                 this.Judge(timerLength);
+                this.setState({ timer: timerLength });
             });
     }
 
@@ -60,17 +61,15 @@ export class CJCore extends React.Component {
         //document.getElementById(item).click();
         document.getElementById("itemOne").click();
     }
-    /*TODO: fix the issue with timed judgement,
-     * if a judgment is made it should reset the 
-     * countdown before automating a new judgement
-     */
+
     Judge(timerLength) {
         if (timerLength > 0) {
+            clearTimeout(this.timeOut);
             var interval = timerLength * 1000;
             var itemLs = ["itemOne", "itemTwo"];
             //TODO: fix random choice of items issue
             var randChoice = itemLs[Math.floor(Math.random() * itemLs.length)];
-            timeout = setTimeout(this.clickJ, interval);
+            this.timeOut = setTimeout(this.clickJ, interval);
         } else {
             console.log("no timer");
         }
@@ -119,7 +118,7 @@ export class CJCore extends React.Component {
         var elapsed = this.elapsedTime();
         this.getNextFiles();
         this.send(this.state.fileNames[this.state.index], item, timeJudged, elapsed);
-        this.Judge();
+        this.Judge(this.state.timer);
     }
 
     setTime() {
