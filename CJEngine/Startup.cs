@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using CJEngine.Data;
 
+
 namespace CJEngine
 {
     public class Startup
@@ -35,9 +36,11 @@ namespace CJEngine
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             // In production, the React files will be served from this directory
-            services.AddIdentity<Researcher, IdentityRole>()
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<CJEngineLoginContext>()
                 .AddDefaultTokenProviders();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddSpaStaticFiles(configuration =>
             {
@@ -47,11 +50,24 @@ namespace CJEngine
                 options.UseSqlServer(Configuration.GetConnectionString("CJEngineContext")));
 
             //User must confirm email first before being able to log on
-            services.AddDefaultIdentity<IdentityUser>(config =>
+            /*services.AddDefaultIdentity<IdentityUser>(config =>
             {
                 config.SignIn.RequireConfirmedEmail = true;
-            });
+            });*/
             return services.BuildServiceProvider();
+        }
+
+
+        private async Task CreateUserRoles(IServiceProvider serviceProvider)
+        {
+            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            IdentityResult roleResult;
+            var roleCheck = await RoleManager.RoleExistsAsync("Researcher");
+            if (!roleCheck)
+            {
+                roleResult = await RoleManager.CreateAsync(new IdentityRole("Researcher"));
+                //roleResult = await RoleManager.CreateAsync(new IdentityRole("Judge"));
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -90,18 +106,6 @@ namespace CJEngine
             REngineClass.Initialise();
             applicationLifetime.ApplicationStopping.Register(OnShutDown);
             CreateUserRoles(services).Wait();
-        }
-
-        private async Task CreateUserRoles(IServiceProvider serviceProvider)
-        {
-            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            IdentityResult roleResult;
-            var roleCheck = await RoleManager.RoleExistsAsync("Researcher");
-            if (!roleCheck)
-            {
-                roleResult = await RoleManager.CreateAsync(new IdentityRole("Researcher"));
-                //roleResult = await RoleManager.CreateAsync(new IdentityRole("Judge"));
-            }
         }
 
         //not yet sure if this method is being called.
