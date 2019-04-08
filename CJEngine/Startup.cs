@@ -50,6 +50,7 @@ namespace CJEngine
                 options.UseSqlServer(Configuration.GetConnectionString("CJEngineContext")));
 
             //User must confirm email first before being able to log on
+            //TODO: same issue found in ihostingstartup
             /*services.AddDefaultIdentity<IdentityUser>(config =>
             {
                 config.SignIn.RequireConfirmedEmail = true;
@@ -61,12 +62,17 @@ namespace CJEngine
         private async Task CreateUserRoles(IServiceProvider serviceProvider)
         {
             var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var UserManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            string[] roleNames = { "Researcher", "Judge" };
             IdentityResult roleResult;
-            var roleCheck = await RoleManager.RoleExistsAsync("Researcher");
-            if (!roleCheck)
+            
+            foreach(var roleName in roleNames)
             {
-                roleResult = await RoleManager.CreateAsync(new IdentityRole("Researcher"));
-                //roleResult = await RoleManager.CreateAsync(new IdentityRole("Judge"));
+                var roleCheck = await RoleManager.RoleExistsAsync(roleName);
+                if (!roleCheck)
+                {
+                    roleResult = await RoleManager.CreateAsync(new IdentityRole(roleName));
+                }
             }
         }
 

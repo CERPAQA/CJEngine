@@ -18,7 +18,7 @@ namespace CJEngine.Areas.Identity
                 services.AddDbContext<CJEngineLoginContext>(options =>
                     options.UseSqlServer(
                         context.Configuration.GetConnectionString("CJEngineContextConnection")));
-
+                //TODO: when this line and a similar in startup is applied application crashes, not sure why
                 /*services.AddDefaultIdentity<IdentityUser>()
                     .AddEntityFrameworkStores<CJEngineLoginContext>();*/
             });
