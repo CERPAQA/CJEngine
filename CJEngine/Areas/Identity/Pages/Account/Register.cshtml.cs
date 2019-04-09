@@ -68,8 +68,8 @@ namespace CJEngine.Areas.Identity.Pages.Account
             {
                 var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
-                var resultTwo = await _userManager.AddToRoleAsync(user, "Researcher");
-                if (result.Succeeded && resultTwo.Succeeded)
+                //var resultTwo = await _userManager.AddToRoleAsync(user, "Researcher");
+                if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
 
