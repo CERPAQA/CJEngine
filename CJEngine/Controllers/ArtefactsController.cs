@@ -9,9 +9,11 @@ using CJEngine.Models;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CJEngine.Controllers
 {
+    [Authorize]
     public class ArtefactsController : Controller
     {
         private readonly CJEngineContext _context;

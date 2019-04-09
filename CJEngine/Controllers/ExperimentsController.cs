@@ -6,9 +6,11 @@ using Microsoft.EntityFrameworkCore;
 using CJEngine.Models;
 using CJEngine.Models.Join_Entities;
 using CJEngine.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CJEngine.Controllers
 {
+    [Authorize]
     public class ExperimentsController : Controller
     {
         private readonly CJEngineContext _context;
@@ -20,6 +22,7 @@ namespace CJEngine.Controllers
         }
 
         // GET: Experiments
+
         public async Task<IActionResult> Index()
         {
 
