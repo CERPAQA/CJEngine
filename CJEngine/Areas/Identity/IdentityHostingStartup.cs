@@ -19,8 +19,8 @@ namespace CJEngine.Areas.Identity
                     options.UseSqlServer(
                         context.Configuration.GetConnectionString("CJEngineContextConnection")));
 
-                services.AddDefaultIdentity<IdentityUser>()
-                    .AddEntityFrameworkStores<CJEngineLoginContext>();
+                /*services.AddDefaultIdentity<IdentityUser>()
+                    .AddEntityFrameworkStores<CJEngineLoginContext>();*/
             });
         }
     }
