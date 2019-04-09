@@ -11,6 +11,8 @@ using CJEngine.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using CJEngine.Data;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using WebPWrecover.Services;
 
 namespace CJEngine
 {
@@ -37,21 +39,24 @@ namespace CJEngine
             // In production, the React files will be served from this directory
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            /*services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<IdentityUser, IdentityRole>()
               .AddEntityFrameworkStores<CJEngineLoginContext>()
-              .AddDefaultTokenProviders();*/
+              .AddDefaultTokenProviders();
+
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.Configure<AuthMessageSenderOptions>(Configuration);
 
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/build";
             });
 
-            /*services.AddDbContext<CJEngineContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("CJEngineContext")));*/
+            services.AddDbContext<CJEngineContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("CJEngineContext")));
             return services.BuildServiceProvider();
         }
 
-        /*private async Task CreateUserRoles(IServiceProvider serviceProvider)
+        private async Task CreateUserRoles(IServiceProvider serviceProvider)
         {
             var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var UserManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
@@ -66,7 +71,7 @@ namespace CJEngine
                     roleResult = await RoleManager.CreateAsync(new IdentityRole(roleName));
                 }
             }
-        }*/
+        }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime applicationLifetime, IServiceProvider services)
@@ -102,7 +107,7 @@ namespace CJEngine
                 }
             });
             REngineClass.Initialise();
-            //CreateUserRoles(services).Wait();
+            CreateUserRoles(services).Wait();
             applicationLifetime.ApplicationStopping.Register(OnShutDown);
         }
 

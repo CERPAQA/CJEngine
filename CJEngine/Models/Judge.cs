@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Identity;
 
 namespace CJEngine.Models
 {
-    public class Judge : IdentityUser<int>
+    //TODO: this is causing issues in the aspnetusers table likewise with researchers
+    //public class Judge : IdentityUser<int>
+      public class Judge
     {
-        public override int Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
 
