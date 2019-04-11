@@ -72,12 +72,14 @@ namespace CJEngine.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
-            if (ModelState.IsValid)
+            var location = new Uri($"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}");
+            var url = location.AbsoluteUri.ToLower().Contains("judge");
+
+            if (ModelState.IsValid && url == true)
             {
                 var user = new IdentityUser {  UserName = Input.Email, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
-                var resultTwo = await _userManager.AddToRoleAsync(user, "Researcher");
-                //TODO: create a new researcher in researcher table
+                var resultTwo = await _userManager.AddToRoleAsync(user, "Judge");
                 if (result.Succeeded && resultTwo.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
@@ -89,13 +91,13 @@ namespace CJEngine.Areas.Identity.Pages.Account
                         values: new { userId = user.Id, code = code },
                         protocol: Request.Scheme);
 
-                    Researcher researcher = new Researcher();
-                    researcher.Name = Input.Name;
-                    researcher.Email = user.Email;
+                    Judge judge = new Judge();
+                    judge.Name = Input.Name;
+                    judge.Email = user.Email;
 
                     if (ModelState.IsValid)
                     {
-                        _CJEngineContext.Add(researcher);
+                        _CJEngineContext.Add(judge);
                         await _CJEngineContext.SaveChangesAsync();
                     }
 

@@ -22,7 +22,7 @@ namespace CJEngine.Controllers
         }
 
         // GET: Experiments
-
+        [Authorize(Roles = ("Researcher"))]
         public async Task<IActionResult> Index()
         {
 
@@ -30,14 +30,16 @@ namespace CJEngine.Controllers
         }
 
         //This method is what renders when the cj tab is clicked
+        [Authorize(Roles =("Judge, Researcher"))]
         public async Task<IActionResult> CJIndex()
         {
             return View(await _context.Experiment.ToListAsync());
         }
 
-       
+
 
         // GET: Experiments/Details/5
+        [Authorize(Roles = ("Researcher"))]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -62,6 +64,7 @@ namespace CJEngine.Controllers
         }
 
         // GET: Experiments/Create
+        [Authorize(Roles = ("Researcher"))]
         public IActionResult Create()
         {
             CreateExperimentViewModel CEVM = new CreateExperimentViewModel();
@@ -76,6 +79,7 @@ namespace CJEngine.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = ("Researcher"))]
         public async Task<IActionResult> Create([Bind("Id,Name,Description")] Experiment experiment)
         {
             var form = Request.Form;
@@ -129,6 +133,7 @@ namespace CJEngine.Controllers
         }
 
         // GET: Experiments/Edit/5
+        [Authorize(Roles = ("Researcher"))]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -159,6 +164,7 @@ namespace CJEngine.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = ("Researcher"))]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description")] Experiment experiment)
         {
             if (id != experiment.Id)
@@ -230,6 +236,7 @@ namespace CJEngine.Controllers
         }
 
         // GET: Experiments/Delete/5
+        [Authorize(Roles = ("Researcher"))]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -250,6 +257,7 @@ namespace CJEngine.Controllers
         // POST: Experiments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = ("Researcher"))]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var experiment = await _context.Experiment.FindAsync(id);

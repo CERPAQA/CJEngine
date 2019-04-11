@@ -11,9 +11,11 @@ using RDotNet;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CJEngine.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class PairingsController : Controller
     {

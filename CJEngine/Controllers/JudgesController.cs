@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace CJEngine.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = ("Researcher"))]
     public class JudgesController : Controller
     {
         private readonly CJEngineContext _context;

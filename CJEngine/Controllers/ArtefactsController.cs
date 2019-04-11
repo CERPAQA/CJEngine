@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace CJEngine.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = ("Researcher"))]
     public class ArtefactsController : Controller
     {
         private readonly CJEngineContext _context;
