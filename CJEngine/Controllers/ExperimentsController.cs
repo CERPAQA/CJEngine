@@ -42,7 +42,8 @@ namespace CJEngine.Controllers
             //TODO: definitely needs refactoring and possibly some splitting up
             var user = await GetCurrentUserAsync();
 
-            //can we use a generic user which can search both researcher and judge tables for a match?
+            //TODO: Test this first
+            var judge = _context.Judge.Single(j => j.LoginId == user.Id);
             var judge = _context.Judge.Single(j => j.Email == user.Email);
             var experimentsJudge = _context.ExpJudge
                 .Where(e => e.JudgeId == judge.Id)
@@ -116,7 +117,7 @@ namespace CJEngine.Controllers
             int expParamID = expParam.Id;
             experiment.ExperimentParametersId = expParamID;
             experiment.ExperimentParameters = expParam;
-            //TODO: this method needs to also take the researches ID now and store it with the experiment.
+
             var artefacts = form["expArtefacts"];
             foreach (string x in artefacts)
             {
