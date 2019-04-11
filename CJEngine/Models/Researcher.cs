@@ -7,11 +7,11 @@ using Microsoft.AspNetCore.Identity;
 
 namespace CJEngine.Models
 {
-    //public class Researcher : IdentityUser<int>
-    public class Researcher
+    public class Researcher : IdentityUser<int>
+    //public class Researcher
     {
-        public int Id { get; set; }
-        public int Name { get; set; }
+        //public int Id { get; set; }
+        public string Name { get; set; }
 
         public IList<ExpResearcher> ExpResearchers { get; set; }
     }

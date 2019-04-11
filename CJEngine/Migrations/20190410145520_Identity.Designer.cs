@@ -4,14 +4,16 @@ using CJEngine.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CJEngine.Migrations
 {
     [DbContext(typeof(CJEngineContext))]
-    partial class CJEngineContextModelSnapshot : ModelSnapshot
+    [Migration("20190410145520_Identity")]
+    partial class Identity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -250,7 +252,7 @@ namespace CJEngine.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
 
-                    b.Property<string>("Name");
+                    b.Property<int>("Name");
 
                     b.Property<string>("NormalizedEmail");
 

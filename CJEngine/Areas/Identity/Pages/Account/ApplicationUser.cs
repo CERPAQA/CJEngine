@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace CJEngine.Areas.Identity.Pages.Account
 {
-    public class ApplicationIdentityUserStore
+    public class ApplicationUser : IdentityUser
     {
     }
 }

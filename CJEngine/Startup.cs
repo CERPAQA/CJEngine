@@ -41,6 +41,7 @@ namespace CJEngine
 
             services.AddIdentity<IdentityUser, IdentityRole>()
               .AddEntityFrameworkStores<CJEngineLoginContext>()
+              .AddDefaultUI()
               .AddDefaultTokenProviders();
 
             services.AddTransient<IEmailSender, EmailSender>();
