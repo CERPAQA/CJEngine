@@ -145,6 +145,7 @@ namespace CJEngine.Controllers
             DateTime timeJudgement = DateTime.ParseExact((string)data.TimeOfPairing, "dd/MM/yyyy, HH:mm:ss", CultureInfo.InvariantCulture);
             int elapsedTime = (int)data.ElapsedTime;
             string comment = data.Comment;
+            //TODO: this needs to get the judgeID now that judges are integrated into the system
             Pairing pairing = new Pairing
             {
                 ExperimentId = (int)id,

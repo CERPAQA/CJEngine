@@ -7,6 +7,7 @@ using CJEngine.Models;
 using CJEngine.Models.Join_Entities;
 using CJEngine.ViewModel;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace CJEngine.Controllers
 {
@@ -14,26 +15,48 @@ namespace CJEngine.Controllers
     public class ExperimentsController : Controller
     {
         private readonly CJEngineContext _context;
-        //public static IList<Artefact> expArtefacts = new List<Artefact>();
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public ExperimentsController(CJEngineContext context)
+        public ExperimentsController(CJEngineContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
+
+        private Task<IdentityUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         // GET: Experiments
         [Authorize(Roles = ("Researcher"))]
         public async Task<IActionResult> Index()
         {
-
             return View(await _context.Experiment.ToListAsync());
         }
 
         //This method is what renders when the cj tab is clicked
+        /*TODO: this method needs to know what role the user is,
+         * then the appropriate experiments for that user should be displayed.
+         */
         [Authorize(Roles =("Judge, Researcher"))]
         public async Task<IActionResult> CJIndex()
         {
-            return View(await _context.Experiment.ToListAsync());
+            //TODO: definitely needs refactoring and possibly some splitting up
+            var user = await GetCurrentUserAsync();
+
+            //can we use a generic user which can search both researcher and judge tables for a match?
+            var judge = _context.Judge.Single(j => j.Email == user.Email);
+            var experimentsJudge = _context.ExpJudge
+                .Where(e => e.JudgeId == judge.Id)
+                .ToList();
+
+            foreach(ExpJudge exp in experimentsJudge)
+            {
+                var experiments = _context.Experiment
+                .Where(e => e.Id == exp.ExperimentId)
+                .ToList();
+                return View(experiments);
+            }
+            ErrorViewModel errorView = new ErrorViewModel();
+            return View(errorView.ToString());
         }
 
 
@@ -93,7 +116,7 @@ namespace CJEngine.Controllers
             int expParamID = expParam.Id;
             experiment.ExperimentParametersId = expParamID;
             experiment.ExperimentParameters = expParam;
-
+            //TODO: this method needs to also take the researches ID now and store it with the experiment.
             var artefacts = form["expArtefacts"];
             foreach (string x in artefacts)
             {
