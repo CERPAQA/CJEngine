@@ -40,11 +40,11 @@ namespace CJEngine.Controllers
         public async Task<IActionResult> CJIndex()
         {
             //TODO: definitely needs refactoring and possibly some splitting up
-            var user = await GetCurrentUserAsync();
+            var user = await GetCurrentUserAsync(); 
 
             //TODO: Test this first
             var judge = _context.Judge.Single(j => j.LoginId == user.Id);
-            var judge = _context.Judge.Single(j => j.Email == user.Email);
+            //var judge = _context.Judge.Single(j => j.Email == user.Email);
             var experimentsJudge = _context.ExpJudge
                 .Where(e => e.JudgeId == judge.Id)
                 .ToList();

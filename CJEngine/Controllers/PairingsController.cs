@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using CJEngine.Models;
 using CJEngine.Models.Join_Entities;
@@ -181,6 +180,7 @@ namespace CJEngine.Controllers
             {
                 winningArtefact = artefactTwo;
             }
+
             pairOfScripts.Add(one);
             pairOfScripts.Add(two);
             pairing.ArtefactPairings = pairOfScripts;
@@ -188,6 +188,7 @@ namespace CJEngine.Controllers
             pairing.TimeOfPairing = timeJudgement;
             pairing.ElapsedTime = elapsedTime;
             pairing.Comment = comment;
+
             if (ModelState.IsValid)
             {
                 _context.Update(pairing);
