@@ -7,14 +7,10 @@ using Microsoft.AspNetCore.Identity;
 
 namespace CJEngine.Models
 {
-    //TODO: this is causing issues in the aspnetusers table likewise with researchers
       public class Judge : IdentityUser<int>
-      //public class Judge
     {
         public string LoginId { get; set; }
         public string Name { get; set; }
-        //public string Email { get; set; }
-
         public IList<Pairing> Pairings { get; set; }
         public IList<ExpJudge> ExpJudges { get; set; }
     }

@@ -11,6 +11,7 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace CJEngine.Controllers
 {
@@ -25,12 +26,14 @@ namespace CJEngine.Controllers
         private static int maxJudges = 5;
 
         private readonly CJEngineContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
         List<string> fileNames = new List<string>();
         Dictionary<string, bool> expParams = new Dictionary<string, bool>();
 
-        public PairingsController(CJEngineContext context)
+        public PairingsController(CJEngineContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         [HttpGet("[action]")]
@@ -134,6 +137,8 @@ namespace CJEngine.Controllers
             return id;
         }
 
+        private Task<IdentityUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
+
         [Produces("application/json")]
         [HttpPost]
         [Route("GetWinners")]
@@ -144,12 +149,12 @@ namespace CJEngine.Controllers
             DateTime timeJudgement = DateTime.ParseExact((string)data.TimeOfPairing, "dd/MM/yyyy, HH:mm:ss", CultureInfo.InvariantCulture);
             int elapsedTime = (int)data.ElapsedTime;
             string comment = data.Comment;
-            //TODO: this needs to get the judgeID now that judges are integrated into the system
+            var user = GetCurrentUserAsync().Result.Id;
             Pairing pairing = new Pairing
             {
                 ExperimentId = (int)id,
                 Experiment = await _context.Experiment.FirstOrDefaultAsync(m => m.Id == id),
-                JudgeId = 1
+                JudgeLoginID = user
             };
 
             List<ArtefactPairing> pairOfScripts = new List<ArtefactPairing>();

@@ -33,22 +33,14 @@ namespace CJEngine.Controllers
         }
 
         //This method is what renders when the cj tab is clicked
-        /*TODO: this method needs to know what role the user is,
-         * then the appropriate experiments for that user should be displayed.
-         */
         [Authorize(Roles =("Judge, Researcher"))]
         public async Task<IActionResult> CJIndex()
         {
-            //TODO: definitely needs refactoring and possibly some splitting up
             var user = await GetCurrentUserAsync(); 
-
-            //TODO: Test this first
             var judge = _context.Judge.Single(j => j.LoginId == user.Id);
-            //var judge = _context.Judge.Single(j => j.Email == user.Email);
             var experimentsJudge = _context.ExpJudge
                 .Where(e => e.JudgeId == judge.Id)
                 .ToList();
-
             foreach(ExpJudge exp in experimentsJudge)
             {
                 var experiments = _context.Experiment
@@ -59,8 +51,6 @@ namespace CJEngine.Controllers
             ErrorViewModel errorView = new ErrorViewModel();
             return View(errorView.ToString());
         }
-
-
 
         // GET: Experiments/Details/5
         [Authorize(Roles = ("Researcher"))]
@@ -117,7 +107,7 @@ namespace CJEngine.Controllers
             int expParamID = expParam.Id;
             experiment.ExperimentParametersId = expParamID;
             experiment.ExperimentParameters = expParam;
-
+            //TODO: addresearcher id to newly created exps
             var artefacts = form["expArtefacts"];
             foreach (string x in artefacts)
             {

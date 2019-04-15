@@ -90,7 +90,7 @@ namespace CJEngine.Areas.Identity.Pages.Account
                         pageHandler: null,
                         values: new { userId = user.Id, code = code },
                         protocol: Request.Scheme);
-                    //TODO: test the right things are being assigned here
+
                     Judge judge = new Judge();
                     judge.LoginId = user.Id;
                     judge.Name = Input.Name;

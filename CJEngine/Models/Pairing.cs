@@ -9,7 +9,7 @@ namespace CJEngine.Models
     {
         public int Id { get; set; }
 
-        public int JudgeId { get; set; } 
+        public string JudgeLoginID { get; set; } 
         public Judge Judge;
 
         public int ExperimentId { get; set; }
