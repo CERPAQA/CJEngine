@@ -6,9 +6,9 @@ namespace CJEngine.Models
 {
     public class Researcher : IdentityUser<int>
     {
-        //public int Id { get; set; }
+        public override int Id { get; set; }
+        public string LoginId { get; set; }
         public string Name { get; set; }
-
         public IList<ExpResearcher> ExpResearchers { get; set; }
     }
 }

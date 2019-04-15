@@ -19,8 +19,8 @@ namespace CJEngine.Models
         {
             modelBuilder.Entity<ExpAlgorithm>().HasKey(ea => new { ea.ExperimentId, ea.AlgorithmId });
             modelBuilder.Entity<ExpArtefact>().HasKey(ea => new { ea.ExperimentId, ea.ArtefactId });
-            modelBuilder.Entity<ExpJudge>().HasKey(ej => new { ej.ExperimentId, ej.JudgeId });
-            modelBuilder.Entity<ExpResearcher>().HasKey(er => new { er.ExperimentId, er.ResearcherId });
+            modelBuilder.Entity<ExpJudge>().HasKey(ej => new { ej.ExperimentId, ej.JudgeLoginId });
+            modelBuilder.Entity<ExpResearcher>().HasKey(er => new { er.ExperimentId, er.ResearcherLoginId });
             modelBuilder.Entity<ArtefactPairing>().HasKey(ap => new { ap.ArtefactId, ap.PairingId});
         }
 

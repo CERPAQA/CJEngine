@@ -9,6 +9,7 @@ namespace CJEngine.Models
 {
       public class Judge : IdentityUser<int>
     {
+        public override int Id { get; set; }
         public string LoginId { get; set; }
         public string Name { get; set; }
         public IList<Pairing> Pairings { get; set; }

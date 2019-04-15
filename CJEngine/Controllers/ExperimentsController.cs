@@ -39,7 +39,7 @@ namespace CJEngine.Controllers
             var user = await GetCurrentUserAsync(); 
             var judge = _context.Judge.Single(j => j.LoginId == user.Id);
             var experimentsJudge = _context.ExpJudge
-                .Where(e => e.JudgeId == judge.Id)
+                .Where(e => e.JudgeLoginId == judge.LoginId)
                 .ToList();
             foreach(ExpJudge exp in experimentsJudge)
             {
@@ -99,6 +99,7 @@ namespace CJEngine.Controllers
             var form = Request.Form;
             experiment.ExpArtefacts = new List<ExpArtefact>();
             experiment.ExpJudges = new List<ExpJudge>();
+            experiment.ExpResearchers = new List<ExpResearcher>();
 
             var expID = experiment.Id;
             string expNameParam = form["Parameters"];
@@ -107,7 +108,6 @@ namespace CJEngine.Controllers
             int expParamID = expParam.Id;
             experiment.ExperimentParametersId = expParamID;
             experiment.ExperimentParameters = expParam;
-            //TODO: addresearcher id to newly created exps
             var artefacts = form["expArtefacts"];
             foreach (string x in artefacts)
             {
@@ -132,11 +132,21 @@ namespace CJEngine.Controllers
                 var judgeID = judge.Id;
                 ExpJudge exp = new ExpJudge();
                 exp.ExperimentId = expID;
-                exp.JudgeId = judgeID;
+                exp.JudgeLoginId = judge.LoginId;
                 exp.Experiment = experiment;
                 exp.Judge = judge;
                 experiment.ExpJudges.Add(exp);
             }
+
+            var researcher = GetCurrentUserAsync().Result.Id;
+            ExpResearcher expResearcher = new ExpResearcher();
+            expResearcher.ResearcherLoginId = researcher;
+            expResearcher.Researcher = await _context.Researcher.
+                FirstOrDefaultAsync(r => r.LoginId == researcher);
+            expResearcher.ExperimentId = expID;
+            expResearcher.Experiment = experiment;
+            experiment.ExpResearchers.Add(expResearcher);
+
             if (ModelState.IsValid)
             {
                 _context.Add(experiment);
@@ -225,7 +235,7 @@ namespace CJEngine.Controllers
                         var judgeID = judge.Id;
                         ExpJudge exp = new ExpJudge();
                         exp.ExperimentId = expID;
-                        exp.JudgeId = judgeID;
+                        exp.JudgeLoginId = judge.LoginId;
                         exp.Experiment = experiment;
                         exp.Judge = judge;
                         experiment.ExpJudges.Add(exp);

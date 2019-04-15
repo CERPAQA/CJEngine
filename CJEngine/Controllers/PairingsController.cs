@@ -120,23 +120,6 @@ namespace CJEngine.Controllers
             return finalResult;
         }
 
-        [HttpGet("[action]")]
-        public int GenerateID()
-        {
-            Random rnd = new Random();
-            int id;
-            do
-            {
-                id = rnd.Next(1, maxJudges);
-            }
-            while (ids.Contains(id));
-            maxJudges++; //Max judges is a low number to keep generated IDs low, it scales up if we want more browser windows to test.
-            ids.Add(id);
-            /*Judge j = new Judge(id);
-            judges.Add(j);*/
-            return id;
-        }
-
         private Task<IdentityUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         [Produces("application/json")]

@@ -88,8 +88,8 @@ namespace CJEngine.Areas.Identity.Pages.Account
                         pageHandler: null,
                         values: new { userId = user.Id, code = code },
                         protocol: Request.Scheme);
-
                     Researcher Researcher = new Researcher();
+                    Researcher.LoginId = user.Id;
                     Researcher.Name = Input.Name;
                     Researcher.Email = user.Email;
 
