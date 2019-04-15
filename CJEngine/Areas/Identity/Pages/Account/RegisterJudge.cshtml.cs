@@ -75,6 +75,7 @@ namespace CJEngine.Areas.Identity.Pages.Account
         {
             returnUrl = returnUrl ?? Url.Content("~/");
             var location = new Uri($"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}");
+            var x = Request.Path.Value;
             var url = location.AbsoluteUri.ToLower().Contains("judge");
             var expJudge = location.AbsoluteUri.ToLower().Contains("#");
 
