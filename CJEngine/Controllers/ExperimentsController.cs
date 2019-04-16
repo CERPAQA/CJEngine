@@ -36,19 +36,40 @@ namespace CJEngine.Controllers
         [Authorize(Roles =("Judge, Researcher"))]
         public async Task<IActionResult> CJIndex()
         {
-            //TODO: if user has no experiments assignned to them make sure it doesnt crash
-            var user = await GetCurrentUserAsync(); 
-            var judge = _context.Judge.Single(j => j.LoginId == user.Id);
-            var experimentsJudge = _context.ExpJudge
-                .Where(e => e.JudgeLoginId == judge.LoginId)
-                .ToList();
-            foreach(ExpJudge exp in experimentsJudge)
+            //TODO: researchers and judges can only see whats assigned to them
+            var user = await GetCurrentUserAsync();
+            var roles = await _userManager.GetRolesAsync(user);
+            if (roles.Contains("Judge"))
             {
-                var experiments = _context.Experiment
-                .Where(e => e.Id == exp.ExperimentId)
-                .ToList();
-                return View(experiments);
+                var judge = _context.Judge
+                    .FirstOrDefault(j => j.LoginId == user.Id);
+                var experimentsJudge = _context.ExpJudge
+                    .Where(e => e.JudgeLoginId == judge.LoginId)
+                    .ToList();
+                foreach (ExpJudge exp in experimentsJudge)
+                {
+                    var experiments = _context.Experiment
+                    .Where(e => e.Id == exp.ExperimentId)
+                    .ToList();
+                    return View(experiments);
+                }
+            } 
+            else if (roles.Contains("Researcher"))
+            {
+                var researcher = await _context.Researcher
+                    .FirstOrDefaultAsync(r => r.LoginId == user.Id);
+                var experimentsResearcher = _context.ExpResearcher
+                    .Where(e => e.ResearcherLoginId == researcher.LoginId)
+                    .ToList();
+                foreach (ExpResearcher exp in experimentsResearcher)
+                {
+                    var experiments = _context.Experiment
+                    .Where(e => e.Id == exp.ExperimentId)
+                    .ToList();
+                    return View(experiments);
+                }
             }
+           
             ErrorViewModel errorView = new ErrorViewModel();
             return View(errorView.ToString());
         }
