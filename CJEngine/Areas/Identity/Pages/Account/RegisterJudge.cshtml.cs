@@ -75,9 +75,9 @@ namespace CJEngine.Areas.Identity.Pages.Account
         {
             returnUrl = returnUrl ?? Url.Content("~/");
             var location = new Uri($"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}");
-            var x = Request.Path.Value;
+            //TODO: replace line above with this one above x = Request.GetDisplayUrl();
             var url = location.AbsoluteUri.ToLower().Contains("judge");
-            var expJudge = location.AbsoluteUri.ToLower().Contains("#");
+            var assignedExp = Request.Headers["Referer"].ToString().Contains("=");
 
             if (ModelState.IsValid && url == true)
             {
@@ -100,13 +100,14 @@ namespace CJEngine.Areas.Identity.Pages.Account
                     judge.Name = Input.Name;
                     judge.Email = user.Email;
 
-                    if (expJudge == true)
+                    if (assignedExp == true)
                     {
-                        var expID = location.Fragment;
+                        var stringexpID = Request.Headers["Referer"].ToString().Split("=")[1];
+                        var expID = Convert.ToInt32(stringexpID);
                         var experiment = await _CJEngineContext.Experiment.FindAsync(expID);
-                            
+                        experiment.ExpJudges = new List<ExpJudge>();
                         ExpJudge exp = new ExpJudge();
-                        //exp.ExperimentId = expID;
+                        exp.ExperimentId = expID;
                         exp.JudgeLoginId = judge.LoginId;
                         exp.Experiment = experiment;
                         exp.Judge = judge;

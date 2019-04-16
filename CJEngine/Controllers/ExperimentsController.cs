@@ -36,6 +36,7 @@ namespace CJEngine.Controllers
         [Authorize(Roles =("Judge, Researcher"))]
         public async Task<IActionResult> CJIndex()
         {
+            //TODO: if user has no experiments assignned to them make sure it doesnt crash
             var user = await GetCurrentUserAsync(); 
             var judge = _context.Judge.Single(j => j.LoginId == user.Id);
             var experimentsJudge = _context.ExpJudge
