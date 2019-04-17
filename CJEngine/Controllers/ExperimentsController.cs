@@ -36,7 +36,6 @@ namespace CJEngine.Controllers
         [Authorize(Roles =("Judge, Researcher"))]
         public async Task<IActionResult> CJIndex()
         {
-            //TODO: researchers and judges can only see whats assigned to them
             var user = await GetCurrentUserAsync();
             var roles = await _userManager.GetRolesAsync(user);
             if (roles.Contains("Judge"))
