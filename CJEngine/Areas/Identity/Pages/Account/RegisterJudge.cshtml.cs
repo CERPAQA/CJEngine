@@ -75,7 +75,6 @@ namespace CJEngine.Areas.Identity.Pages.Account
         {
             returnUrl = returnUrl ?? Url.Content("~/");
             var location = new Uri($"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}");
-            //TODO: replace line above with this one above x = Request.GetDisplayUrl();
             var url = location.AbsoluteUri.ToLower().Contains("judge");
             var assignedExp = Request.Headers["Referer"].ToString().Contains("=");
 

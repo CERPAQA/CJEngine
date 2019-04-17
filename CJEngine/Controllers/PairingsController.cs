@@ -127,6 +127,7 @@ namespace CJEngine.Controllers
         [Route("GetWinners")]
         public async Task GetWinners([FromBody] dynamic data, int? id)
         {
+            //TODO: if a researcher is testing the experiment we dont want this information stored
             string winner = data.Winner;
             var winningArtefact = new Artefact();
             DateTime timeJudgement = DateTime.ParseExact((string)data.TimeOfPairing, "dd/MM/yyyy, HH:mm:ss", CultureInfo.InvariantCulture);

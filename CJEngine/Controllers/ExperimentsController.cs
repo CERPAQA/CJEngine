@@ -29,15 +29,17 @@ namespace CJEngine.Controllers
         [Authorize(Roles = ("Researcher"))]
         public async Task<IActionResult> Index()
         {
+            //Researcher should only see experiments assigned to them here
             return View(await _context.Experiment.ToListAsync());
         }
 
-        //This method is what renders when the cj tab is clicked
+        //This method is what renders when the CJ option is selected on the NavBar
         [Authorize(Roles =("Judge, Researcher"))]
         public async Task<IActionResult> CJIndex()
         {
             var user = await GetCurrentUserAsync();
             var roles = await _userManager.GetRolesAsync(user);
+            var experiments = new List<Experiment>();
             if (roles.Contains("Judge"))
             {
                 var judge = _context.Judge
@@ -47,11 +49,11 @@ namespace CJEngine.Controllers
                     .ToList();
                 foreach (ExpJudge exp in experimentsJudge)
                 {
-                    var experiments = _context.Experiment
-                    .Where(e => e.Id == exp.ExperimentId)
-                    .ToList();
-                    return View(experiments);
+                    Experiment tempEXP = _context.Experiment
+                        .FirstOrDefault(e => e.Id == exp.ExperimentId);
+                    experiments.Add(tempEXP);
                 }
+                return View(experiments);
             } 
             else if (roles.Contains("Researcher"))
             {
@@ -62,13 +64,14 @@ namespace CJEngine.Controllers
                     .ToList();
                 foreach (ExpResearcher exp in experimentsResearcher)
                 {
-                    var experiments = _context.Experiment
-                    .Where(e => e.Id == exp.ExperimentId)
-                    .ToList();
-                    return View(experiments);
+                    Experiment tempEXP = _context.Experiment
+                        .FirstOrDefault(e => e.Id == exp.ExperimentId);
+                    experiments.Add(tempEXP);
                 }
+                return View(experiments);
             }
            
+            //TODO: if not experiments work on what on what is displayed
             ErrorViewModel errorView = new ErrorViewModel();
             return View(errorView.ToString());
         }

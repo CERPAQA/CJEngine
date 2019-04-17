@@ -38,20 +38,16 @@ namespace CJEngine
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             // In production, the React files will be served from this directory
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
             services.AddIdentity<IdentityUser, IdentityRole>()
               .AddEntityFrameworkStores<CJEngineLoginContext>()
               .AddDefaultUI()
               .AddDefaultTokenProviders();
-
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
-
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/build";
             });
-
             services.AddDbContext<CJEngineContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("CJEngineContext")));
             return services.BuildServiceProvider();
