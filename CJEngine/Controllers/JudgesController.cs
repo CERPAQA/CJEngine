@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CJEngine.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CJEngine.Controllers
 {
+    [Authorize(Roles = ("Researcher"))]
     public class JudgesController : Controller
     {
         private readonly CJEngineContext _context;

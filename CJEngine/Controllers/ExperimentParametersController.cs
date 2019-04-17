@@ -6,10 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CJEngine.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CJEngine.Controllers
 {
     //[Route("api/[controller]")]
+    [Authorize]
     public class ExperimentParametersController : Controller
     {
         private readonly CJEngineContext _context;

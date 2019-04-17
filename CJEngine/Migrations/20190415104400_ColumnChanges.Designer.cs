@@ -4,14 +4,16 @@ using CJEngine.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CJEngine.Migrations
 {
     [DbContext(typeof(CJEngineContext))]
-    partial class CJEngineContextModelSnapshot : ModelSnapshot
+    [Migration("20190415104400_ColumnChanges")]
+    partial class ColumnChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -140,11 +142,9 @@ namespace CJEngine.Migrations
                 {
                     b.Property<int>("ExperimentId");
 
-                    b.Property<string>("JudgeLoginId");
+                    b.Property<int>("JudgeId");
 
-                    b.Property<int?>("JudgeId");
-
-                    b.HasKey("ExperimentId", "JudgeLoginId");
+                    b.HasKey("ExperimentId", "JudgeId");
 
                     b.HasIndex("JudgeId");
 
@@ -155,11 +155,9 @@ namespace CJEngine.Migrations
                 {
                     b.Property<int>("ExperimentId");
 
-                    b.Property<string>("ResearcherLoginId");
+                    b.Property<int>("ResearcherId");
 
-                    b.Property<int?>("ResearcherId");
-
-                    b.HasKey("ExperimentId", "ResearcherLoginId");
+                    b.HasKey("ExperimentId", "ResearcherId");
 
                     b.HasIndex("ResearcherId");
 
@@ -339,7 +337,8 @@ namespace CJEngine.Migrations
 
                     b.HasOne("CJEngine.Models.Judge", "Judge")
                         .WithMany("ExpJudges")
-                        .HasForeignKey("JudgeId");
+                        .HasForeignKey("JudgeId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("CJEngine.Models.Join_Entities.ExpResearcher", b =>
@@ -351,7 +350,8 @@ namespace CJEngine.Migrations
 
                     b.HasOne("CJEngine.Models.Researcher", "Researcher")
                         .WithMany("ExpResearchers")
-                        .HasForeignKey("ResearcherId");
+                        .HasForeignKey("ResearcherId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("CJEngine.Models.Pairing", b =>

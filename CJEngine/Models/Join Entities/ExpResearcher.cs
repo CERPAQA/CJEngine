@@ -10,7 +10,7 @@ namespace CJEngine.Models.Join_Entities
     {
         public int ExperimentId { get; set; }
         public Experiment Experiment { get; set; }
-        public int ResearcherId { get; set; }
+        public string ResearcherLoginId { get; set; }
         public Researcher Researcher { get; set; }
     }
 }

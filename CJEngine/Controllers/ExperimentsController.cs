@@ -6,35 +6,75 @@ using Microsoft.EntityFrameworkCore;
 using CJEngine.Models;
 using CJEngine.Models.Join_Entities;
 using CJEngine.ViewModel;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace CJEngine.Controllers
 {
+    [Authorize]
     public class ExperimentsController : Controller
     {
         private readonly CJEngineContext _context;
-        //public static IList<Artefact> expArtefacts = new List<Artefact>();
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public ExperimentsController(CJEngineContext context)
+        public ExperimentsController(CJEngineContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
+        private Task<IdentityUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
+
         // GET: Experiments
+        [Authorize(Roles = ("Researcher"))]
         public async Task<IActionResult> Index()
         {
-
             return View(await _context.Experiment.ToListAsync());
         }
 
         //This method is what renders when the cj tab is clicked
+        [Authorize(Roles =("Judge, Researcher"))]
         public async Task<IActionResult> CJIndex()
         {
-            return View(await _context.Experiment.ToListAsync());
+            var user = await GetCurrentUserAsync();
+            var roles = await _userManager.GetRolesAsync(user);
+            if (roles.Contains("Judge"))
+            {
+                var judge = _context.Judge
+                    .FirstOrDefault(j => j.LoginId == user.Id);
+                var experimentsJudge = _context.ExpJudge
+                    .Where(e => e.JudgeLoginId == judge.LoginId)
+                    .ToList();
+                foreach (ExpJudge exp in experimentsJudge)
+                {
+                    var experiments = _context.Experiment
+                    .Where(e => e.Id == exp.ExperimentId)
+                    .ToList();
+                    return View(experiments);
+                }
+            } 
+            else if (roles.Contains("Researcher"))
+            {
+                var researcher = await _context.Researcher
+                    .FirstOrDefaultAsync(r => r.LoginId == user.Id);
+                var experimentsResearcher = _context.ExpResearcher
+                    .Where(e => e.ResearcherLoginId == researcher.LoginId)
+                    .ToList();
+                foreach (ExpResearcher exp in experimentsResearcher)
+                {
+                    var experiments = _context.Experiment
+                    .Where(e => e.Id == exp.ExperimentId)
+                    .ToList();
+                    return View(experiments);
+                }
+            }
+           
+            ErrorViewModel errorView = new ErrorViewModel();
+            return View(errorView.ToString());
         }
 
-       
-
         // GET: Experiments/Details/5
+        [Authorize(Roles = ("Researcher"))]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -59,6 +99,7 @@ namespace CJEngine.Controllers
         }
 
         // GET: Experiments/Create
+        [Authorize(Roles = ("Researcher"))]
         public IActionResult Create()
         {
             CreateExperimentViewModel CEVM = new CreateExperimentViewModel();
@@ -73,11 +114,13 @@ namespace CJEngine.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = ("Researcher"))]
         public async Task<IActionResult> Create([Bind("Id,Name,Description")] Experiment experiment)
         {
             var form = Request.Form;
             experiment.ExpArtefacts = new List<ExpArtefact>();
             experiment.ExpJudges = new List<ExpJudge>();
+            experiment.ExpResearchers = new List<ExpResearcher>();
 
             var expID = experiment.Id;
             string expNameParam = form["Parameters"];
@@ -86,7 +129,6 @@ namespace CJEngine.Controllers
             int expParamID = expParam.Id;
             experiment.ExperimentParametersId = expParamID;
             experiment.ExperimentParameters = expParam;
-
             var artefacts = form["expArtefacts"];
             foreach (string x in artefacts)
             {
@@ -111,11 +153,21 @@ namespace CJEngine.Controllers
                 var judgeID = judge.Id;
                 ExpJudge exp = new ExpJudge();
                 exp.ExperimentId = expID;
-                exp.JudgeId = judgeID;
+                exp.JudgeLoginId = judge.LoginId;
                 exp.Experiment = experiment;
                 exp.Judge = judge;
                 experiment.ExpJudges.Add(exp);
             }
+
+            var researcher = GetCurrentUserAsync().Result.Id;
+            ExpResearcher expResearcher = new ExpResearcher();
+            expResearcher.ResearcherLoginId = researcher;
+            expResearcher.Researcher = await _context.Researcher.
+                FirstOrDefaultAsync(r => r.LoginId == researcher);
+            expResearcher.ExperimentId = expID;
+            expResearcher.Experiment = experiment;
+            experiment.ExpResearchers.Add(expResearcher);
+
             if (ModelState.IsValid)
             {
                 _context.Add(experiment);
@@ -126,6 +178,7 @@ namespace CJEngine.Controllers
         }
 
         // GET: Experiments/Edit/5
+        [Authorize(Roles = ("Researcher"))]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -156,6 +209,7 @@ namespace CJEngine.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = ("Researcher"))]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description")] Experiment experiment)
         {
             if (id != experiment.Id)
@@ -202,7 +256,7 @@ namespace CJEngine.Controllers
                         var judgeID = judge.Id;
                         ExpJudge exp = new ExpJudge();
                         exp.ExperimentId = expID;
-                        exp.JudgeId = judgeID;
+                        exp.JudgeLoginId = judge.LoginId;
                         exp.Experiment = experiment;
                         exp.Judge = judge;
                         experiment.ExpJudges.Add(exp);
@@ -227,6 +281,7 @@ namespace CJEngine.Controllers
         }
 
         // GET: Experiments/Delete/5
+        [Authorize(Roles = ("Researcher"))]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -247,6 +302,7 @@ namespace CJEngine.Controllers
         // POST: Experiments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = ("Researcher"))]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var experiment = await _context.Experiment.FindAsync(id);

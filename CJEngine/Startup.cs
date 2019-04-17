@@ -8,6 +8,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using CJEngine.Models;
+using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
+using CJEngine.Data;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using WebPWrecover.Services;
 
 namespace CJEngine
 {
@@ -32,9 +37,15 @@ namespace CJEngine
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             // In production, the React files will be served from this directory
-
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+              .AddEntityFrameworkStores<CJEngineLoginContext>()
+              .AddDefaultUI()
+              .AddDefaultTokenProviders();
+
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.Configure<AuthMessageSenderOptions>(Configuration);
 
             services.AddSpaStaticFiles(configuration =>
             {
@@ -46,8 +57,25 @@ namespace CJEngine
             return services.BuildServiceProvider();
         }
 
+        private async Task CreateUserRoles(IServiceProvider serviceProvider)
+        {
+            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var UserManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            string[] roleNames = { "Researcher", "Judge" };
+            IdentityResult roleResult;
+
+            foreach (var roleName in roleNames)
+            {
+                var roleCheck = await RoleManager.RoleExistsAsync(roleName);
+                if (!roleCheck)
+                {
+                    roleResult = await RoleManager.CreateAsync(new IdentityRole(roleName));
+                }
+            }
+        }
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime applicationLifetime)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime applicationLifetime, IServiceProvider services)
         {
             if (env.IsDevelopment())
             {
@@ -64,6 +92,7 @@ namespace CJEngine
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
             app.UseCookiePolicy();
+            app.UseAuthentication();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -79,6 +108,7 @@ namespace CJEngine
                 }
             });
             REngineClass.Initialise();
+            CreateUserRoles(services).Wait();
             applicationLifetime.ApplicationStopping.Register(OnShutDown);
         }
 

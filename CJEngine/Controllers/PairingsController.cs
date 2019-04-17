@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using CJEngine.Models;
 using CJEngine.Models.Join_Entities;
@@ -11,9 +10,12 @@ using RDotNet;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace CJEngine.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class PairingsController : Controller
     {
@@ -24,12 +26,14 @@ namespace CJEngine.Controllers
         private static int maxJudges = 5;
 
         private readonly CJEngineContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
         List<string> fileNames = new List<string>();
         Dictionary<string, dynamic> expParams = new Dictionary<string, dynamic>();
 
-        public PairingsController(CJEngineContext context)
+        public PairingsController(CJEngineContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         [HttpGet("[action]")]
@@ -118,22 +122,7 @@ namespace CJEngine.Controllers
             return finalResult;
         }
 
-        [HttpGet("[action]")]
-        public int GenerateID()
-        {
-            Random rnd = new Random();
-            int id;
-            do
-            {
-                id = rnd.Next(1, maxJudges);
-            }
-            while (ids.Contains(id));
-            maxJudges++; //Max judges is a low number to keep generated IDs low, it scales up if we want more browser windows to test.
-            ids.Add(id);
-            /*Judge j = new Judge(id);
-            judges.Add(j);*/
-            return id;
-        }
+        private Task<IdentityUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         [Produces("application/json")]
         [HttpPost]
@@ -145,11 +134,12 @@ namespace CJEngine.Controllers
             DateTime timeJudgement = DateTime.ParseExact((string)data.TimeOfPairing, "dd/MM/yyyy, HH:mm:ss", CultureInfo.InvariantCulture);
             int elapsedTime = (int)data.ElapsedTime;
             string comment = data.Comment;
+            var user = GetCurrentUserAsync().Result.Id;
             Pairing pairing = new Pairing
             {
                 ExperimentId = (int)id,
                 Experiment = await _context.Experiment.FirstOrDefaultAsync(m => m.Id == id),
-                JudgeId = 1
+                JudgeLoginID = user
             };
 
             List<ArtefactPairing> pairOfScripts = new List<ArtefactPairing>();
@@ -180,6 +170,7 @@ namespace CJEngine.Controllers
             {
                 winningArtefact = artefactTwo;
             }
+
             pairOfScripts.Add(one);
             pairOfScripts.Add(two);
             pairing.ArtefactPairings = pairOfScripts;
@@ -187,6 +178,7 @@ namespace CJEngine.Controllers
             pairing.TimeOfPairing = timeJudgement;
             pairing.ElapsedTime = elapsedTime;
             pairing.Comment = comment;
+
             if (ModelState.IsValid)
             {
                 _context.Update(pairing);
