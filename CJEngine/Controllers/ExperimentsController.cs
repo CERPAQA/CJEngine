@@ -29,8 +29,15 @@ namespace CJEngine.Controllers
         [Authorize(Roles = ("Researcher"))]
         public async Task<IActionResult> Index()
         {
-            //Researcher should only see experiments assigned to them here
-            return View(await _context.Experiment.ToListAsync());
+            var user = await GetCurrentUserAsync();
+            var experiments = await (
+                from exp in _context.Experiment
+                join r in _context.Researcher on user.Id equals r.LoginId
+                join er in _context.ExpResearcher on r.LoginId equals er.ResearcherLoginId
+                where exp.Id == er.ExperimentId
+                select exp)
+                .ToListAsync();
+            return View(experiments);
         }
 
         //This method is what renders when the CJ option is selected on the NavBar
@@ -39,41 +46,29 @@ namespace CJEngine.Controllers
         {
             var user = await GetCurrentUserAsync();
             var roles = await _userManager.GetRolesAsync(user);
-            var experiments = new List<Experiment>();
             if (roles.Contains("Judge"))
             {
-                var judge = _context.Judge
-                    .FirstOrDefault(j => j.LoginId == user.Id);
-                var experimentsJudge = _context.ExpJudge
-                    .Where(e => e.JudgeLoginId == judge.LoginId)
-                    .ToList();
-                foreach (ExpJudge exp in experimentsJudge)
-                {
-                    Experiment tempEXP = _context.Experiment
-                        .FirstOrDefault(e => e.Id == exp.ExperimentId);
-                    experiments.Add(tempEXP);
-                }
+                var experiments = await (
+                from exp in _context.Experiment
+                join j in _context.Judge on user.Id equals j.LoginId
+                join ej in _context.ExpJudge on j.LoginId equals ej.JudgeLoginId
+                where exp.Id == ej.ExperimentId
+                select exp)
+                .ToListAsync();
                 return View(experiments);
             } 
             else if (roles.Contains("Researcher"))
             {
-                var researcher = await _context.Researcher
-                    .FirstOrDefaultAsync(r => r.LoginId == user.Id);
-                var experimentsResearcher = _context.ExpResearcher
-                    .Where(e => e.ResearcherLoginId == researcher.LoginId)
-                    .ToList();
-                foreach (ExpResearcher exp in experimentsResearcher)
-                {
-                    Experiment tempEXP = _context.Experiment
-                        .FirstOrDefault(e => e.Id == exp.ExperimentId);
-                    experiments.Add(tempEXP);
-                }
+                var experiments = await (
+                from exp in _context.Experiment
+                join r in _context.Researcher on user.Id equals r.LoginId
+                join er in _context.ExpResearcher on r.LoginId equals er.ResearcherLoginId
+                where exp.Id == er.ExperimentId
+                select exp)
+                .ToListAsync();
                 return View(experiments);
             }
-           
-            //TODO: if not experiments work on what on what is displayed
-            ErrorViewModel errorView = new ErrorViewModel();
-            return View(errorView.ToString());
+            return View();
         }
 
         // GET: Experiments/Details/5

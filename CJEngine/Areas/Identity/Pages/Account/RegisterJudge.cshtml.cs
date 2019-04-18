@@ -113,7 +113,6 @@ namespace CJEngine.Areas.Identity.Pages.Account
                         experiment.ExpJudges.Add(exp);
                     }
 
-
                     if (ModelState.IsValid)
                     {
                         _CJEngineContext.Add(judge);
