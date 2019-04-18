@@ -10,5 +10,6 @@ namespace CJEngine.ViewModel
         public IEnumerable<ExperimentParameters> ExperimentParametersList { get; set; }
         public IEnumerable<Artefact> Artefacts { get; set; }
         public IEnumerable<Judge> Judges { get; set; }
+        public IEnumerable<Algorithm> Algorithms { get; set; }
     }
 }

@@ -24,6 +24,9 @@
             <div id="partialUpdate">
                 <partial name="~/Views/ExperimentParameters/_LsParams.cshtml" />
             </div>
+            <div id="selectedAlgorithm">
+                <partial name="~/Views/Algorithms/_LsAlgorithm.cshtml" />
+            </div>
             <div>
                 <partial name="~/Views/Artefacts/_IndexArtefacts.cshtml" />
             </div>
@@ -49,8 +52,25 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
+                    <!--TODO: reset create new parameter button-->
                     <div class="modal-body">
                         <partial name="~/Views/ExperimentParameters/_CreateParams.cshtml" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="algorithmsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Upload new algorithm</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <!--TODO: reset create new parameter button-->
+                    <div class="modal-body">
+                        <partial name="~/Views/Algorithms/_UploadAlgorithm.cshtml" />
                     </div>
                 </div>
             </div>

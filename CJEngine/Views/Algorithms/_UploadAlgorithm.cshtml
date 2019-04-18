@@ -1,0 +1,29 @@
+﻿@model CJEngine.ViewModel.CreateExperimentViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <form>
+            <div class="text-danger"></div>
+            <div class="form-group form-check">
+                <label class="control-label">Select An Algorithm</label>
+                <input id="algorithmFile" type="file" />
+            </div>
+            <div class="form-group form-check">
+                <label class="control-label">Description</label>
+                <input id="description" type="text" />
+            </div>
+            <div class="modal-footer">
+                <!--TODO: does this need to talk to an api controller action-->
+                <Button type="button" onclick="" class="btn btn-primary" data-dismiss="modal">Save and Close</Button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

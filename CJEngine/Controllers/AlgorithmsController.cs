@@ -18,6 +18,20 @@ namespace CJEngine.Controllers
             _context = context;
         }
 
+        //nullreferenceException: object not set to an instance of an object....its not passing the view model along.
+        public PartialViewResult LsAlgorithm()
+        {
+            try
+            {
+                return PartialView("~/Views/Algorithms/_LsAlgorithm.cshtml");
+            }
+            catch (NullReferenceException e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
+            }
+        }
+
         // GET: Algorithms
         public async Task<IActionResult> Index()
         {

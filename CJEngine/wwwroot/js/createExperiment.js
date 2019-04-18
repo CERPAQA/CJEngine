@@ -170,3 +170,7 @@ function createParams() {
     select.options[select.options.length] = new Option(description, description);
     select.value = description;
 }
+
+function CreateAlgorithm() {
+    
+}

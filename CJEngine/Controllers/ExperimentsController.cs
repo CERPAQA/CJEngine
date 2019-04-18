@@ -104,6 +104,7 @@ namespace CJEngine.Controllers
             CEVM.ExperimentParametersList = _context.ExperimentParameters.ToList();
             CEVM.Artefacts = _context.Artefact.ToList();
             CEVM.Judges = _context.Judge.ToList();
+            CEVM.Algorithms = _context.Algorithm.ToList();
             return View(CEVM);
         }
 
@@ -115,6 +116,7 @@ namespace CJEngine.Controllers
         [Authorize(Roles = ("Researcher"))]
         public async Task<IActionResult> Create([Bind("Id,Name,Description")] Experiment experiment)
         {
+            //TODO: save algorithm data to model aswell
             var form = Request.Form;
             experiment.ExpArtefacts = new List<ExpArtefact>();
             experiment.ExpJudges = new List<ExpJudge>();

@@ -134,13 +134,13 @@ namespace CJEngine.Controllers
             int elapsedTime = (int)data.ElapsedTime;
             string comment = data.Comment;
             var user = GetCurrentUserAsync().Result.Id;
+            //TODO: Can this method be split into seperate methods
             Pairing pairing = new Pairing
             {
                 ExperimentId = (int)id,
                 Experiment = await _context.Experiment.FirstOrDefaultAsync(m => m.Id == id),
                 JudgeLoginID = user
             };
-
             List<ArtefactPairing> pairOfScripts = new List<ArtefactPairing>();
             string scriptOne = data.ArtefactPairings["item1"];
             Artefact artefactOne = await _context.Artefact
@@ -151,7 +151,6 @@ namespace CJEngine.Controllers
                 PairingId = pairing.Id,
                 Artefact = artefactOne
             };
-
             string scriptTwo = data.ArtefactPairings["item2"];
             Artefact artefactTwo = await _context.Artefact
                 .FirstOrDefaultAsync(m => m.FilePath == scriptTwo);
@@ -169,7 +168,6 @@ namespace CJEngine.Controllers
             {
                 winningArtefact = artefactTwo;
             }
-
             pairOfScripts.Add(one);
             pairOfScripts.Add(two);
             pairing.ArtefactPairings = pairOfScripts;
@@ -177,7 +175,6 @@ namespace CJEngine.Controllers
             pairing.TimeOfPairing = timeJudgement;
             pairing.ElapsedTime = elapsedTime;
             pairing.Comment = comment;
-
             if (ModelState.IsValid)
             {
                 _context.Update(pairing);
