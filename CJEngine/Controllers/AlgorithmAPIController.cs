@@ -13,7 +13,7 @@ namespace CJEngine.Controllers
 {
     [Route("api/[controller]")]
     [Authorize(Roles = ("Researcher"))]
-    public class AlgorithmAPIController : ControllerBase
+    public class AlgorithmAPIController : Controller
     {
         private readonly CJEngineContext _context;
         private readonly IHostingEnvironment he;
@@ -24,21 +24,23 @@ namespace CJEngine.Controllers
             he = e;
         }
 
-        [Produces("application/json")]
         [HttpPost("[action]")]
-        public async Task AddAlgorithm([FromBody][Bind("Id,FunctionName,Filename,Description,Valid")] IFormFile file, Algorithm algorithm)
+        public async Task AddAlgorithm([FromBody][Bind("Id,FunctionName,Filename,Description,Valid")] dynamic data, Algorithm algorithm)
         {
-            //TODO: add fetch call to the createexp.js file and test
+            //TODO: request form not in correct format, see artfeacts contorller create method
+            var formData = Request;
+            string stringFile = data.file;
+            stringFile = stringFile.Replace("C:\\fakepath\\", "");
+            string description = data.description;
+            var fileName = Path.Combine(he.WebRootPath + "/Rscripts", Path.GetFileName(stringFile));
+            //file.CopyTo(new FileStream(fileName, FileMode.Create));
+            
+            algorithm.setAlgorithmAsRelativePath(fileName);
+            algorithm.Description = description;
             if (ModelState.IsValid)
             {
-                if (file != null)
-                {
-                    var fileName = Path.Combine(he.WebRootPath + "/Rscripts", Path.GetFileName(file.FileName));
-                    file.CopyTo(new FileStream(fileName, FileMode.Create));
-                    algorithm.setAlgorithmAsRelativePath(fileName);
-                    _context.Add(algorithm);
-                    await _context.SaveChangesAsync();
-                }
+                _context.Add(algorithm);
+                await _context.SaveChangesAsync();
             }
         }
     }

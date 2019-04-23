@@ -172,5 +172,27 @@ function createParams() {
 }
 
 function CreateAlgorithm() {
-    
+    var file = document.getElementById("algorithmFile").value;
+    //TODO: description cannot be null
+    var description = document.getElementById("algorithmDescription").value;
+    fetch('/api/AlgorithmAPI/AddAlgorithm', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ description, file })
+    }).then(function (response) {
+        if (response.status !== 200) {
+            console.log('fetch returned not ok' + response.status);
+        }
+
+        response.json().then(function (data) {
+            console.log('fetch returned ok');
+            console.log(data);
+        });
+    })
+        .catch(function (err) {
+            console.log(`error: ${err}`);
+        });
 }
