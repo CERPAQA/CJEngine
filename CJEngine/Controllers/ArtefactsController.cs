@@ -66,7 +66,6 @@ namespace CJEngine.Controllers
             {
                 if (file != null)
                 {
-                    var formdata = Request.Form.Files;
                     var fileName = Path.Combine(he.WebRootPath + "/artefacts", Path.GetFileName(file.FileName));
                     file.CopyTo(new FileStream(fileName, FileMode.Create));
                     artefact.setImageAsRelativePath(fileName);
@@ -76,6 +75,7 @@ namespace CJEngine.Controllers
                         artefact.Name = Path.GetFileNameWithoutExtension(fileName);
                     }
                 }
+                //TODO: add if model state is valid for the below
                 _context.Add(artefact);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Create));

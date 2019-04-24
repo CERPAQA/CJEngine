@@ -24,10 +24,10 @@ namespace CJEngine.Controllers
             he = e;
         }
 
+        //TODO: could not get form submitted properly
         [HttpPost("[action]")]
         public async Task AddAlgorithm([FromBody][Bind("Id,FunctionName,Filename,Description,Valid")] dynamic data, Algorithm algorithm)
         {
-            //TODO: request form not in correct format, see artfeacts contorller create method
             var formData = Request;
             string stringFile = data.file;
             stringFile = stringFile.Replace("C:\\fakepath\\", "");

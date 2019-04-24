@@ -173,16 +173,16 @@ function createParams() {
 
 function CreateAlgorithm() {
     var file = document.getElementById("algorithmFile").value;
-    //TODO: description cannot be null
     var description = document.getElementById("algorithmDescription").value;
-    fetch('/api/AlgorithmAPI/AddAlgorithm', {
+    var formData = new FormData();
+    formData.append("Filename", file);
+    formData.append("Description", description);
+    const options = {
         method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ description, file })
-    }).then(function (response) {
+        body: formData
+    }
+    fetch('/api/AlgorithmAPI/AddAlgorithm', options)
+        .then(function (response) {
         if (response.status !== 200) {
             console.log('fetch returned not ok' + response.status);
         }
