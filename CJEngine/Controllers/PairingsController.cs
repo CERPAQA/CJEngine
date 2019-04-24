@@ -89,9 +89,9 @@ namespace CJEngine.Controllers
         }
 
         [HttpGet("[action]")]
-        public List<Tuple<int, int>> GetPairings(int noScripts, int noPairings)
+        public List<Tuple<int, int>> GetPairings(int noScripts, int noPairings, string rScript)
         {
-            REngineClass.GetREngine().Evaluate(@"source('REngine\\RScripts\\ComparativeJudgmentPairingsTest.R')");
+            REngineClass.GetREngine().Evaluate(@"source('REngine\\RScripts\\"+ rScript +"')");
             NumericMatrix matrix = REngineClass.GetREngine().Evaluate(string.Format("matrix <- generatePairings(noOfScripts = {0}, noOfPairings = {1})", noScripts, noPairings)).AsNumericMatrix();
 
             List<Tuple<int, int>> pairings = new List<Tuple<int, int>>();
@@ -109,7 +109,14 @@ namespace CJEngine.Controllers
         public async Task<List<Tuple<string, string>>> CreatePairings(int? id)
         {
             var liveExperiment = await getCurrentExp((int)id);
+            //TODO: check what script name returns and add to line 120
+            var scriptname = await (
+                from x in _context.Algorithm
+                join r in _context.ExpAlgorithm on liveExperiment.Id equals r.ExperimentId
+                select x).ToListAsync();
+                
             List<string> original = GetFiles(liveExperiment);
+            //TODO: add script name below
             List<Tuple<int, int>> result = GetPairings(fileNames.Count - 1, 20); 
             List<Tuple<string, string>> finalResult = new List<Tuple<string, string>>();
             foreach (Tuple<int, int> x in result)
