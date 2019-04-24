@@ -78,6 +78,7 @@ namespace CJEngine.Controllers
             {
                 var filepath = Path.GetTempPath();
                 var f = Path.GetTempFileName();
+                //This two lines above dont appear to do anything, should probably take them out
                 var fileName = Path.Combine("C://Users//owner//Source//Repos//CERPAQA//CJEngine//CJEngine//REngine//RScripts", Path.GetFileName(file.FileName));
                 using (var fileStream = new FileStream(fileName, FileMode.Create))
                 {
