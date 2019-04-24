@@ -76,9 +76,14 @@ namespace CJEngine.Controllers
         {
             if (file != null)
             {
+                var filepath = Path.GetTempPath();
+                var f = Path.GetTempFileName();
                 var fileName = Path.Combine("C://Users//owner//Source//Repos//CERPAQA//CJEngine//CJEngine//REngine//RScripts", Path.GetFileName(file.FileName));
-                file.CopyTo(new FileStream(fileName, FileMode.Create));
-                algorithm.setAlgorithmAsRelativePath(fileName);
+                using (var fileStream = new FileStream(fileName, FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream);
+                }
+                algorithm.setAlgorithmAsRelativePath(Path.GetFileName(file.FileName));
             }
                 if (ModelState.IsValid)
             {

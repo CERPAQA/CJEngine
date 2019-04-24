@@ -116,11 +116,11 @@ namespace CJEngine.Controllers
         [Authorize(Roles = ("Researcher"))]
         public async Task<IActionResult> Create([Bind("Id,Name,Description")] Experiment experiment)
         {
-            //TODO: save algorithm data to model aswell
             var form = Request.Form;
             experiment.ExpArtefacts = new List<ExpArtefact>();
             experiment.ExpJudges = new List<ExpJudge>();
             experiment.ExpResearchers = new List<ExpResearcher>();
+            experiment.ExpAlgorithms = new List<ExpAlgorithm>();
 
             var expID = experiment.Id;
             string expNameParam = form["Parameters"];
@@ -129,6 +129,18 @@ namespace CJEngine.Controllers
             int expParamID = expParam.Id;
             experiment.ExperimentParametersId = expParamID;
             experiment.ExperimentParameters = expParam;
+
+            var expAlgorithmName = form["algorithms"];
+            var expAlgorithm = await _context.Algorithm
+                .FirstOrDefaultAsync(m => m.Description == expAlgorithmName);
+            int expAlgorithmID = expAlgorithm.Id;
+            ExpAlgorithm expAL = new ExpAlgorithm();
+            expAL.AlgorithmId = expAlgorithmID;
+            expAL.Algorithm = expAlgorithm;
+            expAL.Experiment = experiment;
+            expAL.ExperimentId = expID;
+            experiment.ExpAlgorithms.Add(expAL);
+
             var artefacts = form["expArtefacts"];
             foreach (string x in artefacts)
             {

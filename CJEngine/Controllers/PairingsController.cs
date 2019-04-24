@@ -23,7 +23,6 @@ namespace CJEngine.Controllers
         private static List<Judge> judges = new List<Judge>();
         private static List<int> ids = new List<int>();
         private static List<string> scriptsChosen = new List<string>();
-        private static int maxJudges = 5;
 
         private readonly CJEngineContext _context;
         private readonly UserManager<IdentityUser> _userManager;
