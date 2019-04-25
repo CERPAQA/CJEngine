@@ -20,15 +20,12 @@ namespace CJEngine.Controllers
     public class PairingsController : Controller
     {
         private static List<Pairing> allPairings = new List<Pairing>();
-        private static List<Judge> judges = new List<Judge>();
-        private static List<int> ids = new List<int>();
         private static List<string> scriptsChosen = new List<string>();
-
+        Dictionary<string, dynamic> expParams = new Dictionary<string, dynamic>();
         private readonly CJEngineContext _context;
         private readonly UserManager<IdentityUser> _userManager;
         List<string> fileNames = new List<string>();
-        Dictionary<string, dynamic> expParams = new Dictionary<string, dynamic>();
-
+       
         public PairingsController(CJEngineContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
@@ -93,7 +90,7 @@ namespace CJEngine.Controllers
         [HttpGet("[action]")]
         public List<Tuple<int, int>> GetPairings(int noScripts, int noPairings, string rScript)
         {
-            REngineClass.GetREngine().Evaluate(@"source('REngine\\RScripts\\"+ rScript +"')");
+            REngineClass.GetREngine().Evaluate(@"source('REngine\\RScripts\\Generate\\"+ rScript +"')");
             NumericMatrix matrix = REngineClass.GetREngine().Evaluate(string.Format("matrix <- generatePairings(noOfScripts = {0}, noOfPairings = {1})", noScripts, noPairings)).AsNumericMatrix();
 
             List<Tuple<int, int>> pairings = new List<Tuple<int, int>>();

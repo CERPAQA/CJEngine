@@ -53,6 +53,8 @@
 
   <ItemGroup>
     <Folder Include="ClientApp\public\images\" />
+    <Folder Include="REngine\RScripts\Analyse\" />
+    <Folder Include="REngine\RScripts\Generate\" />
   </ItemGroup>
 
   <ItemGroup>

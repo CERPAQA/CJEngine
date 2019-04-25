@@ -76,13 +76,21 @@ namespace CJEngine.Controllers
         {
             if (file != null)
             {
-                var filepath = Path.GetTempPath();
-                var f = Path.GetTempFileName();
-                //This two lines above dont appear to do anything, should probably take them out
-                var fileName = Path.Combine("C://Users//owner//Source//Repos//CERPAQA//CJEngine//CJEngine//REngine//RScripts", Path.GetFileName(file.FileName));
-                using (var fileStream = new FileStream(fileName, FileMode.Create))
+                string functionName = Request.Form["FunctionName"];
+                if (functionName.ToLower() == "analyse")
                 {
-                    await file.CopyToAsync(fileStream);
+                    var fileName = Path.Combine("C://Users//owner//Source//Repos//CERPAQA//CJEngine//CJEngine//REngine//RScripts//Analyse", Path.GetFileName(file.FileName));
+                    using (var fileStream = new FileStream(fileName, FileMode.Create))
+                    {
+                        await file.CopyToAsync(fileStream);
+                    }
+                } else if (functionName.ToLower() == "generate")
+                {
+                    var fileName = Path.Combine("C://Users//owner//Source//Repos//CERPAQA//CJEngine//CJEngine//REngine//RScripts//Generate", Path.GetFileName(file.FileName));
+                    using (var fileStream = new FileStream(fileName, FileMode.Create))
+                    {
+                        await file.CopyToAsync(fileStream);
+                    }
                 }
                 algorithm.setAlgorithmAsRelativePath(Path.GetFileName(file.FileName));
             }
