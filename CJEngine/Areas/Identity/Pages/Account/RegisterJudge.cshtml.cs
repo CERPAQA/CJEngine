@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using CJEngine.Models;
 using CJEngine.Models.Join_Entities;
@@ -11,7 +10,6 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Http.Extensions;
 
 namespace CJEngine.Areas.Identity.Pages.Account
 {
@@ -75,7 +73,6 @@ namespace CJEngine.Areas.Identity.Pages.Account
         {
             returnUrl = returnUrl ?? Url.Content("~/");
             var location = new Uri($"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}");
-            //TODO: replace line above with this one above x = Request.GetDisplayUrl();
             var url = location.AbsoluteUri.ToLower().Contains("judge");
             var assignedExp = Request.Headers["Referer"].ToString().Contains("=");
 
@@ -113,7 +110,6 @@ namespace CJEngine.Areas.Identity.Pages.Account
                         exp.Judge = judge;
                         experiment.ExpJudges.Add(exp);
                     }
-
 
                     if (ModelState.IsValid)
                     {

@@ -23,7 +23,6 @@ namespace CJEngine.Controllers
         private static List<Judge> judges = new List<Judge>();
         private static List<int> ids = new List<int>();
         private static List<string> scriptsChosen = new List<string>();
-        private static int maxJudges = 5;
 
         private readonly CJEngineContext _context;
         private readonly UserManager<IdentityUser> _userManager;
@@ -92,9 +91,9 @@ namespace CJEngine.Controllers
         }
 
         [HttpGet("[action]")]
-        public List<Tuple<int, int>> GetPairings(int noScripts, int noPairings)
+        public List<Tuple<int, int>> GetPairings(int noScripts, int noPairings, string rScript)
         {
-            REngineClass.GetREngine().Evaluate(@"source('REngine\\RScripts\\ComparativeJudgmentPairingsTest.R')");
+            REngineClass.GetREngine().Evaluate(@"source('REngine\\RScripts\\"+ rScript +"')");
             NumericMatrix matrix = REngineClass.GetREngine().Evaluate(string.Format("matrix <- generatePairings(noOfScripts = {0}, noOfPairings = {1})", noScripts, noPairings)).AsNumericMatrix();
 
             List<Tuple<int, int>> pairings = new List<Tuple<int, int>>();
@@ -112,8 +111,15 @@ namespace CJEngine.Controllers
         public async Task<List<Tuple<string, string>>> CreatePairings(int? id)
         {
             var liveExperiment = await getCurrentExp((int)id);
+            var tempScript = await (
+                from x in _context.Algorithm
+                join ea in _context.ExpAlgorithm on liveExperiment.Id equals ea.ExperimentId
+                where ea.AlgorithmId == x.Id
+                select x).FirstOrDefaultAsync();
+            string scriptName = tempScript.Filename.Replace("/../../", "");
+
             List<string> original = GetFiles(liveExperiment);
-            List<Tuple<int, int>> result = GetPairings(fileNames.Count - 1, 20); 
+            List<Tuple<int, int>> result = GetPairings(fileNames.Count - 1, 20, scriptName); 
             List<Tuple<string, string>> finalResult = new List<Tuple<string, string>>();
             foreach (Tuple<int, int> x in result)
             {
@@ -129,19 +135,20 @@ namespace CJEngine.Controllers
         [Route("GetWinners")]
         public async Task GetWinners([FromBody] dynamic data, int? id)
         {
+            //TODO: if a researcher is testing the experiment we dont want this information stored
             string winner = data.Winner;
             var winningArtefact = new Artefact();
             DateTime timeJudgement = DateTime.ParseExact((string)data.TimeOfPairing, "dd/MM/yyyy, HH:mm:ss", CultureInfo.InvariantCulture);
             int elapsedTime = (int)data.ElapsedTime;
             string comment = data.Comment;
             var user = GetCurrentUserAsync().Result.Id;
+            //TODO: Can this method be split into seperate methods
             Pairing pairing = new Pairing
             {
                 ExperimentId = (int)id,
                 Experiment = await _context.Experiment.FirstOrDefaultAsync(m => m.Id == id),
                 JudgeLoginID = user
             };
-
             List<ArtefactPairing> pairOfScripts = new List<ArtefactPairing>();
             string scriptOne = data.ArtefactPairings["item1"];
             Artefact artefactOne = await _context.Artefact
@@ -152,7 +159,6 @@ namespace CJEngine.Controllers
                 PairingId = pairing.Id,
                 Artefact = artefactOne
             };
-
             string scriptTwo = data.ArtefactPairings["item2"];
             Artefact artefactTwo = await _context.Artefact
                 .FirstOrDefaultAsync(m => m.FilePath == scriptTwo);
@@ -170,7 +176,6 @@ namespace CJEngine.Controllers
             {
                 winningArtefact = artefactTwo;
             }
-
             pairOfScripts.Add(one);
             pairOfScripts.Add(two);
             pairing.ArtefactPairings = pairOfScripts;
@@ -178,7 +183,6 @@ namespace CJEngine.Controllers
             pairing.TimeOfPairing = timeJudgement;
             pairing.ElapsedTime = elapsedTime;
             pairing.Comment = comment;
-
             if (ModelState.IsValid)
             {
                 _context.Update(pairing);

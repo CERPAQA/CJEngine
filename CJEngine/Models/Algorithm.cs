@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using CJEngine.Models.Join_Entities;
 
 namespace CJEngine.Models
@@ -12,5 +14,12 @@ namespace CJEngine.Models
         public bool Valid { get; set; }
 
         public IList<ExpAlgorithm> ExpAlgorithms { get; set; }
+
+        public void setAlgorithmAsRelativePath(String absPath)
+        {
+            String relativeTo = "ReEngine\\Rscripts";
+            String relPath = Path.GetRelativePath(relativeTo, absPath);
+            Filename = "/" + relPath.Replace("\\", "/");
+        }
     }
 }

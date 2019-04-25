@@ -29,10 +29,18 @@ namespace CJEngine.Controllers
         [Authorize(Roles = ("Researcher"))]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Experiment.ToListAsync());
+            var user = await GetCurrentUserAsync();
+            var experiments = await (
+                from exp in _context.Experiment
+                join r in _context.Researcher on user.Id equals r.LoginId
+                join er in _context.ExpResearcher on r.LoginId equals er.ResearcherLoginId
+                where exp.Id == er.ExperimentId
+                select exp)
+                .ToListAsync();
+            return View(experiments);
         }
 
-        //This method is what renders when the cj tab is clicked
+        //This method is what renders when the CJ option is selected on the NavBar
         [Authorize(Roles =("Judge, Researcher"))]
         public async Task<IActionResult> CJIndex()
         {
@@ -40,37 +48,27 @@ namespace CJEngine.Controllers
             var roles = await _userManager.GetRolesAsync(user);
             if (roles.Contains("Judge"))
             {
-                var judge = _context.Judge
-                    .FirstOrDefault(j => j.LoginId == user.Id);
-                var experimentsJudge = _context.ExpJudge
-                    .Where(e => e.JudgeLoginId == judge.LoginId)
-                    .ToList();
-                foreach (ExpJudge exp in experimentsJudge)
-                {
-                    var experiments = _context.Experiment
-                    .Where(e => e.Id == exp.ExperimentId)
-                    .ToList();
-                    return View(experiments);
-                }
+                var experiments = await (
+                from exp in _context.Experiment
+                join j in _context.Judge on user.Id equals j.LoginId
+                join ej in _context.ExpJudge on j.LoginId equals ej.JudgeLoginId
+                where exp.Id == ej.ExperimentId
+                select exp)
+                .ToListAsync();
+                return View(experiments);
             } 
             else if (roles.Contains("Researcher"))
             {
-                var researcher = await _context.Researcher
-                    .FirstOrDefaultAsync(r => r.LoginId == user.Id);
-                var experimentsResearcher = _context.ExpResearcher
-                    .Where(e => e.ResearcherLoginId == researcher.LoginId)
-                    .ToList();
-                foreach (ExpResearcher exp in experimentsResearcher)
-                {
-                    var experiments = _context.Experiment
-                    .Where(e => e.Id == exp.ExperimentId)
-                    .ToList();
-                    return View(experiments);
-                }
+                var experiments = await (
+                from exp in _context.Experiment
+                join r in _context.Researcher on user.Id equals r.LoginId
+                join er in _context.ExpResearcher on r.LoginId equals er.ResearcherLoginId
+                where exp.Id == er.ExperimentId
+                select exp)
+                .ToListAsync();
+                return View(experiments);
             }
-           
-            ErrorViewModel errorView = new ErrorViewModel();
-            return View(errorView.ToString());
+            return View();
         }
 
         // GET: Experiments/Details/5
@@ -106,6 +104,7 @@ namespace CJEngine.Controllers
             CEVM.ExperimentParametersList = _context.ExperimentParameters.ToList();
             CEVM.Artefacts = _context.Artefact.ToList();
             CEVM.Judges = _context.Judge.ToList();
+            CEVM.Algorithms = _context.Algorithm.ToList();
             return View(CEVM);
         }
 
@@ -121,6 +120,7 @@ namespace CJEngine.Controllers
             experiment.ExpArtefacts = new List<ExpArtefact>();
             experiment.ExpJudges = new List<ExpJudge>();
             experiment.ExpResearchers = new List<ExpResearcher>();
+            experiment.ExpAlgorithms = new List<ExpAlgorithm>();
 
             var expID = experiment.Id;
             string expNameParam = form["Parameters"];
@@ -129,6 +129,18 @@ namespace CJEngine.Controllers
             int expParamID = expParam.Id;
             experiment.ExperimentParametersId = expParamID;
             experiment.ExperimentParameters = expParam;
+
+            var expAlgorithmName = form["algorithms"];
+            var expAlgorithm = await _context.Algorithm
+                .FirstOrDefaultAsync(m => m.Description == expAlgorithmName);
+            int expAlgorithmID = expAlgorithm.Id;
+            ExpAlgorithm expAL = new ExpAlgorithm();
+            expAL.AlgorithmId = expAlgorithmID;
+            expAL.Algorithm = expAlgorithm;
+            expAL.Experiment = experiment;
+            expAL.ExperimentId = expID;
+            experiment.ExpAlgorithms.Add(expAL);
+
             var artefacts = form["expArtefacts"];
             foreach (string x in artefacts)
             {

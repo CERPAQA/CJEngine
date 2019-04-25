@@ -6,16 +6,35 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CJEngine.Models;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace CJEngine.Controllers
 {
     public class AlgorithmsController : Controller
     {
         private readonly CJEngineContext _context;
+        private readonly IHostingEnvironment he;
 
-        public AlgorithmsController(CJEngineContext context)
+        public AlgorithmsController(CJEngineContext context, IHostingEnvironment e)
         {
             _context = context;
+            he = e;
+        }
+
+        //nullreferenceException: object not set to an instance of an object....its not passing the view model along.
+        public PartialViewResult LsAlgorithm()
+        {
+            try
+            {
+                return PartialView("~/Views/Algorithms/_LsAlgorithm.cshtml");
+            }
+            catch (NullReferenceException e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
+            }
         }
 
         // GET: Algorithms
@@ -53,9 +72,21 @@ namespace CJEngine.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FunctionName,Filename,Description,Valid")] Algorithm algorithm)
+        public async Task<IActionResult> Create([Bind("Id,FunctionName,Filename,Description,Valid")]IFormFile file, Algorithm algorithm)
         {
-            if (ModelState.IsValid)
+            if (file != null)
+            {
+                var filepath = Path.GetTempPath();
+                var f = Path.GetTempFileName();
+                //This two lines above dont appear to do anything, should probably take them out
+                var fileName = Path.Combine("C://Users//owner//Source//Repos//CERPAQA//CJEngine//CJEngine//REngine//RScripts", Path.GetFileName(file.FileName));
+                using (var fileStream = new FileStream(fileName, FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream);
+                }
+                algorithm.setAlgorithmAsRelativePath(Path.GetFileName(file.FileName));
+            }
+                if (ModelState.IsValid)
             {
                 _context.Add(algorithm);
                 await _context.SaveChangesAsync();

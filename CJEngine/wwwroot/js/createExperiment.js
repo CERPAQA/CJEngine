@@ -170,3 +170,29 @@ function createParams() {
     select.options[select.options.length] = new Option(description, description);
     select.value = description;
 }
+
+function CreateAlgorithm() {
+    var file = document.getElementById("algorithmFile").value;
+    var description = document.getElementById("algorithmDescription").value;
+    var formData = new FormData();
+    formData.append("Filename", file);
+    formData.append("Description", description);
+    const options = {
+        method: 'POST',
+        body: formData
+    }
+    fetch('/api/AlgorithmAPI/AddAlgorithm', options)
+        .then(function (response) {
+        if (response.status !== 200) {
+            console.log('fetch returned not ok' + response.status);
+        }
+
+        response.json().then(function (data) {
+            console.log('fetch returned ok');
+            console.log(data);
+        });
+    })
+        .catch(function (err) {
+            console.log(`error: ${err}`);
+        });
+}

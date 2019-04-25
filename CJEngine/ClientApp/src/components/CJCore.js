@@ -67,7 +67,7 @@ export class CJCore extends React.Component {
             clearTimeout(this.timeOut);
             var interval = timerLength * 1000;
             var itemLs = ["itemOne", "itemTwo"];
-            //TODO: fix random choice of items issue
+            //TODO: fix random choice of items issue(STRETCH GOAL)
             var randChoice = itemLs[Math.floor(Math.random() * itemLs.length)];
             this.timeOut = setTimeout(this.clickJ, interval);
         } else {
