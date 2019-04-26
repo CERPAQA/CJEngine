@@ -137,7 +137,6 @@ namespace CJEngine.Controllers
             DateTime timeJudgement = DateTime.ParseExact((string)data.TimeOfPairing, "dd/MM/yyyy, HH:mm:ss", CultureInfo.InvariantCulture);
             int elapsedTime = (int)data.ElapsedTime;
             string comment = data.Comment;
-            //TODO: if a researcher is testing the experiment we dont want this information stored
             var user = GetCurrentUserAsync().Result.Id;
             Pairing pairing = new Pairing
             {

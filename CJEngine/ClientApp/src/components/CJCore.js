@@ -23,7 +23,7 @@ export class CJCore extends React.Component {
         this.getNextFiles = this.getNextFiles.bind(this);
         this.getJudgeID = this.getJudgeID.bind(this);
         this.getLeadingScript = this.getLeadingScript.bind(this);
-        this.clickJ = this.clickJ.bind(this);
+        this.randomClick = this.randomClick.bind(this);
         this.Judge = this.Judge.bind(this);
         this.timeOut = setTimeout(null, 1000000000000);
     }
@@ -57,7 +57,7 @@ export class CJCore extends React.Component {
             });
     }
 
-    clickJ(item) {
+    randomClick(item) {
         //document.getElementById(item).click();
         document.getElementById("itemOne").click();
     }
@@ -69,7 +69,7 @@ export class CJCore extends React.Component {
             var itemLs = ["itemOne", "itemTwo"];
             //TODO: fix random choice of items issue(STRETCH GOAL)
             var randChoice = itemLs[Math.floor(Math.random() * itemLs.length)];
-            this.timeOut = setTimeout(this.clickJ, interval);
+            this.timeOut = setTimeout(this.randomClick, interval);
         } else {
             console.log("no timer");
         }
