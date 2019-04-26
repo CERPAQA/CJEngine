@@ -75,10 +75,13 @@ namespace CJEngine.Controllers
                         artefact.Name = Path.GetFileNameWithoutExtension(fileName);
                     }
                 }
-                //TODO: add if model state is valid for the below
-                _context.Add(artefact);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Create));
+
+                if(ModelState.IsValid)
+                {
+                    _context.Add(artefact);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Create));
+                }
             }
             return View(artefact);
         }

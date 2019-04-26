@@ -24,7 +24,7 @@ namespace CJEngine.Controllers
             he = e;
         }
 
-        //TODO: could not get form submitted properly
+        //TODO: could not get form submitted properly(LEAVE FOR NOW)
         [HttpPost("[action]")]
         public async Task AddAlgorithm([FromBody][Bind("Id,FunctionName,Filename,Description,Valid")] dynamic data, Algorithm algorithm)
         {

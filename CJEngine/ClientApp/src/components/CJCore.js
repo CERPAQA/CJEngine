@@ -12,7 +12,7 @@ export class CJCore extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            fileNames: [], expID: 0, showTitle: false, addComment: false, timer: 0, index: 0, isHidden: false, counter: 0, score: 0, time: new Date(), judgeID: 0, winList: [], topPick: "" };
+            fileNames: [], expID: 0, expTitle: "",  showTitle: false, addComment: false, timer: 0, index: 0, isHidden: false, counter: 0, score: 0, time: new Date(), judgeID: 0, winList: [], topPick: "" };
         this.nextFileButton = this.nextFileButton.bind(this);
         this.prevFileButton = this.prevFileButton.bind(this);
         this.judgePairOneButton = this.judgePairOneButton.bind(this);
@@ -42,7 +42,7 @@ export class CJCore extends React.Component {
         fetch("api/Pairings/GetParams/?id=" + expNum)
             .then(response => response.json())
             .then(params => {
-                this.setState({ showTitle: params["showTitle"], addComment: params["addComment"] })
+                this.setState({ showTitle: params["showTitle"], addComment: params["addComment"], expTitle: params["expTitle"] })
             });
     }
 
@@ -215,7 +215,7 @@ export class CJCore extends React.Component {
         }
         return (
             <div>
-                {<Header isHidden={this.state.showTitle} />}
+                {<Header isHidden={this.state.showTitle} text={this.state.expTitle}/>}
                 <div class="itemDisplay">
                     <button id="prevFileButton" className="btn btn-dark" align="right" onClick={this.prevFileButton}>Previous File</button>
                     {viewLeft}

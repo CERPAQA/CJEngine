@@ -132,14 +132,13 @@ namespace CJEngine.Controllers
         [Route("GetWinners")]
         public async Task GetWinners([FromBody] dynamic data, int? id)
         {
-            //TODO: if a researcher is testing the experiment we dont want this information stored
             string winner = data.Winner;
             var winningArtefact = new Artefact();
             DateTime timeJudgement = DateTime.ParseExact((string)data.TimeOfPairing, "dd/MM/yyyy, HH:mm:ss", CultureInfo.InvariantCulture);
             int elapsedTime = (int)data.ElapsedTime;
             string comment = data.Comment;
+            //TODO: if a researcher is testing the experiment we dont want this information stored
             var user = GetCurrentUserAsync().Result.Id;
-            //TODO: Can this method be split into seperate methods
             Pairing pairing = new Pairing
             {
                 ExperimentId = (int)id,
@@ -195,7 +194,7 @@ namespace CJEngine.Controllers
             string mostFrequent = "";
             for (var i = 0; i < scriptsChosen.Count; i++)
             {
-                // this needs changing, otherwise one gets added to each key during each iterations
+                //TODO: this needs changing, otherwise one gets added to each key during each iterations
                 var word = scriptsChosen[i];
 
                 if (counts.ContainsKey(word))
