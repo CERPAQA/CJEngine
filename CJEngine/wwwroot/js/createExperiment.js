@@ -94,7 +94,7 @@ window.onload = function () {
     tempLsArtefact = document.getElementById("selectedArtefacts")
         .getElementsByTagName("li");
     for (i = 0; i < tempLsArtefact.length; i++) {
-        var name = $(tempLsArtefact[i]).text().split("Remove")[0].trim(); //not efficient enough, needs fixing
+        var name = $(tempLsArtefact[i]).text().split("Remove")[0].trim(); //TODO: not efficient enough, needs fixing
         artefactList.push(name);
     }
     tempLsJudge = document.getElementById("selectedJudges")

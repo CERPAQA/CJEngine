@@ -29,7 +29,7 @@
                     @Html.DisplayFor(modelItem => item.FileName)
                 </td>
                 <td>
-                    <a asp-route-id="@item.Id" class="addArtefactButton">Add</a>
+                    <button asp-route-id="@item.Id" class="addArtefactButton" type="button">Add</button>
                 </td>
             </tr>
         }

@@ -10,7 +10,7 @@
 <h4>Experiment</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-10">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Experiment.Id" />
@@ -36,9 +36,12 @@
                     }
                 </select>
             </div>
+            <br />
             <div>
                 <partial name="~/Views/Artefacts/_EditIndexArtefacts.cshtml" />
             </div>
+            <br /> 
+            <h2>Selected Artefacts</h2>
             <div>
                 <ul id="selectedArtefacts">
                     @foreach (var artefact in Model.Experiment.ExpArtefacts)

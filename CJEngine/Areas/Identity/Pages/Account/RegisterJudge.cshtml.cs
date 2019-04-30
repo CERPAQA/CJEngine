@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using CJEngine.Models;
 using CJEngine.Models.Join_Entities;
@@ -74,6 +75,7 @@ namespace CJEngine.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             var location = new Uri($"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}");
             var url = location.AbsoluteUri.ToLower().Contains("judge");
+            //check to see if link has expID attached
             var assignedExp = Request.Headers["Referer"].ToString().Contains("=");
 
             if (ModelState.IsValid && url == true)
@@ -116,12 +118,10 @@ namespace CJEngine.Areas.Identity.Pages.Account
                         _CJEngineContext.Add(judge);
                         await _CJEngineContext.SaveChangesAsync();
                     }
-
                     //TODO: email confirmation to fix
                     //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                     //$"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    //await _signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(returnUrl);
                 }
                 foreach (var error in result.Errors)

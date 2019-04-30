@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using CJEngine.Data;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using WebPWrecover.Services;
+using Microsoft.AspNetCore.Identity.UI;
 
 namespace CJEngine
 {
@@ -37,7 +38,9 @@ namespace CJEngine
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             // In production, the React files will be served from this directory
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            //config => { config.SignIn.RequireConfirmedEmail = true; } - this goes into the brackets afer identity role
             services.AddIdentity<IdentityUser, IdentityRole>()
               .AddEntityFrameworkStores<CJEngineLoginContext>()
               .AddDefaultUI()

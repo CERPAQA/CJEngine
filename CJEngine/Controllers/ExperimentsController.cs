@@ -85,7 +85,9 @@ namespace CJEngine.Controllers
                 .Include(exp => exp.ExpJudges)
                     .ThenInclude(judge => judge.Judge)
                 .Include(exp => exp.ExpArtefacts)
-                    .ThenInclude(artefact => artefact. Artefact)
+                    .ThenInclude(artefact => artefact.Artefact)
+               .Include(exp => exp.ExpAlgorithms)
+                    .ThenInclude(algorithm => algorithm.Algorithm)
                 .FirstOrDefaultAsync(m => m.Id == id);
             
             if (experiment == null)

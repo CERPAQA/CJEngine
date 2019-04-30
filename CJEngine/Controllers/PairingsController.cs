@@ -221,6 +221,11 @@ namespace CJEngine.Controllers
         public string GenerateCSVString()
         {
             StringBuilder sb = new StringBuilder();
+            /*TODO:
+             * add expid
+             * selected params(each one, timer, comments, etc)
+             * 
+             */
             sb.Append("Winner,");
             sb.Append("Script One,");
             sb.Append("Script Two,");
