@@ -99,7 +99,6 @@ namespace CJEngine.Areas.Identity.Pages.Account
                         await _CJEngineContext.SaveChangesAsync();
                     }
 
-                    //TODO: email confirmation to fix
                     //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                     //$"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 

@@ -13,7 +13,7 @@ $(".addArtefactButton").click(function (event) {
         var node = document.createElement("li");
         var textNode = document.createTextNode(artefactName);
         var buttonNode = document.createElement("button");
-        buttonNode.setAttribute("class", "remove");
+        buttonNode.setAttribute("class", "remove btn btn-link");
         buttonNode.setAttribute("id", "artefact" + artefactName)
         buttonNode.setAttribute("type", "button");
         buttonNode.addEventListener("click", function () {
@@ -56,7 +56,7 @@ $(".addJudgeButton").click(function (event) {
         var node = document.createElement("li");
         var textNode = document.createTextNode(judgeName);
         var buttonNode = document.createElement("button");
-        buttonNode.setAttribute("class", "remove");
+        buttonNode.setAttribute("class", "remove btn btn-link");
         buttonNode.setAttribute("id", "artefact" + judgeName)
         buttonNode.setAttribute("type", "button");
         buttonNode.addEventListener("click", function () {

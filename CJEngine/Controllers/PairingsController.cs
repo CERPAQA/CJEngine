@@ -224,8 +224,12 @@ namespace CJEngine.Controllers
             /*TODO:
              * add expid
              * selected params(each one, timer, comments, etc)
-             * 
              */
+            sb.Append("Experiment ID");
+            sb.Append("Timer");
+            sb.Append("Comments");
+            sb.Append("Title");
+            //havent yet implemented the above
             sb.Append("Winner,");
             sb.Append("Script One,");
             sb.Append("Script Two,");
