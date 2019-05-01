@@ -102,7 +102,21 @@ namespace CJEngine.Controllers
         public async Task<FileContentResult> GenerateReport(int? id)
         {
             StringBuilder sb = new StringBuilder();
+            sb.Append("Experiment ID,");
+            sb.Append("Winner,");
+            sb.Append("Script One,");
+            sb.Append("Script Two,");
+            sb.Append("Judge,");
+            sb.Append("Date,");
+            sb.Append("TimeJudged,"); //TODO: add seconds and seperate from date and time
+            sb.Append("ElapsedTime,"); //convert to milliseconds
+            sb.Append("Timer,"); 
+            //sb.Append("Timer (s),");
+            sb.Append("Comments,");
+            sb.Append("Title,");
+            sb.AppendLine();
             int pairingID;
+
             var records = await (
                 from p in _context.Pairing
                 where p.ExperimentId == id
@@ -135,20 +149,6 @@ namespace CJEngine.Controllers
                     where ex.Id == e.ExperimentParametersId
                     select ex
                     ).FirstOrDefaultAsync();
-
-                sb.Append("Experiment ID,");
-                sb.Append("Winner,");
-                sb.Append("Script One,");
-                sb.Append("Script Two,");
-                sb.Append("Judge,");
-                sb.Append("Date,");
-                sb.Append("TimeJudged,");
-                sb.Append("ElapsedTime,");
-                sb.Append("Timer,");
-                sb.Append("Timer (s),");
-                sb.Append("Comments,");
-                sb.Append("Title,");
-                sb.AppendLine();
 
                 sb.Append(id + ",");
                 sb.Append(winner.Name + ",");
