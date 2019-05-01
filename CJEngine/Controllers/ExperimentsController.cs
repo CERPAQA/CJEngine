@@ -99,8 +99,9 @@ namespace CJEngine.Controllers
             return View(experiment);
         }
 
-        public async Task GenerateReport(int? id)
+        public async Task<FileContentResult> GenerateReport(int? id)
         {
+            StringBuilder sb = new StringBuilder();
             int pairingID;
             var records = await (
                 from p in _context.Pairing
@@ -116,6 +117,13 @@ namespace CJEngine.Controllers
                 var artefactIDList = await _context.ArtefactPairings
                     .Where(ap => ap.PairingId == pairing.Id).ToListAsync();
 
+                var scriptOne = await _context.Artefact
+                    .Where(s => s.Id == artefactIDList[0].ArtefactId)
+                    .FirstOrDefaultAsync();
+                var scriptTwo = await _context.Artefact
+                    .Where(s => s.Id == artefactIDList[1].ArtefactId)
+                    .FirstOrDefaultAsync();
+
                 var judgeName = await (
                     from j in _context.Judge
                     where j.LoginId == pairing.JudgeLoginID
@@ -128,23 +136,37 @@ namespace CJEngine.Controllers
                     select ex
                     ).FirstOrDefaultAsync();
 
-                StringBuilder sb = new StringBuilder();
-                sb.Append("Experiment ID");
+                sb.Append("Experiment ID,");
                 sb.Append("Winner,");
                 sb.Append("Script One,");
                 sb.Append("Script Two,");
-                sb.Append("Judge");
+                sb.Append("Judge,");
                 sb.Append("Date,");
                 sb.Append("TimeJudged,");
                 sb.Append("ElapsedTime,");
-                sb.Append("Timer");
-                sb.Append("Comments");
-                sb.Append("Title");
+                sb.Append("Timer,");
+                sb.Append("Timer (s),");
+                sb.Append("Comments,");
+                sb.Append("Title,");
                 sb.AppendLine();
 
-                sb.Append(id);
-                sb.Append(winner.Name);
+                sb.Append(id + ",");
+                sb.Append(winner.Name + ",");
+                sb.Append(scriptOne.Name + ",");
+                sb.Append(scriptTwo.Name + ",");
+                sb.Append(judgeName + ",");
+                sb.Append(pairing.TimeOfPairing + ",");
+                sb.Append(pairing.TimeOfPairing + ",");
+                sb.Append(pairing.ElapsedTime + ",");
+                sb.Append(expParam.ShowTimer + ",");
+                sb.Append(expParam.AddComment + ",");
+                sb.Append(expParam.ShowTitle + ",");
+                sb.AppendLine();
             }
+            var fullReport = sb.ToString(); // can probably take this out
+            var fileName = "report.csv";
+
+            return File(new System.Text.UTF8Encoding().GetBytes(fullReport), "text/csv", fileName);
         }
 
         // GET: Experiments/Create
