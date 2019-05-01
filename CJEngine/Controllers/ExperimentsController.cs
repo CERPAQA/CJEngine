@@ -8,6 +8,7 @@ using CJEngine.Models.Join_Entities;
 using CJEngine.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using System.Text;
 
 namespace CJEngine.Controllers
 {
@@ -96,6 +97,54 @@ namespace CJEngine.Controllers
             }
 
             return View(experiment);
+        }
+
+        public async Task GenerateReport(int? id)
+        {
+            int pairingID;
+            var records = await (
+                from p in _context.Pairing
+                where p.ExperimentId == id
+                select p).ToListAsync();
+
+            foreach(var pairing in records)
+            {
+                var winner = await _context.Artefact
+                    .Where(a => a.Id == pairing.WinnerId)
+                    .FirstOrDefaultAsync();
+
+                var artefactIDList = await _context.ArtefactPairings
+                    .Where(ap => ap.PairingId == pairing.Id).ToListAsync();
+
+                var judgeName = await (
+                    from j in _context.Judge
+                    where j.LoginId == pairing.JudgeLoginID
+                    select j.Name).FirstOrDefaultAsync();
+
+                var expParam = await (
+                    from ex in _context.ExperimentParameters
+                    join e in _context.Experiment on id equals e.Id
+                    where ex.Id == e.ExperimentParametersId
+                    select ex
+                    ).FirstOrDefaultAsync();
+
+                StringBuilder sb = new StringBuilder();
+                sb.Append("Experiment ID");
+                sb.Append("Winner,");
+                sb.Append("Script One,");
+                sb.Append("Script Two,");
+                sb.Append("Judge");
+                sb.Append("Date,");
+                sb.Append("TimeJudged,");
+                sb.Append("ElapsedTime,");
+                sb.Append("Timer");
+                sb.Append("Comments");
+                sb.Append("Title");
+                sb.AppendLine();
+
+                sb.Append(id);
+                sb.Append(winner.Name);
+            }
         }
 
         // GET: Experiments/Create
