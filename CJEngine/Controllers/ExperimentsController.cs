@@ -108,14 +108,14 @@ namespace CJEngine.Controllers
             sb.Append("Script Two,");
             sb.Append("Judge,");
             sb.Append("Date,");
-            sb.Append("TimeJudged,"); //TODO: add seconds and seperate from date and time
-            sb.Append("ElapsedTime,"); //convert to milliseconds
+            sb.Append("TimeJudged,");
+            sb.Append("ElapsedTime,"); 
             sb.Append("Timer,"); 
-            //sb.Append("Timer (s),");
+            //sb.Append("Timer (s),"); whatever the seconds parameter was e.g 20 seconds
             sb.Append("Comments,");
+            // whatever comment was left perhaps in here??
             sb.Append("Title,");
             sb.AppendLine();
-            int pairingID;
 
             var records = await (
                 from p in _context.Pairing
@@ -150,14 +150,18 @@ namespace CJEngine.Controllers
                     select ex
                     ).FirstOrDefaultAsync();
 
+                var judgeDate = pairing.TimeOfPairing.Date.ToString("d");
+                var judgeTime = pairing.TimeOfPairing.TimeOfDay.ToString();
+                var elapsedTimeMS = pairing.ElapsedTime * 1000;
+
                 sb.Append(id + ",");
                 sb.Append(winner.Name + ",");
                 sb.Append(scriptOne.Name + ",");
                 sb.Append(scriptTwo.Name + ",");
                 sb.Append(judgeName + ",");
-                sb.Append(pairing.TimeOfPairing + ",");
-                sb.Append(pairing.TimeOfPairing + ",");
-                sb.Append(pairing.ElapsedTime + ",");
+                sb.Append(judgeDate + ",");
+                sb.Append(judgeTime + ",");
+                sb.Append(elapsedTimeMS + ",");
                 sb.Append(expParam.ShowTimer + ",");
                 sb.Append(expParam.AddComment + ",");
                 sb.Append(expParam.ShowTitle + ",");
