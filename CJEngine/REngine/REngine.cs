@@ -8,10 +8,11 @@ namespace CJEngine
 {
     public static class REngineClass
     {
-        private static REngine engine;
+        private static  REngine engine;
+
         public static void Initialise()
         {
-            engine = REngine.GetInstance();
+           engine = REngine.GetInstance();
         }
 
         public static REngine GetREngine()
