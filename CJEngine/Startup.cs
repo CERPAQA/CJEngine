@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Identity.UI;
 
 namespace CJEngine
 {
+    //remove this comment
     public class Startup
     {
         public Startup(IConfiguration configuration)
