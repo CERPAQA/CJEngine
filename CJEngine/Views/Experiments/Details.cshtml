@@ -1,0 +1,120 @@
+﻿@model CJEngine.Models.Experiment
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Experiment</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class="col-sm-2">
+            Experiment Parameter Description
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ExperimentParameters.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ExperimentParameters.ShowTimer)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ExperimentParameters.ShowTimer)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ExperimentParameters.AddComment)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ExperimentParameters.AddComment)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ExperimentParameters.ShowTitle)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ExperimentParameters.ShowTitle)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ExperimentParameters.Timer)
+        </dt>
+        @if (Model.ExperimentParameters.Timer != 0)
+        {
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.ExperimentParameters.Timer) second intervals
+            </dd>
+        }
+        else
+        {
+            <dd class="col-sm-10">
+                No timer
+            </dd>
+        }
+    </dl>
+    <p>
+        Experiment register link <br />
+        <a asp-route-id="@Model.Id" asp-area="Identity" asp-page="/Account/RegisterJudge">Identity/Account/RegisterJudge?id=@Model.Id</a>
+    </p>
+    <!--<p>Registration Link: <a href="/Identity/Account/RegisterJudge/"@Model.Id>"/Identity/Account/RegisterJudge/@Model.Id"</a></p>-->
+     @foreach (var X in Model.ExpAlgorithms)
+        {
+        <P>Algorithm Description: @Html.DisplayFor(algorithm => X.Algorithm.Description)</P>
+        }
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Experiment Judges
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ExpJudges)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(judge => item.Judge.Name)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Experiment Artefacts
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ExpArtefacts)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(judge => item.Artefact.Name)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+ <a asp-action="GenerateReport" asp-route-id="@Model.Id">Generate Report</a>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

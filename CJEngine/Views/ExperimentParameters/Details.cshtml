@@ -1,0 +1,36 @@
+﻿@model CJEngine.Models.ExperimentParameters;
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>ExperimentParameters</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ShowTitle)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ShowTitle)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ShowTimer)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ShowTimer)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AddComment)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AddComment)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

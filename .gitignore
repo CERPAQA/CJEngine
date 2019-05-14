@@ -259,3 +259,9 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/CJEngine/Root
+/CJEngine/ClientApp/Root
+/CJEngine/ClientApp/public/images
+/CJEngine/ClientApp/public/pdf
+/CJEngine/ClientApp/public
+/CJEngine/wwwroot/artefacts

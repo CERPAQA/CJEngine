@@ -1,0 +1,79 @@
+﻿@model CJEngine.Models.Algorithm
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Add a new algorithm</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-10">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Filename" class="control-label">Upload File</label>
+                <p>
+                    <input asp-for="Filename" type="file" name="file">
+                    <span asp-validation-for="Filename" class="text-danger"></span>
+                </p>
+            </div>
+            <div class="form-group">
+                <label asp-for="FunctionName" class="control-label">Function Name</label>
+                <input asp-for="FunctionName" class="form-control" placeholder="Leave blank to use Filename" />
+                <span asp-validation-for="FunctionName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label">Description</label>
+                <input asp-for="Description" class="form-control" placeholder="Option description of the artefact">
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Valid" /> @Html.DisplayNameFor(model => model.Valid)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<!--<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="FunctionName" class="control-label"></label>
+                <input asp-for="FunctionName" class="form-control" />
+                <span asp-validation-for="FunctionName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Filename" class="control-label"></label>
+                <input asp-for="Filename" type="file" class="form-control" />
+                <span asp-validation-for="Filename" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Valid" /> @Html.DisplayNameFor(model => model.Valid)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>-->
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using RDotNet;
 
-namespace CJ_Engine
+namespace CJEngine
 {
     public static class REngineClass
     {

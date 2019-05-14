@@ -1,6 +1,6 @@
 using System;
 
-namespace CJ_Engine.Models
+namespace CJEngine.Models
 {
     public class ErrorViewModel
     {

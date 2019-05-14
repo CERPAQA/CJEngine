@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CJEngine.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CJEngine.Controllers
 {
+    [Authorize(Roles = ("Researcher"))]
     public class JudgesController : Controller
     {
         private readonly CJEngineContext _context;
@@ -53,13 +55,13 @@ namespace CJEngine.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Judge judge)
+        public async Task<IActionResult> Create([Bind("Id,Name,Email")] Judge judge)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(judge);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Create));
             }
             return View(judge);
         }
@@ -85,7 +87,7 @@ namespace CJEngine.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Judge judge)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Email")] Judge judge)
         {
             if (id != judge.Id)
             {

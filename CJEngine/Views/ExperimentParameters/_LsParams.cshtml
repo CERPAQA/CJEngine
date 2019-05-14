@@ -1,0 +1,15 @@
+﻿@model CJEngine.ViewModel.CreateExperimentViewModel;
+<div>
+    <div class="form-group">
+        <label asp-for="Experiment.ExperimentParameters" class="control-label"></label>
+        <select name="Parameters" asp-for="Experiment.ExperimentParameters" class="form-control" id="parametersList" onchange="this.options[this.selectedIndex].onclick()">
+            <option value="Default" class="dropdown-menu">Select Saved Parameters</option>
+            <option value="New" class="dropdown-item" onclick=" document.getElementById('hiddenButton').click()">Create New Parameters...</option>
+            @foreach (var item in Model.ExperimentParametersList)
+            {
+                <option>@item.Description</option>
+            }
+        </select>
+        <button id="hiddenButton" type="button" data-target="#parameters" data-toggle="modal" role="button" hidden="hidden"></button>
+    </div>
+</div>
