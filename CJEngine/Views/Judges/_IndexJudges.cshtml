@@ -1,0 +1,31 @@
+﻿@model CJEngine.ViewModel.CreateExperimentViewModel;
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h4>Add Judges</h4>
+
+<table id="tblJudge" class="col-md-10">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Judges)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    <button asp-route-id="@item.Id" class="addJudgeButton btn btn-link" type="button">Add</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
