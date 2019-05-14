@@ -15,6 +15,7 @@ namespace WebApplication1
 {
     public class Startup
     {
+        //random comment
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
