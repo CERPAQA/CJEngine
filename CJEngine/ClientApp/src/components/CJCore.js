@@ -1,11 +1,18 @@
 ﻿import React, { Component } from 'react';
-import { GetFileType } from './components/GetFileType';
-
+import { GetFileType } from './GetFileType';
+import { Header } from './Header';
+import { IMGViewer } from './IMGViewer';
+import { JudgedScripts } from './JudgedScripts';
+import { PDFViewer } from './PDFViewer';
+//import { PDFViewer2 } from './PDFViewer2';
+import { ElapsedTimer } from './ElapsedTimer';
+import { CommentBox } from './CommentBox';
 
 export class CJCore extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { data: [], index: 0, isHidden: false, counter: 0, score: 0, time: new Date(), judgeID: 0, winList: [], topPick: "" };
+        this.state = {
+            fileNames: [], expID: 0, expTitle: "",  showTitle: false, addComment: false, timer: 0, index: 0, isHidden: false, counter: 0, score: 0, time: new Date(), judgeID: 0, winList: [], topPick: "" };
         this.nextFileButton = this.nextFileButton.bind(this);
         this.prevFileButton = this.prevFileButton.bind(this);
         this.judgePairOneButton = this.judgePairOneButton.bind(this);
@@ -16,16 +23,56 @@ export class CJCore extends React.Component {
         this.getNextFiles = this.getNextFiles.bind(this);
         this.getJudgeID = this.getJudgeID.bind(this);
         this.getLeadingScript = this.getLeadingScript.bind(this);
+        this.randomClick = this.randomClick.bind(this);
+        this.Judge = this.Judge.bind(this);
+        this.timeOut = setTimeout(null, 1000000000000);
+    }
+
+    componentWillMount() {
+        var stringExpNum = document.URL.split("/")[4];
+        var expNum = parseInt(stringExpNum, 10);
+        this.setState({ expID: expNum });
+
+        fetch("api/Pairings/CreatePairings/?id=" + expNum)
+            .then(response => response.json())
+            .then(fileNames => {
+                this.setState({ fileNames: fileNames })
+            });
+
+        fetch("api/Pairings/GetParams/?id=" + expNum)
+            .then(response => response.json())
+            .then(params => {
+                this.setState({ showTitle: params["showTitle"], addComment: params["addComment"], expTitle: params["expTitle"] })
+            });
     }
 
     componentDidMount() {
-        const xhr = new XMLHttpRequest();
-        xhr.open('get', this.props.url, true);
-        xhr.onload = () => {
-            const data = JSON.parse(xhr.responseText);
-            this.setState({ data: data });
-        };
-        xhr.send();
+        var stringExpNum = document.URL.split("/")[document.URL.split("/").length-1];
+        var expNum = parseInt(stringExpNum, 10);
+        fetch("api/Pairings/IsTimerSet/?id=" + expNum)
+            .then(response => response.json())
+            .then(timerLength => {
+                this.Judge(timerLength);
+                this.setState({ timer: timerLength });
+            });
+    }
+
+    randomClick(item) {
+        //document.getElementById(item).click();
+        document.getElementById("itemOne").click();
+    }
+
+    Judge(timerLength) {
+        if (timerLength > 0) {
+            clearTimeout(this.timeOut);
+            var interval = timerLength * 1000;
+            var itemLs = ["itemOne", "itemTwo"];
+            //TODO: fix random choice of items issue(STRETCH GOAL)
+            var randChoice = itemLs[Math.floor(Math.random() * itemLs.length)];
+            this.timeOut = setTimeout(this.randomClick, interval);
+        } else {
+            console.log("no timer");
+        }
     }
 
     toggleHidden() {
@@ -35,7 +82,8 @@ export class CJCore extends React.Component {
     getNextFiles() {
         var newindex = this.state.index + 1;
         var newcounter = this.state.counter;
-        this.state.index === this.state.counter ? newcounter++ : newcounter;
+        if(this.state.index === this.state.counter)
+            newcounter++;
         var Score = this.judgeScore();
         this.getLeadingScript();
         this.setState({ index: newindex, counter: newcounter, score: Score, time: new Date() });
@@ -65,11 +113,12 @@ export class CJCore extends React.Component {
 
     //This handles pressing either the item 1 or 2 button 
     judgePair(itemNumber) {
-        var item = this.state.data[this.state.index][itemNumber];
+        var item = this.state.fileNames[this.state.index][itemNumber];
         var timeJudged = this.setTime();
         var elapsed = this.elapsedTime();
         this.getNextFiles();
-        this.send(this.state.data[this.state.index], item, timeJudged, elapsed);
+        this.send(this.state.fileNames[this.state.index], item, timeJudged, elapsed);
+        this.Judge(this.state.timer);
     }
 
     setTime() {
@@ -85,7 +134,7 @@ export class CJCore extends React.Component {
         timeDiff /= 1000;
 
         var seconds = Math.round(timeDiff);
-        var elapsed = seconds + " seconds";
+        var elapsed = seconds;
         return elapsed;
     }
 
@@ -96,50 +145,45 @@ export class CJCore extends React.Component {
     }
 
     getJudgeID() {
-        const xhr = new XMLHttpRequest();
-        xhr.open('get', "/id", true);
-        xhr.onload = () => {
-            const id = JSON.parse(xhr.responseText);
-            this.setState({ judgeID: id });
-        };
-        xhr.send();
+        fetch('api/Pairings/GenerateID')
+            .then(response => response.json())
+            .then(id => {
+                this.setState({ judgeID: id});
+            });
+
         var id = this.state.judgeID;
         return id;
     }
 
     getLeadingScript() {
-        const xhr = new XMLHttpRequest();
-        xhr.open('get', "/leader", true);
-        xhr.onload = () => {
-            const script = xhr.responseText;
-            this.setState({ topPick: script });
-        };
-        xhr.send();
+        fetch('api/Pairings/GetLeadingScript')
+            .then(response => response.text())
+            .then(script => {
+                this.setState({ topPick: script });
+            });
         var script = this.state.topPick;
         return script;
     }
 
     send(pair, winner, timeJ, elapsed) {
-        fetch("winners", {
+        var commentEnabled = this.state.addComment;
+        if (commentEnabled === true) {
+            var comment = document.getElementById("CommentText").value;
+        } else {
+            comment = "";
+        }
+        fetch("api/Pairings/GetWinners?id=" + this.state.expID, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ winner: winner, pairOfScripts: pair, timeJudgement: timeJ, elapsedTime: elapsed, judgeID: this.state.judgeID })
+            body: JSON.stringify({ Winner: winner, ArtefactPairings: pair, TimeOfPairing: timeJ, ElapsedTime: elapsed, Comment: comment, judgeID: this.state.judgeID })
         }).then(function (response) {
             if (response.status !== 200) {
                 console.log('fetch returned not ok' + response.status);
             }
-
-            response.json().then(function (data) {
-                console.log('fetch returned ok');
-                console.log(data);
-            });
         })
-            .catch(function (err) {
-                console.log(`error: ${err}`);
-            });
     }
 
     render() {
@@ -147,46 +191,43 @@ export class CJCore extends React.Component {
         let viewRight;
         var endOfPairs = this.state.counter;
 
-        if (this.state.data.length > 0) {
-            if (endOfPairs >= this.state.data.length) {
+        if (this.state.fileNames.length > 0) {
+            if (endOfPairs >= this.state.fileNames.length) {
                 viewLeft = <EndOfPairs align="left" />;
             } else {
-                var currentFileLeft = this.state.data[this.state.index]["item1"];
-                var currentFileRight = this.state.data[this.state.index]["item2"];
+                var currentFileLeft = this.state.fileNames[this.state.index]["item1"];
+                var currentFileRight = this.state.fileNames[this.state.index]["item2"];
                 var x = GetFileType(currentFileLeft);
                 var y = GetFileType(currentFileRight);
                 if (x === true) {
-                    viewLeft = <PDFViewer id="left" data={currentFileLeft} />;
+                    viewLeft = <PDFViewer id="left" fileNames={currentFileLeft} />;
 
                 } else {
-                    viewLeft = <IMGViewer id="left" data={currentFileLeft} />;
+                    viewLeft = <IMGViewer id="left" fileNames={currentFileLeft} />;
                 }
                 if (y === true) {
-                    viewRight = <PDFViewer id="right" data={currentFileRight} />;
+                    viewRight = <PDFViewer id="right" fileNames={currentFileRight} />;
                 } else {
 
-                    viewRight = <IMGViewer id="right" data={currentFileRight} />;
+                    viewRight = <IMGViewer id="right" fileNames={currentFileRight} />;
                 }
             }
         }
         return (
             <div>
-                {<Header isHidden={this.state.isHidden} />}
+                {<Header isHidden={this.state.showTitle} text={this.state.expTitle}/>}
                 <div class="itemDisplay">
-                    <button id="prevFileButton" class="btn btn-dark" align="right" onClick={this.prevFileButton}>Previous File</button>
+                    <button id="prevFileButton" className="btn btn-dark" align="right" onClick={this.prevFileButton}>Previous File</button>
                     {viewLeft}
                     {viewRight}
-                    <button id="nextFileButton" class="btn btn-dark" align="left" onClick={this.nextFileButton}>Next File</button>
+                    <button id="nextFileButton" className="btn btn-dark" align="left" onClick={this.nextFileButton}>Next File</button>
                 </div>
 
                 <div class="judgeChoice">
                     <button id="itemOne" class="btn btn-dark" onClick={this.judgePairOneButton}>Item One</button>
                     <button id="itemTwo" class="btn btn-dark" onClick={this.judgePairTwoButton}>Item Two</button>
                 </div>
-                <button id="hideTitle" class="btn btn-dark" onClick={this.toggleHidden.bind(this)} >
-                    Hide Title
-				</button>
-                <TotalScripts data={this.state.data.length} score={this.state.score} top={this.state.topPick} />
+                <JudgedScripts fileNames={this.state.fileNames.length} score={this.state.score} top={this.state.topPick} />
             </div>
         );
     }
@@ -197,8 +238,3 @@ function EndOfPairs(props) {
         <img src="finished.jpg" width='40%' align={props.align}></img>
     );
 }
-
-ReactDOM.render(
-    <CJCore url="/files" />,
-    document.getElementById('pdfLoc')
-);

@@ -1,0 +1,85 @@
+﻿@model CJEngine.ViewModel.CreateExperimentViewModel;
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create a new Experiment</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-10">
+
+        <form asp-action="Create">
+            <!--<div asp-validation-summary="ModelOnly" class="text-danger"></div>-->
+            <div class="form-group">
+                <label asp-for="Experiment.Name" class="control-label"></label>
+                <input asp-for="Experiment.Name" class="form-control" />
+                <span asp-validation-for="Experiment.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Experiment.Description" class="control-label"></label>
+                <input asp-for="Experiment.Description" class="form-control" />
+                <span asp-validation-for="Experiment.Description" class="text-danger"></span>
+            </div>
+            <div id="partialUpdate">
+                <partial name="~/Views/ExperimentParameters/_LsParams.cshtml" />
+            </div>
+            <div id="selectedAlgorithm">
+                <partial name="~/Views/Algorithms/_LsAlgorithm.cshtml" />
+            </div><br />
+            <div>
+                <partial name="~/Views/Artefacts/_IndexArtefacts.cshtml" />
+            </div><br />
+            <div>
+                <ul id="selectedArtefacts"></ul>
+            </div>
+            <div><br />
+                <partial name="~/Views/Judges/_IndexJudges.cshtml" />
+            </div><br />
+            <div>
+                <ul id="selectedJudges"></ul>
+            </div>
+            <div>
+                <input type="submit" value="Create Experiment" class="btn btn-primary" />
+            </div>
+        </form>
+        <div class="modal fade" id="parameters" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Create New Parameter Set</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <partial name="~/Views/ExperimentParameters/_CreateParams.cshtml" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="algorithmsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Upload new algorithm</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <partial name="~/Views/Algorithms/_UploadAlgorithm.cshtml" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to Experiments</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
