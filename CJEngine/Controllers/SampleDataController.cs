@@ -9,7 +9,7 @@ namespace CJEngine.Controllers
     [Route("api/[controller]")]
     public class SampleDataController : Controller
     {
-        CJEngine.Controllers.PairingsController pairingsController = new CJEngine.Controllers.PairingsController();
+        //CJEngine.Controllers.PairingsController pairingsController = new CJEngine.Controllers.PairingsController();
         private static string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"

@@ -83,7 +83,7 @@ namespace CJEngine
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
-            REngineClass.Initialise();
+            //REngineClass.Initialise();
             applicationLifetime.ApplicationStopping.Register(OnShutDown);
         }
 
