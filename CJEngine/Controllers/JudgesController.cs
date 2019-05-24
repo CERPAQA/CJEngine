@@ -45,6 +45,7 @@ namespace CJEngine.Controllers
         }
 
         // GET: Judges/Create
+        [NonAction] //This attribute stops the method from being used as an action
         public IActionResult Create()
         {
             return View();
@@ -55,6 +56,7 @@ namespace CJEngine.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [NonAction]
         public async Task<IActionResult> Create([Bind("Id,Name,Email")] Judge judge)
         {
             if (ModelState.IsValid)

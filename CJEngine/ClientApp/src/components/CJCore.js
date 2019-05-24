@@ -27,7 +27,8 @@ export class CJCore extends React.Component {
         this.Judge = this.Judge.bind(this);
         this.timeOut = setTimeout(null, 1000000000000);
     }
-
+    //TODO: Item1 and Item2 button can be spammed, there needs to be some sort of delay where they cant press
+    //TODO: next and previous buttons should bepart of params, needs to be hidden by default
     componentWillMount() {
         var stringExpNum = document.URL.split("/")[4];
         var expNum = parseInt(stringExpNum, 10);
@@ -56,7 +57,7 @@ export class CJCore extends React.Component {
                 this.setState({ timer: timerLength });
             });
     }
-
+    //TODO: Timed judgements crash at the end, needs to be fixed
     randomClick(item) {
         //document.getElementById(item).click();
         document.getElementById("itemOne").click();

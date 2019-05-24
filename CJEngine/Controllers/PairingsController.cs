@@ -107,6 +107,7 @@ namespace CJEngine.Controllers
         [Route("CreatePairings")]
         public async Task<List<Tuple<string, string>>> CreatePairings(int? id)
         {
+            //TODO: make sure every artefact definitely appears in the experiment
             var liveExperiment = await getCurrentExp((int)id);
             var tempScript = await (
                 from x in _context.Algorithm
@@ -225,6 +226,7 @@ namespace CJEngine.Controllers
              * add expid
              * selected params(each one, timer, comments, etc)
              */
+             //TODO: does not currently geneate researcher data, might be because if user is researcher data is not saved, needs to save regardless of user
             sb.Append("Experiment ID");
             sb.Append("Timer");
             sb.Append("Comments");
