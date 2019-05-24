@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using RDotNet;
+﻿using RDotNet;
 
 namespace CJEngine
 {
@@ -11,7 +7,7 @@ namespace CJEngine
         private static REngine engine;
         public static void Initialise()
         {
-            engine = REngine.GetInstance();
+           engine = REngine.GetInstance();
         }
 
         public static REngine GetREngine()
