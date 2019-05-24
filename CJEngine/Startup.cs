@@ -107,8 +107,7 @@ namespace CJEngine
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
-            //leave this out until furthe notice.
-            //REngineClass.Initialise();
+            REngineClass.Initialise();
             CreateUserRoles(services).Wait();
             applicationLifetime.ApplicationStopping.Register(OnShutDown);
         }

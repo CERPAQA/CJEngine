@@ -26,8 +26,9 @@ export class CJCore extends React.Component {
         this.randomClick = this.randomClick.bind(this);
         this.Judge = this.Judge.bind(this);
         this.timeOut = setTimeout(null, 1000000000000);
+        this.tempDisableItemButtons = this.tempDisableItemButtons.bind(this);
+        this.enableItemButtons = this.enableItemButtons.bind(this);
     }
-    //TODO: Item1 and Item2 button can be spammed, there needs to be some sort of delay where they cant press
     //TODO: next and previous buttons should bepart of params, needs to be hidden by default
     componentWillMount() {
         var stringExpNum = document.URL.split("/")[4];
@@ -114,6 +115,8 @@ export class CJCore extends React.Component {
 
     //This handles pressing either the item 1 or 2 button 
     judgePair(itemNumber) {
+        this.tempDisableItemButtons();
+        setTimeout(this.enableItemButtons, 5000);
         var item = this.state.fileNames[this.state.index][itemNumber];
         var timeJudged = this.setTime();
         var elapsed = this.elapsedTime();
@@ -164,6 +167,16 @@ export class CJCore extends React.Component {
             });
         var script = this.state.topPick;
         return script;
+    }
+
+    tempDisableItemButtons() {
+        document.getElementById("itemOne").disabled = true;
+        document.getElementById("itemTwo").disabled = true;
+    }
+
+    enableItemButtons() {
+        document.getElementById("itemOne").disabled = false;
+        document.getElementById("itemTwo").disabled = false;
     }
 
     send(pair, winner, timeJ, elapsed) {
