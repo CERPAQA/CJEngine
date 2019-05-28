@@ -12,7 +12,7 @@ export class CJCore extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            fileNames: [], expID: 0, expTitle: "", showTitle: false, addComment: false, timeLine: false, timer: 0, index: 0, isHidden: false, counter: 0, score: 0, time: new Date(), judgeID: 0, winList: [], topPick: ""
+            fileNames: [], expID: 0, expTitle: "", showTitle: false, addComment: false, timeLine: true, timer: 0, index: 0, isHidden: false, counter: 0, score: 0, time: new Date(), judgeID: 0, winList: [], topPick: ""
         };
         this.nextFileButton = this.nextFileButton.bind(this);
         this.prevFileButton = this.prevFileButton.bind(this);
@@ -30,7 +30,6 @@ export class CJCore extends React.Component {
         this.tempDisableItemButtons = this.tempDisableItemButtons.bind(this);
         this.enableItemButtons = this.enableItemButtons.bind(this);
     }
-    //TODO: next and previous buttons should bepart of params, needs to be hidden by default
     componentWillMount() {
         var stringExpNum = document.URL.split("/")[4];
         var expNum = parseInt(stringExpNum, 10);
@@ -59,7 +58,7 @@ export class CJCore extends React.Component {
                 this.setState({ timer: timerLength });
             });
     }
-    //TODO: Timed judgements crash at the end, needs to be fixed
+
     randomClick(item) {
         //document.getElementById(item).click();
         document.getElementById("itemOne").click();
@@ -208,7 +207,7 @@ export class CJCore extends React.Component {
 
         if (this.state.fileNames.length > 0) {
             if (endOfPairs >= this.state.fileNames.length) {
-                viewLeft = <EndOfPairs align="left" />;
+                EndOfPairs();
             } else {
                 var currentFileLeft = this.state.fileNames[this.state.index]["item1"];
                 var currentFileRight = this.state.fileNames[this.state.index]["item2"];
@@ -248,8 +247,7 @@ export class CJCore extends React.Component {
     }
 }
 
-function EndOfPairs(props) {
-    return (
-        <img src="finished.jpg" width='40%' align={props.align}></img>
-    );
+function EndOfPairs() {
+    alert("Thank you for taking part!");
+    setTimeout(window.location.replace("/"), 1000);
 }

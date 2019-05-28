@@ -4,10 +4,10 @@ import { NavMenu } from './NavMenu';
 
 export class Layout extends Component {
   static displayName = Layout.name;
-
+//for some reason if you remove below nothing renders???
   render () {
     return (
-      <div>
+        <div>
         <NavMenu />
         <Container>
           {this.props.children}

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using CJEngine.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+// 
 
 namespace CJEngine.Controllers
 {
@@ -20,7 +17,7 @@ namespace CJEngine.Controllers
         {
             _context = context;
         }
-        //This method is used when adding new parameters
+        //This method is used when adding new parameters and is called from the createExperiment.js file
         [Produces("application/json")]
         [HttpPost("[action]")]
         public async Task CreateParams([FromBody][Bind("Id,Description,ShowTitle,ShowTimer,AddComment,Timer, TimeLine")] ExperimentParameters experimentParameters)
