@@ -111,6 +111,7 @@ namespace CJEngine.Controllers
             sb.Append("TimeJudged,");
             sb.Append("ElapsedTime,"); 
             sb.Append("Timer,"); 
+            //TODO: see below
             //sb.Append("Timer (s),"); whatever the seconds parameter was e.g 20 seconds
             sb.Append("Comments,");
             // whatever comment was left perhaps in here??
@@ -124,6 +125,7 @@ namespace CJEngine.Controllers
 
             foreach(var pairing in records)
             {
+                //TODO: can this for loop be refactored?
                 var winner = await _context.Artefact
                     .Where(a => a.Id == pairing.WinnerId)
                     .FirstOrDefaultAsync();

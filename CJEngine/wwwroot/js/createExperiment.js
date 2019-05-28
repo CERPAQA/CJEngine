@@ -144,6 +144,7 @@ function createParams() {
     var showTimer = document.getElementById("checkTime").checked;
     var addComment = document.getElementById("checkAddComment").checked;
     var timer = document.getElementById("checkTimer").value;
+    var timeLine = document.getElementById("checkTimeLine").checked;
 
     //reconfigure fetch method
     fetch('/api/ExperimentParametersAPI/CreateParams', {
@@ -152,7 +153,7 @@ function createParams() {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ description, showTimer, showTitle, addComment, timer })
+        body: JSON.stringify({ description, showTimer, showTitle, addComment, timer, timeLine })
     }).then(function (response) {
         if (response.status !== 200) {
             console.log('fetch returned not ok' + response.status);

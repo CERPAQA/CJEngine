@@ -75,15 +75,18 @@ namespace CJEngine.Controllers
         [Route("GetParams")]
         public async Task<Dictionary<string, dynamic>> GetParams(int? id)
         {
+            //TODO: edit params once they have been created ? and if so where does this happen?
             var liveExperiment = await getCurrentExp((int)id);
             string expTitle = liveExperiment.Name;
             bool showTimer = liveExperiment.ExperimentParameters.ShowTimer;
             bool showTitle = liveExperiment.ExperimentParameters.ShowTitle;
             bool addComment = liveExperiment.ExperimentParameters.AddComment;
+            bool timeLine = liveExperiment.ExperimentParameters.TimeLine;
             expParams.Add("expTitle", expTitle);
             expParams.Add("showTimer", showTimer);
             expParams.Add("showTitle", showTitle);
             expParams.Add("addComment", addComment);
+            expParams.Add("timeLine", timeLine);
             return expParams;
         }
 
@@ -216,50 +219,6 @@ namespace CJEngine.Controllers
                 }
             }
             return mostFrequent;
-        }
-
-        [HttpGet("[action]")]
-        public string GenerateCSVString()
-        {
-            StringBuilder sb = new StringBuilder();
-            /*TODO:
-             * add expid
-             * selected params(each one, timer, comments, etc)
-             */
-             //TODO: does not currently geneate researcher data, might be because if user is researcher data is not saved, needs to save regardless of user
-            sb.Append("Experiment ID");
-            sb.Append("Timer");
-            sb.Append("Comments");
-            sb.Append("Title");
-            //havent yet implemented the above
-            sb.Append("Winner,");
-            sb.Append("Script One,");
-            sb.Append("Script Two,");
-            sb.Append("Date,");
-            sb.Append("TimeJudged,");
-            sb.Append("ElapsedTime,");
-            sb.Append("Judge");
-            sb.AppendLine();
-            for (int i = 0; i < allPairings.Count; i++)
-            {
-                //Just cleaning the strings up a little bit for easier reading/analysis
-                /*sb.Append(allPairings[i].winner.Replace("/images/", "") + ",");
-                sb.Append(allPairings[i].pairOfScripts.ToString().Replace("/images/", "").Replace("(", "").Replace(")", "") + ",");
-                sb.Append(allPairings[i].timeJudgement + ",");
-                sb.Append(allPairings[i].elapsedTime + ",");
-                sb.Append(allPairings[i].judgeID + ",");*/
-                sb.AppendLine();
-            }
-            return sb.ToString();
-        }
-
-        [HttpGet("[action]")]
-        public FileContentResult ReportBuilder()
-        {
-            var csv = GenerateCSVString();
-            var fileName = "report.csv";
-
-            return File(new System.Text.UTF8Encoding().GetBytes(csv), "text/csv", fileName);
         }
     }
 }

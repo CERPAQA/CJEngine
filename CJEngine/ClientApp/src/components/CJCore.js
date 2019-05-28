@@ -12,7 +12,8 @@ export class CJCore extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            fileNames: [], expID: 0, expTitle: "",  showTitle: false, addComment: false, timer: 0, index: 0, isHidden: false, counter: 0, score: 0, time: new Date(), judgeID: 0, winList: [], topPick: "" };
+            fileNames: [], expID: 0, expTitle: "", showTitle: false, addComment: false, timeLine: false, timer: 0, index: 0, isHidden: false, counter: 0, score: 0, time: new Date(), judgeID: 0, winList: [], topPick: ""
+        };
         this.nextFileButton = this.nextFileButton.bind(this);
         this.prevFileButton = this.prevFileButton.bind(this);
         this.judgePairOneButton = this.judgePairOneButton.bind(this);
@@ -44,7 +45,7 @@ export class CJCore extends React.Component {
         fetch("api/Pairings/GetParams/?id=" + expNum)
             .then(response => response.json())
             .then(params => {
-                this.setState({ showTitle: params["showTitle"], addComment: params["addComment"], expTitle: params["expTitle"] })
+                this.setState({ showTitle: params["showTitle"], addComment: params["addComment"], expTitle: params["expTitle"], timeLine: params["timeLine"] })
             });
     }
 
@@ -116,7 +117,7 @@ export class CJCore extends React.Component {
     //This handles pressing either the item 1 or 2 button 
     judgePair(itemNumber) {
         this.tempDisableItemButtons();
-        setTimeout(this.enableItemButtons, 5000);
+        setTimeout(this.enableItemButtons, 500);
         var item = this.state.fileNames[this.state.index][itemNumber];
         var timeJudged = this.setTime();
         var elapsed = this.elapsedTime();
@@ -231,10 +232,10 @@ export class CJCore extends React.Component {
             <div>
                 {<Header isHidden={this.state.showTitle} text={this.state.expTitle}/>}
                 <div class="itemDisplay">
-                    <button id="prevFileButton" className="btn btn-dark" align="right" onClick={this.prevFileButton}>Previous File</button>
+                    <button id="prevFileButton" hidden={this.state.timeLine} className="btn btn-dark" align="right" onClick={this.prevFileButton}>Previous File</button>
                     {viewLeft}
                     {viewRight}
-                    <button id="nextFileButton" className="btn btn-dark" align="left" onClick={this.nextFileButton}>Next File</button>
+                    <button id="nextFileButton" hidden={this.state.timeLine} className="btn btn-dark" align="left" onClick={this.nextFileButton}>Next File</button>
                 </div>
 
                 <div class="judgeChoice">
