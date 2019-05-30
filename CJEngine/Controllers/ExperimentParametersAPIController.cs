@@ -20,7 +20,7 @@ namespace CJEngine.Controllers
         //This method is used when adding new parameters and is called from the createExperiment.js file
         [Produces("application/json")]
         [HttpPost("[action]")]
-        public async Task CreateParams([FromBody][Bind("Id,Description,ShowTitle,ShowTimer,AddComment,Timer, TimeLine")] ExperimentParameters experimentParameters)
+        public async Task CreateParams([FromBody][Bind("Id,Description,ShowTitle,ShowTimer,AddComment,Timer, TimeLine, NumberOfPairings")] ExperimentParameters experimentParameters)
         {
             if (ModelState.IsValid)
             {

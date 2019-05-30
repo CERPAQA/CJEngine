@@ -5,9 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CJEngine.Models;
 using CJEngine.Models.Join_Entities;
-using System.IO;
 using RDotNet;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using Microsoft.AspNetCore.Authorization;
@@ -110,7 +108,6 @@ namespace CJEngine.Controllers
         [Route("CreatePairings")]
         public async Task<List<Tuple<string, string>>> CreatePairings(int? id)
         {
-            //TODO: make sure every artefact definitely appears in the experiment
             var liveExperiment = await getCurrentExp((int)id);
             var tempScript = await (
                 from x in _context.Algorithm
@@ -120,7 +117,7 @@ namespace CJEngine.Controllers
             string scriptName = tempScript.Filename.Replace("/../../", "");
 
             List<string> original = GetFiles(liveExperiment);
-            List<Tuple<int, int>> result = GetPairings(fileNames.Count - 1, 20, scriptName); 
+            List<Tuple<int, int>> result = GetPairings(fileNames.Count - 1, liveExperiment.ExperimentParameters.NumberOfPairings, scriptName); 
             List<Tuple<string, string>> finalResult = new List<Tuple<string, string>>();
             foreach (Tuple<int, int> x in result)
             {

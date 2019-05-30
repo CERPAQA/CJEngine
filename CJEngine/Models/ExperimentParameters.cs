@@ -9,5 +9,8 @@
         public bool AddComment { get; set; }
         public int Timer { get; set; }
         public bool TimeLine { get; set; }
+        public int NumberOfPairings { get; set; }
+        //TODO: change numpairings to maxJudgejudgmnets and then work on disabling an experiment after the judge has finished
+
     }
 }

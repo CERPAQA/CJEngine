@@ -101,6 +101,7 @@ namespace CJEngine.Controllers
 
         public async Task<FileContentResult> GenerateReport(int? id)
         {
+            //TODO: add numpairings to csv
             StringBuilder sb = new StringBuilder();
             sb.Append("Experiment ID,");
             sb.Append("Winner,");

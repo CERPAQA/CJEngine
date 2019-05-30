@@ -248,6 +248,7 @@ export class CJCore extends React.Component {
 }
 
 function EndOfPairs() {
+    //TODO: just double check the user has to click okay before redirect happens
     alert("Thank you for taking part!");
     setTimeout(window.location.replace("/"), 1000);
 }

@@ -53,6 +53,12 @@
             @Html.DisplayFor(model => model.ExperimentParameters.TimeLine)
         </dd>
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ExperimentParameters.NumberOfPairings)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ExperimentParameters.NumberOfPairings)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ExperimentParameters.Timer)
         </dt>
         @if (Model.ExperimentParameters.Timer != 0)

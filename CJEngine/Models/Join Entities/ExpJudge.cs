@@ -12,5 +12,6 @@ namespace CJEngine.Models.Join_Entities
         public Experiment Experiment { get; set; }
         public string JudgeLoginId { get; set; }
         public Judge Judge { get; set; }
+        //TODO: add new field for counter
     }
 }
