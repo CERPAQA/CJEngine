@@ -101,7 +101,6 @@ namespace CJEngine.Controllers
 
         public async Task<FileContentResult> GenerateReport(int? id)
         {
-            //TODO: add numpairings to csv
             StringBuilder sb = new StringBuilder();
             sb.Append("Experiment ID,");
             sb.Append("Winner,");
@@ -110,7 +109,8 @@ namespace CJEngine.Controllers
             sb.Append("Judge,");
             sb.Append("Date,");
             sb.Append("TimeJudged,");
-            sb.Append("ElapsedTime,"); 
+            sb.Append("ElapsedTimeMS,");
+            sb.Append("NumberOfPairings");
             sb.Append("Timer,"); 
             //TODO: see below
             //sb.Append("Timer (s),"); whatever the seconds parameter was e.g 20 seconds
@@ -126,7 +126,6 @@ namespace CJEngine.Controllers
 
             foreach(var pairing in records)
             {
-                //TODO: can this for loop be refactored?
                 var winner = await _context.Artefact
                     .Where(a => a.Id == pairing.WinnerId)
                     .FirstOrDefaultAsync();
@@ -165,12 +164,13 @@ namespace CJEngine.Controllers
                 sb.Append(judgeDate + ",");
                 sb.Append(judgeTime + ",");
                 sb.Append(elapsedTimeMS + ",");
+                sb.Append(expParam.NumberOfPairings + ",");
                 sb.Append(expParam.ShowTimer + ",");
                 sb.Append(expParam.AddComment + ",");
                 sb.Append(expParam.ShowTitle + ",");
                 sb.AppendLine();
             }
-            var fullReport = sb.ToString(); // can probably take this out
+            var fullReport = sb.ToString();
             var fileName = "report.csv";
 
             return File(new System.Text.UTF8Encoding().GetBytes(fullReport), "text/csv", fileName);

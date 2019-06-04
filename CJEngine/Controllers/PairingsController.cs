@@ -73,7 +73,6 @@ namespace CJEngine.Controllers
         [Route("GetParams")]
         public async Task<Dictionary<string, dynamic>> GetParams(int? id)
         {
-            //TODO: edit params once they have been created ? and if so where does this happen?
             var liveExperiment = await getCurrentExp((int)id);
             string expTitle = liveExperiment.Name;
             bool showTimer = liveExperiment.ExperimentParameters.ShowTimer;
