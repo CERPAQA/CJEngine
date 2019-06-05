@@ -12,7 +12,7 @@ export class CJCore extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            fileNames: [], expID: 0, expTitle: "", showTitle: false, addComment: false, timeLine: true, timer: 0, index: 0, isHidden: false, counter: 0, score: 0, time: new Date(), judgeID: 0, winList: [], topPick: ""
+            fileNames: [], expID: 0, expTitle: "", showTitle: false, addComment: false, timeLine: false, timer: 0, index: 0, isHidden: false, counter: 0, score: 0, time: new Date(), judgeID: 0, winList: [], topPick: ""
         };
         this.nextFileButton = this.nextFileButton.bind(this);
         this.prevFileButton = this.prevFileButton.bind(this);
@@ -60,7 +60,6 @@ export class CJCore extends React.Component {
     }
 
     randomClick(item) {
-        //document.getElementById(item).click();
         document.getElementById("itemOne").click();
     }
 
@@ -69,8 +68,6 @@ export class CJCore extends React.Component {
             clearTimeout(this.timeOut);
             var interval = timerLength * 1000;
             var itemLs = ["itemOne", "itemTwo"];
-            //TODO: fix random choice of items issue(STRETCH GOAL)
-            var randChoice = itemLs[Math.floor(Math.random() * itemLs.length)];
             this.timeOut = setTimeout(this.randomClick, interval);
         } else {
             console.log("no timer");
@@ -214,16 +211,16 @@ export class CJCore extends React.Component {
                 var x = GetFileType(currentFileLeft);
                 var y = GetFileType(currentFileRight);
                 if (x === true) {
-                    viewLeft = <PDFViewer id="left" fileNames={currentFileLeft} />;
+                    viewLeft = <PDFViewer id="leftDisplay" fileNames={currentFileLeft} />;
 
                 } else {
-                    viewLeft = <IMGViewer id="left" fileNames={currentFileLeft} />;
+                    viewLeft = <IMGViewer id="leftDisplay" fileNames={currentFileLeft} />;
                 }
                 if (y === true) {
-                    viewRight = <PDFViewer id="right" fileNames={currentFileRight} />;
+                    viewRight = <PDFViewer id="rightDisplay" fileNames={currentFileRight} />;
                 } else {
 
-                    viewRight = <IMGViewer id="right" fileNames={currentFileRight} />;
+                    viewRight = <IMGViewer id="rightDisplay" fileNames={currentFileRight} />;
                 }
             }
         }
@@ -248,7 +245,6 @@ export class CJCore extends React.Component {
 }
 
 function EndOfPairs() {
-    //TODO: just double check the user has to click okay before redirect happens
     alert("Thank you for taking part!");
     setTimeout(window.location.replace("/"), 1000);
 }
