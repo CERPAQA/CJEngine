@@ -231,6 +231,7 @@ export class CJCore extends React.Component {
                     <button id="prevFileButton" hidden={this.state.timeLine} className="btn btn-dark" align="right" onClick={this.prevFileButton}>Previous File</button>
                     {viewLeft}
                     {viewRight}
+                    <CommentBox isHidden={this.state.addComment}/>
                     <button id="nextFileButton" hidden={this.state.timeLine} className="btn btn-dark" align="left" onClick={this.nextFileButton}>Next File</button>
                 </div>
 

@@ -79,14 +79,7 @@ namespace CJEngine.Controllers
             bool showTitle = liveExperiment.ExperimentParameters.ShowTitle;
             bool addComment = liveExperiment.ExperimentParameters.AddComment;
             bool timeLine = liveExperiment.ExperimentParameters.TimeLine;
-            if (timeLine == true)
-            {
-                timeLine = false;
-            }
-            else
-            {
-                timeLine = true;
-            }
+            timeLine = !timeLine; //true means the timeline will be hidden
             expParams.Add("expTitle", expTitle);
             expParams.Add("showTimer", showTimer);
             expParams.Add("showTitle", showTitle);
