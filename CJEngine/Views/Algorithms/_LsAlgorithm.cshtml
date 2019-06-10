@@ -2,7 +2,7 @@
 <div>
     <div class="form-group">
         <label asp-for="Algorithms" class="control-label"></label>
-        <select name="algorithms" asp-for="Algorithms" class="form-control" id="algorithmsList" onchange="this.options[this.selectedIndex].onclick()">
+        <select name="algorithms" asp-for="Algorithms" class="form-control" id="algorithmsList" onchange="this.options[this.selectedIndex].onclick()" required>
             !<!--<option value="New" class="dropdown-item" onclick=" document.getElementById('hiddenButtonA').click()">Upload new Algorithm...</option>-->
             @foreach (var item in Model.Algorithms)
             {

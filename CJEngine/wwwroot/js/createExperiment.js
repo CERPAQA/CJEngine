@@ -147,30 +147,35 @@ function createParams() {
     var timeLine = document.getElementById("checkTimeLine").checked;
     var NumberOfPairings = document.getElementById("numPairings").value;
 
-    //reconfigure fetch method
-    fetch('/api/ExperimentParametersAPI/CreateParams', {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ description, showTimer, showTitle, addComment, timer, timeLine, NumberOfPairings })
-    }).then(function (response) {
-        if (response.status !== 200) {
-            console.log('fetch returned not ok' + response.status);
-        }
+    if (description == "" || NumberOfPairings == "") {
+        alert("Please make sure descrition and number of pairings are filled in!")
+    } else {
+        //reconfigure fetch method
+        fetch('/api/ExperimentParametersAPI/CreateParams', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ description, showTimer, showTitle, addComment, timer, timeLine, NumberOfPairings })
+        }).then(function (response) {
+            if (response.status !== 200) {
+                console.log('fetch returned not ok' + response.status);
+            }
 
-        response.json().then(function (data) {
-            console.log('fetch returned ok');
-            console.log(data);
-        });
-    })
-        .catch(function (err) {
-            console.log(`error: ${err}`);
-        });
-    var select = document.getElementById("parametersList");
-    select.options[select.options.length] = new Option(description, description);
-    select.value = description;
+            response.json().then(function (data) {
+                console.log('fetch returned ok');
+                console.log(data);
+            });
+        })
+            .catch(function (err) {
+                console.log(`error: ${err}`);
+            });
+        var select = document.getElementById("parametersList");
+        select.options[select.options.length] = new Option(description, description);
+        select.value = description;
+    }
+    
 }
 
 function CreateAlgorithm() {
